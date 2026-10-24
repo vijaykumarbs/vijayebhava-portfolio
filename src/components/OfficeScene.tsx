@@ -117,55 +117,100 @@ function Person({
 }) {
   const body = useRef<THREE.Group>(null);
   const rightArm = useRef<THREE.Mesh>(null);
+  const leftArm = useRef<THREE.Mesh>(null);
   const head = useRef<THREE.Group>(null);
-  const suit = palette[role];
-  const hair = role === "leader" ? "#332b40" : role === "engineering" ? "#26394a" : "#493b32";
+  const costume = {
+    host: { jacket: "#db604d", pants: "#344c4c", shirt: "#fff8e9", hair: "#493b32" },
+    customer: { jacket: "#f2bd48", pants: "#346d78", shirt: "#fff3d2", hair: "#513c32" },
+    leader: { jacket: "#7953b8", pants: "#3d345b", shirt: "#faf2ff", hair: "#332b40" },
+    engineering: { jacket: "#328cda", pants: "#26394a", shirt: "#e8f7ff", hair: "#26394a" },
+  }[role];
+  const skin = role === "customer" ? "#ba7958" : role === "leader" ? "#d3a07b" : role === "engineering" ? "#bd805c" : "#d7a988";
 
   useFrame(({ clock }) => {
     const time = clock.elapsedTime + phase;
     const focus = THREE.MathUtils.clamp(1 - Math.abs(progress.current - stage) / 0.95, 0, 1);
     if (body.current) body.current.rotation.y = Math.sin(time * 0.65) * 0.025;
     if (head.current) head.current.rotation.x = -focus * (0.035 + Math.sin(time * 1.2) * 0.015);
-    if (rightArm.current) rightArm.current.rotation.x = -focus * (0.24 + Math.sin(time * 1.6) * 0.06);
+    if (rightArm.current) rightArm.current.rotation.z = 0.58 + focus * (0.38 + Math.sin(time * 1.6) * 0.08);
+    if (leftArm.current) leftArm.current.rotation.z = -0.58 - focus * (0.3 + Math.sin(time * 1.3 + phase) * 0.06);
   });
 
   return (
     <group position={position}>
       <group ref={body}>
-        <mesh position={[0, 0.58, 0]} castShadow>
-          <capsuleGeometry args={[0.2, 0.42, 5, 12]} />
-          <meshPhysicalMaterial color={suit} roughness={0.38} clearcoat={0.35} />
+        {/* Distinct trouser legs and polished shoes give each figure a full silhouette. */}
+        {[-0.105, 0.105].map((x) => (
+          <group key={x}>
+            <mesh position={[x, 0.28, 0]} castShadow>
+              <capsuleGeometry args={[0.075, 0.32, 5, 10]} />
+              <meshStandardMaterial color={costume.pants} roughness={0.62} />
+            </mesh>
+            <mesh position={[x, 0.075, 0.045]} castShadow>
+              <capsuleGeometry args={[0.07, 0.09, 4, 9]} />
+              <meshStandardMaterial color={role === "customer" ? "#f8f0db" : "#263a35"} roughness={0.42} />
+            </mesh>
+          </group>
+        ))}
+        <mesh position={[0, 0.72, 0]} castShadow>
+          <capsuleGeometry args={[0.225, 0.36, 6, 14]} />
+          <meshPhysicalMaterial color={costume.jacket} roughness={0.39} clearcoat={0.3} />
         </mesh>
-        <mesh position={[-0.22, 0.61, 0]} rotation={[0, 0, -0.24]} castShadow>
-          <capsuleGeometry args={[0.07, 0.28, 4, 9]} />
-          <meshStandardMaterial color={suit} roughness={0.44} />
+        {/* Shirt front; hoodie drawstrings and a raised hood identify engineering. */}
+        <mesh position={[0, 0.76, 0.207]} castShadow>
+          <boxGeometry args={role === "engineering" ? [0.13, 0.33, 0.025] : [0.09, 0.31, 0.025]} />
+          <meshStandardMaterial color={costume.shirt} roughness={0.38} />
         </mesh>
-        <mesh ref={rightArm} position={[0.22, 0.68, 0]} rotation={[0, 0, 0.24]} castShadow>
-          <capsuleGeometry args={[0.07, 0.3, 4, 9]} />
-          <meshStandardMaterial color={suit} roughness={0.44} />
+        {role === "leader" && <mesh position={[0, 0.76, 0.23]} castShadow>
+          <coneGeometry args={[0.05, 0.2, 3]} />
+          <meshStandardMaterial color="#f1c65e" roughness={0.34} />
+        </mesh>}
+        {role === "engineering" && <>
+          <mesh position={[0, 0.92, -0.015]} castShadow>
+            <torusGeometry args={[0.17, 0.045, 8, 20, Math.PI]} />
+            <meshStandardMaterial color="#1765a7" roughness={0.7} />
+          </mesh>
+          <mesh position={[-0.045, 0.84, 0.23]}><cylinderGeometry args={[0.008, 0.008, 0.15, 8]} /><meshStandardMaterial color="#74c8ed" /></mesh>
+          <mesh position={[0.045, 0.84, 0.23]}><cylinderGeometry args={[0.008, 0.008, 0.15, 8]} /><meshStandardMaterial color="#74c8ed" /></mesh>
+        </>}
+        {role === "host" && <mesh position={[0, 0.76, 0.232]} castShadow>
+          <coneGeometry args={[0.04, 0.16, 3]} />
+          <meshStandardMaterial color="#f2bd48" roughness={0.4} />
+        </mesh>}
+        {role === "customer" && <mesh position={[0.18, 0.72, 0.045]} castShadow>
+          <boxGeometry args={[0.11, 0.14, 0.1]} />
+          <meshStandardMaterial color="#e8a95d" roughness={0.72} />
+        </mesh>}
+        <mesh ref={leftArm} position={[-0.23, 0.84, 0]} rotation={[0, 0, -0.58]} castShadow>
+          <capsuleGeometry args={[0.072, 0.27, 5, 10]} />
+          <meshStandardMaterial color={costume.jacket} roughness={0.44} />
         </mesh>
-        <mesh position={[0, 1.1, 0]} castShadow>
-          <sphereGeometry args={[0.19, 20, 16]} />
-          <meshStandardMaterial color="#d7a988" roughness={0.64} />
+        <mesh ref={rightArm} position={[0.23, 0.84, 0]} rotation={[0, 0, 0.58]} castShadow>
+          <capsuleGeometry args={[0.072, 0.27, 5, 10]} />
+          <meshStandardMaterial color={costume.jacket} roughness={0.44} />
         </mesh>
-        <mesh position={[0, 1.2, -0.025]} castShadow>
-          <sphereGeometry args={[0.192, 20, 14, 0, Math.PI * 2, 0, Math.PI / 2.25]} />
-          <meshStandardMaterial color={hair} roughness={0.82} />
+        <mesh position={[0, 1.13, 0]} castShadow>
+          <cylinderGeometry args={[0.09, 0.1, 0.12, 12]} />
+          <meshStandardMaterial color={skin} roughness={0.72} />
+        </mesh>
+        <mesh position={[0, 1.37, 0]} castShadow>
+          <sphereGeometry args={[0.19, 24, 20]} />
+          <meshStandardMaterial color={skin} roughness={0.62} />
+        </mesh>
+        <mesh position={[0, 1.47, -0.025]} castShadow>
+          <sphereGeometry args={[0.194, 20, 16, 0, Math.PI * 2, 0, Math.PI / 2.1]} />
+          <meshStandardMaterial color={costume.hair} roughness={0.82} />
         </mesh>
         <group ref={head}>
-          <mesh position={[-0.058, 1.12, 0.173]}>
-            <sphereGeometry args={[0.019, 10, 8]} />
+          <mesh position={[-0.058, 1.38, 0.173]}>
+            <sphereGeometry args={[0.022, 12, 10]} />
             <meshBasicMaterial color={palette.ink} />
           </mesh>
-          <mesh position={[0.058, 1.12, 0.173]}>
-            <sphereGeometry args={[0.019, 10, 8]} />
+          <mesh position={[0.058, 1.38, 0.173]}>
+            <sphereGeometry args={[0.022, 12, 10]} />
             <meshBasicMaterial color={palette.ink} />
           </mesh>
         </group>
-        <mesh position={[0, 0.91, 0.183]}>
-          <boxGeometry args={[0.065, 0.15, 0.018]} />
-          <meshStandardMaterial color={role === "host" ? palette.ivory : palette.paper} roughness={0.34} />
-        </mesh>
       </group>
       <mesh position={[0, 0.08, 0]} receiveShadow>
         <cylinderGeometry args={[0.25, 0.28, 0.12, 24]} />
@@ -186,7 +231,7 @@ function Screen({ position, size = [0.8, 0.56], color = "#fffaf0" }: { position:
   );
 }
 
-function Table({ position, size = [1.3, 0.78, 0.72], color = palette.ivory }: { position: Point; size?: Point; color?: string }) {
+function Table({ position, size = [1.3, 0.48, 0.72], color = palette.ivory }: { position: Point; size?: Point; color?: string }) {
   const [width, height, depth] = size;
   return (
     <group position={position}>
@@ -246,7 +291,7 @@ function Office({ progress }: { progress: React.MutableRefObject<number> }) {
 
       {/* Six open, individually furnished rooms form a clear customer journey. */}
       <Room position={[-4, 0, -1.65]} size={[3.45, 2.55]} floor={palette.discovery} accent="#dd8061" progress={progress} stage={1}>
-        <Table position={[0, 0.34, 0.05]} size={[1.35, 0.78, 0.68]} />
+        <Table position={[0, 0.3, 0.05]} size={[1.35, 0.48, 0.68]} />
         <Person position={[-0.76, 0.3, 0.24]} role="customer" stage={1} progress={progress} phase={0.5} />
         <Person position={[0.76, 0.3, 0.24]} role="host" stage={1} progress={progress} phase={1.5} />
         <Screen position={[0, 1.1, -1.12]} size={[0.92, 0.66]} color="#fff5e9" />
@@ -256,7 +301,7 @@ function Office({ progress }: { progress: React.MutableRefObject<number> }) {
       </Room>
 
       <Room position={[0, 0, -3.15]} size={[3.45, 2.55]} floor={palette.strategy} accent="#7954b8" progress={progress} stage={2}>
-        <Table position={[0, 0.34, 0.08]} size={[1.42, 0.78, 0.7]} color="#fffdf7" />
+        <Table position={[0, 0.3, 0.08]} size={[1.42, 0.48, 0.7]} color="#fffdf7" />
         <Person position={[-0.85, 0.3, 0.32]} role="leader" stage={2} progress={progress} phase={1.1} />
         <Person position={[0.85, 0.3, 0.32]} role="host" stage={2} progress={progress} phase={2.1} />
         <Screen position={[0, 1.1, -1.12]} size={[1.05, 0.67]} color="#f8f3ff" />
@@ -266,7 +311,7 @@ function Office({ progress }: { progress: React.MutableRefObject<number> }) {
       </Room>
 
       <Room position={[4, 0, -1.65]} size={[3.45, 2.55]} floor={palette.design} accent="#d0a331" progress={progress} stage={3}>
-        <Table position={[0, 0.34, 0.08]} size={[1.65, 0.78, 0.78]} />
+        <Table position={[0, 0.3, 0.08]} size={[1.65, 0.48, 0.78]} />
         <Person position={[-0.87, 0.3, 0.32]} role="host" stage={3} progress={progress} phase={0.8} />
         <Person position={[0.87, 0.3, 0.32]} role="customer" stage={3} progress={progress} phase={1.8} />
         <Block position={[-0.28, 0.83, -0.03]} size={[0.4, 0.025, 0.35]} color="#e98a68" />
@@ -275,7 +320,7 @@ function Office({ progress }: { progress: React.MutableRefObject<number> }) {
       </Room>
 
       <Room position={[4, 0, 1.65]} size={[3.45, 2.55]} floor={palette.build} accent="#287cb5" progress={progress} stage={4}>
-        <Table position={[0, 0.34, 0.04]} size={[1.72, 0.78, 0.72]} />
+        <Table position={[0, 0.3, 0.04]} size={[1.72, 0.48, 0.72]} />
         <Person position={[-0.88, 0.3, 0.33]} role="engineering" stage={4} progress={progress} phase={0.65} />
         <Person position={[0.88, 0.3, 0.33]} role="engineering" stage={4} progress={progress} phase={2.65} />
         <Screen position={[-0.48, 0.9, -0.11]} size={[0.54, 0.43]} color="#e9f7ff" />
@@ -285,7 +330,7 @@ function Office({ progress }: { progress: React.MutableRefObject<number> }) {
       </Room>
 
       <Room position={[0, 0, 3.15]} size={[3.45, 2.55]} floor={palette.delivery} accent="#348e79" progress={progress} stage={5}>
-        <Table position={[0, 0.34, 0.1]} size={[1.5, 0.78, 0.65]} />
+        <Table position={[0, 0.3, 0.1]} size={[1.5, 0.48, 0.65]} />
         <Person position={[-0.78, 0.3, 0.33]} role="host" stage={5} progress={progress} phase={0.4} />
         <Person position={[0.78, 0.3, 0.33]} role="leader" stage={5} progress={progress} phase={2.4} />
         <Screen position={[0, 1.1, -1.11]} size={[0.95, 0.66]} color="#effcf6" />
@@ -316,7 +361,7 @@ function Office({ progress }: { progress: React.MutableRefObject<number> }) {
         <torusGeometry args={[1.08, 0.045, 12, 64]} />
         <meshStandardMaterial color="#e3b44e" emissive="#d6a334" emissiveIntensity={0.16} metalness={0.55} roughness={0.28} />
       </mesh>
-      <Table position={[0, 0.52, 0]} size={[1.2, 0.68, 0.68]} color="#e9f3ec" />
+      <Table position={[0, 0.47, 0]} size={[1.2, 0.34, 0.68]} color="#e9f3ec" />
       <Person position={[-0.72, 0.47, 0.63]} role="customer" stage={0} progress={progress} phase={0.8} />
       <Person position={[0.72, 0.47, 0.63]} role="host" stage={0} progress={progress} phase={1.8} />
       <Person position={[0, 0.47, -0.83]} role="leader" stage={0} progress={progress} phase={2.8} />

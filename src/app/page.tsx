@@ -2,6 +2,9 @@ import OfficeScene from "@/components/OfficeScene";
 import { chapters } from "@/data/chapters";
 import { getPortfolioCopy } from "@/data/wordpress";
 
+const whatsappHref = "https://wa.me/919164488088?text=Hi%20Vijay%2C%20I%27d%20like%20to%20discuss%20a%20business%20challenge%20with%20you.";
+const linkedInHref = "https://www.linkedin.com/in/vijaykumarbs/";
+
 function OfficeIllustration() {
   return (
     <svg className="office-illustration" viewBox="0 0 620 420" role="img" aria-label="Illustration of a connected miniature office centered around a customer meeting">
@@ -50,10 +53,10 @@ export default async function Home() {
       <OfficeScene />
       <div className="mobile-office"><OfficeIllustration /></div>
       <header className="site-header">
-        <a className="wordmark" href="#top" aria-label="Vijay Ebhava, home">VE<span>.</span></a>
+        <a className="wordmark" href="#top" aria-label="Vijay Ebhava, home"><span className="wordmark-mark">VB</span><span className="wordmark-name">VIJAYEBHAVA</span></a>
         <nav aria-label="Main navigation">
           <a href="#approach">How I work</a>
-          <a href="#contact">Let’s talk <span aria-hidden="true">↗</span></a>
+          <a href={whatsappHref} target="_blank" rel="noreferrer">Contact <span aria-hidden="true">↗</span></a>
         </nav>
       </header>
 
@@ -90,10 +93,13 @@ export default async function Home() {
           <p className="eyebrow"><span className="eyebrow-dot" /> A good place to begin</p>
           <h2 id="contact-title">Bring the challenge.<br /><em>We’ll find the useful next step.</em></h2>
           <p>Start with one process, one decision or one outcome that needs to work better. The scope can stay focused.</p>
-          <div className="contact-note">Contact details can be added when you’re ready to publish.</div>
+          <div className="contact-actions">
+            <a className="contact-whatsapp" href={whatsappHref} target="_blank" rel="noreferrer">Start a WhatsApp chat <span aria-hidden="true">↗</span></a>
+            <a className="contact-linkedin" href={linkedInHref} target="_blank" rel="noreferrer">Connect on LinkedIn <span aria-hidden="true">↗</span></a>
+          </div>
           <a className="back-link" href="#top">Back to the beginning <span aria-hidden="true">↑</span></a>
         </div>
-        <footer><span>Vijay Ebhava</span><span>Customer-centred transformation</span><span>© {new Date().getFullYear()}</span></footer>
+        <footer><span>VB · VIJAYEBHAVA</span><a href={linkedInHref} target="_blank" rel="noreferrer">LinkedIn ↗</a><span>Customer-centred transformation · © {new Date().getFullYear()}</span></footer>
       </section>
     </main>
   );
