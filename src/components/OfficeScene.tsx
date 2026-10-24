@@ -1,12 +1,13 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+import { chapters } from "@/data/chapters";
 
 const palette = {
-  floor: "#eee8dc",
-  wall: "#f2ece0",
+  floor: "#e8dfd0",
+  wall: "#eee6d8",
   trim: "#c9c1b2",
   ink: "#34443f",
   teal: "#8faaa0",
@@ -105,11 +106,11 @@ function Office() {
       {/* One connected architectural base, with an open centre for the customer. */}
       <Block position={[0, -0.08, 0]} size={[12.4, 0.3, 8.4]} color={palette.ink} />
       <Block position={[0, 0.1, 0]} size={[12.15, 0.12, 8.15]} color="#e6dfd1" />
-      <Room position={[-3.6, 0, -2.15]} size={[4.25, 3.2]} floor="#e7e4d8" accent={palette.tealDark} />
-      <Room position={[0.9, 0, -2.15]} size={[4.45, 3.2]} floor="#eee4d7" accent={palette.clay} />
-      <Room position={[4.1, 0, 1.95]} size={[3.55, 3.25]} floor="#e4e8df" accent={palette.tealDark} />
-      <Room position={[-3.35, 0, 2.05]} size={[4.25, 3.15]} floor="#f0e4d8" accent={palette.clay} />
-      <Room position={[0.5, 0, 2.05]} size={[3.05, 3.15]} floor="#eae7df" accent={palette.gold} />
+      <Room position={[-3.6, 0, -2.15]} size={[4.25, 3.2]} floor="#d9e1d8" accent={palette.tealDark} />
+      <Room position={[0.9, 0, -2.15]} size={[4.45, 3.2]} floor="#eedccf" accent={palette.clay} />
+      <Room position={[4.1, 0, 1.95]} size={[3.55, 3.25]} floor="#d8e2d8" accent={palette.tealDark} />
+      <Room position={[-3.35, 0, 2.05]} size={[4.25, 3.15]} floor="#eed9ca" accent={palette.clay} />
+      <Room position={[0.5, 0, 2.05]} size={[3.05, 3.15]} floor="#e8dfca" accent={palette.gold} />
 
       {/* Discovery room */}
       <Desk position={[-3.55, 0.2, -2.1]} color="#f8f3e8" />
@@ -202,18 +203,61 @@ function CameraRig({ progress }: { progress: React.MutableRefObject<number> }) {
   return null;
 }
 
+function ResponsiveCamera() {
+  const { camera, size } = useThree();
+  useEffect(() => {
+    const perspective = camera as THREE.PerspectiveCamera;
+    perspective.fov = size.width < 680 ? 49 : 34;
+    perspective.updateProjectionMatrix();
+  }, [camera, size.width]);
+  return null;
+}
+
+const chapterLabels = ["Discover", "Align", "Design", "Build", "Deliver", "Outcomes"];
+
+function SceneWayfinding({ activeStep }: { activeStep: number }) {
+  return (
+    <>
+      <nav className="scene-stage-track" aria-label="Transformation chapters">
+        {chapters.map((chapter, index) => (
+          <a
+            className={`scene-stage${activeStep === index + 1 ? " is-active" : ""}`}
+            href={`#${chapter.id}`}
+            key={chapter.id}
+            aria-current={activeStep === index + 1 ? "step" : undefined}
+            title={chapter.eyebrow}
+          >
+            <span className="scene-stage-number">{chapter.number}</span>
+            <span>{chapterLabels[index]}</span>
+          </a>
+        ))}
+      </nav>
+      <div className="scene-chapter-caption" aria-live="polite">
+        {activeStep === 0 ? "Customer at the centre" : `${chapters[activeStep - 1]?.number} · ${chapters[activeStep - 1]?.eyebrow}`}
+      </div>
+    </>
+  );
+}
+
 export default function OfficeScene() {
   const progress = useRef(0);
+  const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
     const update = () => {
-      // Scroll progress is converted to a chapter value without React rerenders.
-    const maxStep = 6;
-    progress.current = THREE.MathUtils.clamp(
-        window.scrollY / Math.max(window.innerHeight, 1),
-      0,
-      maxStep,
-    );
+      const chapterStarts = chapters.map((chapter) => {
+        const element = document.getElementById(chapter.id);
+        return element ? element.getBoundingClientRect().top + window.scrollY : window.innerHeight * (chapters.indexOf(chapter) + 1);
+      });
+      const y = window.scrollY;
+      let segment = 0;
+      while (segment < chapterStarts.length && y >= chapterStarts[segment]) segment += 1;
+      const start = segment === 0 ? 0 : chapterStarts[segment - 1];
+      const end = chapterStarts[segment] ?? document.getElementById("contact")?.offsetTop ?? start + window.innerHeight;
+      const fraction = end > start ? THREE.MathUtils.clamp((y - start) / (end - start), 0, 1) : 0;
+      progress.current = THREE.MathUtils.clamp(segment + fraction, 0, chapters.length);
+      const nextStep = Math.round(progress.current);
+      setActiveStep((previous) => (previous === nextStep ? previous : nextStep));
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -225,7 +269,8 @@ export default function OfficeScene() {
   }, []);
 
   return (
-    <div className="office-canvas" aria-hidden="true">
+    <>
+    <div className="office-canvas" role="img" aria-label="Three-dimensional miniature office showing a customer-centred transformation process">
         <Canvas
         camera={{ position: [13, 14, 15], fov: 34, near: 0.1, far: 100 }}
         dpr={[1, 1.3]}
@@ -234,11 +279,14 @@ export default function OfficeScene() {
         shadows
       >
         <color attach="background" args={["#f4f1e9"]} />
-        <ambientLight intensity={1.4} />
-        <directionalLight position={[6, 12, 8]} intensity={1.65} castShadow shadow-mapSize-width={1024} shadow-mapSize-height={1024} />
+        <ambientLight intensity={1.2} />
+        <directionalLight position={[6, 12, 8]} intensity={1.4} castShadow shadow-mapSize-width={1024} shadow-mapSize-height={1024} shadow-radius={4} />
+        <ResponsiveCamera />
         <CameraRig progress={progress} />
         <Office />
       </Canvas>
     </div>
+    <SceneWayfinding activeStep={activeStep} />
+    </>
   );
 }

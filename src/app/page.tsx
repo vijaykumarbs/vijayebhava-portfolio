@@ -95,7 +95,6 @@ export default async function Home() {
         </div>
         <footer><span>Vijay Ebhava</span><span>Customer-centred transformation</span><span>© {new Date().getFullYear()}</span></footer>
       </section>
-      <div className="experience-note" aria-hidden="true">A connected office · Six chapters · One shared outcome</div>
     </main>
   );
 }
