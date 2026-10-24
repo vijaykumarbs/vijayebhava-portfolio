@@ -1,16 +1,29 @@
 import type { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 
+const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
+
 export const metadata: Metadata = {
-  title: "Vijay Ebhava | Product Management & Business Transformation",
+  metadataBase: new URL("https://vijayebhava.com"),
+  title: "Vijayebhava | Product Discovery & Product Management",
   description:
-    "Product management portfolio of Vijay Ebhava: connecting customer needs, business priorities and engineering realities to build what matters.",
+    "Product discovery and product management for founders building AI-enabled SaaS and digital products. Clarify the problem, prioritise what matters, and shape practical delivery.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Vijayebhava | Product Discovery & Product Management",
+    description:
+      "Product discovery and product management for founders building AI-enabled SaaS and digital products.",
+    url: "https://vijayebhava.com/",
+    siteName: "Vijayebhava",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={dmSans.variable}>{children}</body>
     </html>
   );
 }
