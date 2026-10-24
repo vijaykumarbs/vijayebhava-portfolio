@@ -1,6 +1,6 @@
 # Vijay Ebhava portfolio
 
-A customer-centred, scroll-led portfolio experience built with Next.js and a Three.js miniature office scene. The 3D scene remains visible on mobile, follows the chapter scroll position, and includes direct stage links. It is configured for **static export** so the generated site can be served by Hostinger Premium Web Hosting without a Node.js runtime.
+A customer-centred, scroll-led portfolio experience built with Next.js and a Three.js miniature office scene. Colour-coded 3D characters represent Vijay, customers, business leaders and engineers; department rooms use distinct colours, and a moving path links each stage. The 3D scene remains visible on mobile, follows the chapter scroll position, and includes direct stage links. It is configured for **static export** so the generated site can be served by Hostinger Premium Web Hosting without a Node.js runtime.
 
 ## Run locally
 
