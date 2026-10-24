@@ -19,6 +19,14 @@ Next.js writes the static site to `out/`. Upload the **contents** of `out/` to t
 
 The export does not require a running Node process. It intentionally does not use Next.js runtime routes, server rendering or ISR.
 
+## Google Analytics 4
+
+Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` to the GA4 web stream Measurement ID before running `npm run build`. The static export embeds the ID at build time; the tag is omitted when the variable is unset. The provided `.env.example` contains the current ID (`G-EK0TS9LYBC`).
+
+The root layout loads `gtag.js` once across the site. Automatic page views are disabled, and the App Router tracker sends one `page_view` for the initial route and each pathname change. Section anchors and query strings do not create extra page views or enter the reported page URL. No form contents or personal information are sent.
+
+To verify, build with the variable set, open the exported site, and use GA4 **Realtime** or **DebugView** to confirm a `page_view` event. For a locally served static export, check the browser Network panel for `gtag/js?id=G-EK0TS9LYBC` and the `g/collect` request. Rebuild and upload `out/` to Hostinger only when you choose to publish; no live deployment is performed as part of this change.
+
 ## WordPress copy
 
 Set `WORDPRESS_URL` in `.env.local` to the WordPress site's base URL before building, for example:
