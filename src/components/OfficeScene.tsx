@@ -180,6 +180,7 @@ function CameraRig({ progress }: { progress: React.MutableRefObject<number> }) {
       { pos: [9.6, 9.2, -9.0], look: [0.9, 0.6, -2.0] },
       { pos: [-10.8, 9.0, 9.8], look: [-3.1, 0.5, 2.0] },
       { pos: [14.4, 9.5, 9.3], look: [4.0, 0.7, 1.9] },
+      { pos: [4.0, 9.0, 9.2], look: [0.5, 0.6, 2.05] },
       { pos: [10.0, 12.5, 12.0], look: [0, 0.7, 0] },
       { pos: [10.0, 12.5, 12.0], look: [0, 0.7, 0] },
     ],
