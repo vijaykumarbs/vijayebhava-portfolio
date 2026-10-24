@@ -1,46 +1,31 @@
-import OfficeScene from "@/components/OfficeScene";
-import { chapters } from "@/data/chapters";
 import { getPortfolioCopy } from "@/data/wordpress";
+import { chapters } from "@/data/chapters";
 
-const whatsappHref = "https://wa.me/919164488088?text=Hi%20Vijay%2C%20I%27d%20like%20to%20discuss%20a%20business%20challenge%20with%20you.";
+const companies = [
+  { name: "Eurofins", logo: "/companies/eurofins.png", className: "company-logo-eurofins" },
+  { name: "Tekenlight", logo: "/companies/tekenlight.png", className: "company-logo-tekenlight" },
+  { name: "SCMCentral", logo: "/companies/scmcentral.png", className: "company-logo-scmcentral" },
+  { name: "Focaloid", logo: "/companies/focaloid.svg", className: "company-logo-focaloid" },
+  { name: "Vyturr", logo: null, className: "company-logo-vyturr" },
+];
+const whatsappHref = "https://wa.me/919164488088?text=Hi%20Vijay%2C%20I%27d%20like%20to%20discuss%20a%20product%20or%20business%20challenge%20with%20you.";
 const linkedInHref = "https://www.linkedin.com/in/vijaykumarbs/";
 
-function OfficeIllustration() {
+function ProductMap() {
   return (
-    <svg className="office-illustration" viewBox="0 0 620 420" role="img" aria-label="Illustration of a connected miniature office centered around a customer meeting">
-      <defs>
-        <linearGradient id="floor" x1="0" x2="0.9" y1="0" y2="1">
-          <stop stopColor="#fffdf7" />
-          <stop offset="1" stopColor="#ded7c9" />
-        </linearGradient>
-        <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
-          <feDropShadow dx="0" dy="10" stdDeviation="10" floodColor="#43534b" floodOpacity=".13" />
-        </filter>
-      </defs>
-      <g filter="url(#shadow)">
-        <path d="M310 32 582 175 310 318 38 175Z" fill="url(#floor)" stroke="#bfb8aa" strokeWidth="2" />
-        <path d="M38 175v63l272 143v-63Z" fill="#34443f" />
-        <path d="M582 175v63L310 381v-63Z" fill="#52645b" />
-        <path d="M310 48 465 130 310 212 155 130Z" fill="#e7e4d8" />
-        <path d="M310 48v48l155 82v-48Z" fill="#fcfaf5" stroke="#c9c1b2" />
-        <path d="M465 130v38l-155 82v-38Z" fill="#f7f3ea" stroke="#c9c1b2" />
-        <path d="M155 130v38l155 82v-38Z" fill="#eee4d7" stroke="#c9c1b2" />
-        <path d="M310 212v38l-155-82v-38Z" fill="#f4eee3" stroke="#c9c1b2" />
-        <path d="M70 190 165 240v66l-95-50Z" fill="#e6e3d8" stroke="#bfb8aa" />
-        <path d="m455 242 95-50v67l-95 50Z" fill="#e1e7de" stroke="#bfb8aa" />
-        <path d="m245 282 65 35 65-35-65-34Z" fill="#faf8f2" stroke="#c9c1b2" />
-        <path d="m310 248 65 34v18l-65 35v-18l-65-35v-18Z" fill="#d6bd8f" opacity=".7" />
-      </g>
-      <g fill="#52756b">
-        <circle cx="235" cy="133" r="9" /><circle cx="382" cy="145" r="9" />
-        <circle cx="210" cy="232" r="9" /><circle cx="400" cy="218" r="9" />
-        <circle cx="307" cy="280" r="9" />
-      </g>
-      <g fill="#c97a5f"><circle cx="292" cy="166" r="9" /><circle cx="350" cy="173" r="9" /></g>
-      <g fill="none" stroke="#faf8f2" strokeLinecap="round" strokeWidth="3" opacity=".72">
-        <path d="m196 104 44 23m145 8 38-20M150 214l43 23m224 16 38-22" />
-      </g>
-    </svg>
+    <div className="product-map" aria-label="A product journey connecting customer signals to a clear decision and thoughtful delivery">
+      <div className="map-topline"><span>PRODUCT STRATEGY</span><span className="live-mark"><i /> IN MOTION</span></div>
+      <div className="map-title">From friction<br />to <em>forward.</em></div>
+      <div className="map-flow">
+        <div className="map-node map-node-signal"><span className="node-index">01</span><span className="node-symbol">◎</span><strong>Customer signal</strong><small>What is getting in the way?</small></div>
+        <div className="map-link"><i /><i /><i /></div>
+        <div className="map-node map-node-decision"><span className="node-index">02</span><span className="node-symbol">✳</span><strong>Product decision</strong><small>What is worth solving now?</small></div>
+        <div className="map-link"><i /><i /><i /></div>
+        <div className="map-node map-node-delivery"><span className="node-index">03</span><span className="node-symbol">↗</span><strong>Useful delivery</strong><small>How will we know it helped?</small></div>
+      </div>
+      <div className="map-footer"><span>PEOPLE FIRST</span><span>OUTCOMES OVER OUTPUT</span><span>BUILT TO LEARN</span></div>
+      <div className="map-glow" aria-hidden="true" />
+    </div>
   );
 }
 
@@ -48,58 +33,85 @@ export default async function Home() {
   const copy = await getPortfolioCopy(chapters);
   const homeTitle = copy.home?.title;
   const homeExcerpt = copy.home?.excerpt;
+
   return (
     <main className="portfolio">
-      <OfficeScene />
-      <div className="mobile-office"><OfficeIllustration /></div>
       <header className="site-header">
-        <a className="wordmark" href="#top" aria-label="Vijay Ebhava, home"><span className="wordmark-mark">VB</span><span className="wordmark-name">VIJAYEBHAVA</span></a>
+        <a className="wordmark" href="#top" aria-label="Vijay Ebhava, home">
+          <span className="wordmark-mark">VB</span><span className="wordmark-name">VIJAYEBHAVA</span>
+        </a>
         <nav aria-label="Main navigation">
-          <a href="#approach">How I work</a>
-          <a href={whatsappHref} target="_blank" rel="noreferrer">Contact <span aria-hidden="true">↗</span></a>
+          <a href="#approach">Approach</a>
+          <a href="#experience">Experience</a>
+          <a className="nav-contact" href={whatsappHref} target="_blank" rel="noreferrer">Let’s talk <span aria-hidden="true">↗</span></a>
         </nav>
       </header>
 
       <section className="hero" id="top" aria-labelledby="hero-title">
         <div className="hero-copy">
-          <p className="eyebrow"><span className="eyebrow-dot" /> Business transformation · Product · Delivery</p>
-          <h1 id="hero-title">{homeTitle || <>Better business outcomes start with the <em>right problems.</em></>}</h1>
-          <p className="hero-intro">{homeExcerpt || "I help businesses understand operational challenges, shape useful solutions, and work with teams to turn ideas into measurable improvements."}</p>
-          <a className="text-link" href="#approach">Explore the approach <span aria-hidden="true">↓</span></a>
+          <p className="eyebrow"><span className="eyebrow-dot" /> Product management <span className="eyebrow-separator">/</span> Business transformation</p>
+          <h1 id="hero-title">{homeTitle || <>Make the complex <em>clear.</em><br />Build what matters.</>}</h1>
+          <p className="hero-intro">{homeExcerpt || "I connect customer needs, business priorities and engineering realities to help teams make better product decisions and deliver meaningful change."}</p>
+          <div className="hero-actions">
+            <a className="button-primary" href="#approach">Explore my approach <span aria-hidden="true">↓</span></a>
+            <a className="button-text" href={linkedInHref} target="_blank" rel="noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
+          </div>
+          <div className="hero-note"><span className="hero-note-star">✳</span><span>Clarity for the work<br />that moves business forward.</span></div>
         </div>
-        <div className="hero-caption" aria-hidden="true"><span>ONE CONNECTED WAY OF WORKING</span><span>SCROLL TO EXPLORE ↓</span></div>
+        <div className="hero-art"><ProductMap /></div>
+        <div className="hero-bottom"><span>PRODUCT THINKING, MADE PRACTICAL</span><a href="#experience">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a></div>
       </section>
 
-      <div className="chapter-list" id="approach">
-        {chapters.map((chapter, index) => (
-          <section className={`chapter chapter-${chapter.id}`} id={chapter.id} key={chapter.id} aria-labelledby={`${chapter.id}-title`}>
-            <div className="chapter-copy">
-              <div className="chapter-meta"><span>{chapter.number}</span><span className="meta-rule" /><span>{chapter.eyebrow}</span></div>
-              <h2 id={`${chapter.id}-title`}>{copy.chapters[chapter.id]?.title || chapter.title}</h2>
-              <p className="chapter-description">{copy.chapters[chapter.id]?.excerpt || chapter.description}</p>
-              <div className="chapter-output"><span className="output-label">WHAT THIS CAN PRODUCE</span><p>{chapter.deliverable}</p></div>
-              <p className="chapter-detail">{chapter.detail}</p>
-              <a className="chapter-next" href={`#${chapters[(index + 1) % chapters.length].id}`}>
-                {index === chapters.length - 1 ? "Back to discovery" : "Next, see how it connects"}<span aria-hidden="true">↓</span>
-              </a>
-            </div>
-            <span className="chapter-index" aria-hidden="true">{chapter.number}<span> / 06</span></span>
-          </section>
-        ))}
-      </div>
+      <section className="experience" id="experience" aria-labelledby="experience-title">
+        <div className="section-kicker"><span>01</span><span className="kicker-line" /><span>TRUST IS BUILT TOGETHER</span></div>
+        <div className="experience-heading">
+          <h2 id="experience-title">Good work happens<br />in <em>good company.</em></h2>
+          <p>Across teams and industries, I’ve worked with people at</p>
+        </div>
+        <div className="company-logos" aria-label="Companies I have worked with">
+          {companies.map((company) => <div className={`company-logo ${company.className}`} key={company.name}>
+            {company.logo ? <img src={company.logo} alt={`${company.name} logo`} /> : <><span className="vyturr-mark" aria-hidden="true">V</span><span className="vyturr-name">VYTURR</span></>}
+          </div>)}
+        </div>
+        <p className="experience-footnote">A few of the teams I’ve had the pleasure of working alongside.</p>
+      </section>
+
+      <section className="approach" id="approach" aria-labelledby="approach-title">
+        <div className="section-kicker section-kicker-light"><span>02</span><span className="kicker-line" /><span>HOW I WORK</span></div>
+        <div className="approach-heading">
+          <h2 id="approach-title">Less theatre.<br /><em>More forward motion.</em></h2>
+          <p>Make the problem visible. Make the decision together. Help the team deliver the right thing, well.</p>
+        </div>
+        <div className="approach-list">
+          {chapters.map((chapter) => (
+            <article className="approach-row" key={chapter.id}>
+              <span className="approach-number">{chapter.number}</span>
+              <h3>{chapter.eyebrow}</h3>
+              <p>{chapter.description}</p>
+              <span className="approach-arrow" aria-hidden="true">↗</span>
+            </article>
+          ))}
+        </div>
+        <div className="approach-endnote"><span>01—06</span><span>FROM UNDERSTANDING TO OUTCOMES</span><span className="endnote-dot" /></div>
+      </section>
 
       <section className="contact" id="contact" aria-labelledby="contact-title">
-        <div className="contact-inner">
-          <p className="eyebrow"><span className="eyebrow-dot" /> A good place to begin</p>
-          <h2 id="contact-title">Bring the challenge.<br /><em>We’ll find the useful next step.</em></h2>
-          <p>Start with one process, one decision or one outcome that needs to work better. The scope can stay focused.</p>
+        <div className="contact-orbit" aria-hidden="true"><span>VB</span><i /><i /><i /></div>
+        <div className="section-kicker"><span>03</span><span className="kicker-line" /><span>START A CONVERSATION</span></div>
+        <div className="contact-content">
+          <p className="eyebrow"><span className="eyebrow-dot" /> The next good thing starts somewhere</p>
+          <h2 id="contact-title">Have a challenge<br />worth <em>solving?</em></h2>
+          <p>Bring the messy problem, the unanswered question or the idea that needs a clear next step.</p>
           <div className="contact-actions">
-            <a className="contact-whatsapp" href={whatsappHref} target="_blank" rel="noreferrer">Start a WhatsApp chat <span aria-hidden="true">↗</span></a>
-            <a className="contact-linkedin" href={linkedInHref} target="_blank" rel="noreferrer">Connect on LinkedIn <span aria-hidden="true">↗</span></a>
+            <a className="button-primary" href={whatsappHref} target="_blank" rel="noreferrer">Start a WhatsApp chat <span aria-hidden="true">↗</span></a>
+            <a className="button-outline" href={linkedInHref} target="_blank" rel="noreferrer">Connect on LinkedIn <span aria-hidden="true">↗</span></a>
           </div>
-          <a className="back-link" href="#top">Back to the beginning <span aria-hidden="true">↑</span></a>
         </div>
-        <footer><span>VB · VIJAYEBHAVA</span><a href={linkedInHref} target="_blank" rel="noreferrer">LinkedIn ↗</a><span>Customer-centred transformation · © {new Date().getFullYear()}</span></footer>
+        <footer className="site-footer">
+          <a className="footer-brand" href="#top">VB <span>VIJAYEBHAVA</span></a>
+          <span>PRODUCT MANAGEMENT · BUSINESS TRANSFORMATION</span>
+          <span>© {new Date().getFullYear()}</span>
+        </footer>
       </section>
     </main>
   );
