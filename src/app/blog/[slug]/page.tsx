@@ -4,14 +4,13 @@ import { SiteHeader } from "@/components/site-header";
 import { formatPostDate, getPublishedPosts } from "@/data/blog";
 import { portfolioContent } from "@/data/portfolio";
 
-export const dynamicParams = true;
-export const revalidate = 60;
+export const dynamicParams = false;
 
 type PostPageProps = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
   const { posts } = await getPublishedPosts();
-  return posts.map((post) => ({ slug: post.slug }));
+  return posts.length ? posts.map((post) => ({ slug: post.slug })) : [{ slug: "_empty" }];
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {

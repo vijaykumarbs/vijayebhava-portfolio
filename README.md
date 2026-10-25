@@ -15,7 +15,7 @@ npm run dev
 npm run build
 ```
 
-The app uses Next.js server rendering and Incremental Static Regeneration (ISR), so production hosting must support the Next.js runtime. Hostinger Premium serves static files but does not provide the Node.js app runtime needed for this configuration.
+Next.js writes a static export to `out/`, which Hostinger Premium serves from `public_html`. GitHub Actions checks WordPress hourly and rebuilds/redeploys the static export only after published-post content changes, so writing a post does not require a manual build or deployment.
 
 ## Google Analytics 4
 
@@ -33,11 +33,11 @@ Set `WORDPRESS_URL` in the deployment environment (or `.env.local` for local dev
 WORDPRESS_URL=https://cms.vijayebhava.com
 ```
 
-Published WordPress posts populate `/blog/` and each article gets a search-friendly page with canonical metadata and BlogPosting structured data. The sitemap includes published posts; drafts are excluded. Blog data is revalidated every 60 seconds, so a new post appears without a site rebuild or redeploy.
+Published WordPress posts populate `/blog/` and each article gets a search-friendly page with canonical metadata and BlogPosting structured data. The sitemap includes published posts; drafts are excluded. New posts normally appear within about an hour after publishing, after the automatic GitHub build and Hostinger deployment finish.
 
 To add an article, sign in at `https://cms.vijayebhava.com/wp-admin/`, choose **Posts → Add Post**, and publish it. The Next.js site reads the public WordPress REST API; no WordPress password is stored in this repository. The CMS's WordPress theme is separate from the branded Next.js frontend.
 
-For deployment, connect this repository to a Next.js runtime host and configure `WORDPRESS_URL` and `NEXT_PUBLIC_GA_MEASUREMENT_ID`. Vercel Hobby is free for personal, non-commercial projects; review its current usage terms before using it for commercial work.
+The `Publish WordPress posts` workflow checks the published post IDs, slugs and modification times hourly, and also runs when source code changes on `main`. It skips unchanged content and publishes updated exports to the `codex/hostinger-static` branch, which Hostinger deploys automatically. The workflow uses only GitHub's built-in token and public WordPress content.
 
 ## Main files
 

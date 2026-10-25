@@ -3,8 +3,6 @@ import { SiteHeader } from "@/components/site-header";
 import { formatPostDate, getPublishedPosts } from "@/data/blog";
 import { portfolioContent } from "@/data/portfolio";
 
-export const revalidate = 60;
-
 export async function generateMetadata(): Promise<Metadata> {
   const { posts } = await getPublishedPosts();
   const hasArticles = posts.length > 0;
