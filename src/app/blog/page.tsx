@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
-import { formatPostDate, getPublishedPosts, getWordPressAdminUrl } from "@/data/blog";
+import { formatPostDate, getPublishedPosts } from "@/data/blog";
 import { portfolioContent } from "@/data/portfolio";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -22,8 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function BlogIndexPage() {
-  const { posts, cmsAvailable } = await getPublishedPosts();
-  const adminUrl = getWordPressAdminUrl();
+  const { posts } = await getPublishedPosts();
 
   return (
     <main className="blog-page">
@@ -34,7 +33,7 @@ export default async function BlogIndexPage() {
         <p>Practical notes on product discovery, choosing what matters, working with engineering and building with AI.</p>
       </section>
 
-      {posts.length > 0 ? (
+      {posts.length > 0 && (
         <section className="blog-grid" aria-label="Published articles">
           {posts.map((post) => (
             <article className="blog-card" key={post.id}>
@@ -47,20 +46,6 @@ export default async function BlogIndexPage() {
               </div>
             </article>
           ))}
-        </section>
-      ) : (
-        <section className="blog-empty">
-          <div className="blog-empty-mark" aria-hidden="true">VB</div>
-          <div>
-            <p className="blog-eyebrow">{cmsAvailable ? "The journal is taking shape" : "WordPress connection"}</p>
-            <h2>{cmsAvailable ? "New writing is on its way." : "Connect WordPress to start publishing."}</h2>
-            <p>
-              {cmsAvailable
-                ? "Published articles will appear here. Add a post in WordPress, then rebuild and publish the site to make its search-friendly article page live."
-                : "This site is ready to list published WordPress articles. The configured WordPress address is not reachable yet; once it is online, published posts will appear here after a site rebuild."}
-            </p>
-            {adminUrl && <a className="button-primary" href={adminUrl} target="_blank" rel="noreferrer">Open WordPress admin <span aria-hidden="true">↗</span></a>}
-          </div>
         </section>
       )}
 

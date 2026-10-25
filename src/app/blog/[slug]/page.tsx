@@ -10,14 +10,14 @@ type PostPageProps = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
   const { posts } = await getPublishedPosts();
-  return posts.length ? posts.map((post) => ({ slug: post.slug })) : [{ slug: "_wordpress-setup" }];
+  return posts.length ? posts.map((post) => ({ slug: post.slug })) : [{ slug: "_empty" }];
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const { posts } = await getPublishedPosts();
   const post = posts.find((item) => item.slug === slug);
-  if (!post) return { title: "WordPress setup | Vijayebhava", robots: { index: false, follow: false } };
+  if (!post) return { title: "Article not found | Vijayebhava", robots: { index: false, follow: false } };
 
   const description = post.excerpt || `An article by Vijayebhava: ${post.title}`;
   return {
@@ -41,21 +41,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
   const { slug } = await params;
   const { posts } = await getPublishedPosts();
   const post = posts.find((item) => item.slug === slug);
-  if (!post && slug !== "_wordpress-setup") notFound();
-
-  if (!post) {
-    return (
-      <main className="blog-page blog-post-page">
-        <SiteHeader brand={portfolioContent.brand} whatsappUrl={portfolioContent.contact.whatsappUrl} />
-        <article className="blog-article blog-setup-article">
-          <a className="blog-back-link" href="/blog/">← All articles</a>
-          <p className="blog-eyebrow">WORDPRESS CONNECTION</p>
-          <h1>Connect WordPress to publish articles.</h1>
-          <p className="blog-article-excerpt">The blog is ready. Once WordPress is reachable and has a published post, rebuilding the site creates the article pages here.</p>
-        </article>
-      </main>
-    );
-  }
+  if (!post) notFound();
 
   const structuredData = {
     "@context": "https://schema.org",
