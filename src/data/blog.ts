@@ -91,7 +91,7 @@ export async function getPublishedPosts(): Promise<BlogFeed> {
 
     const response = await fetch(endpoint, {
       signal: AbortSignal.timeout(3000),
-      cache: "force-cache",
+      next: { revalidate: 60, tags: ["wordpress-posts"] },
     });
     if (!response.ok) return { posts: [], cmsAvailable: false };
     const posts = (await response.json()) as WordPressPost[];

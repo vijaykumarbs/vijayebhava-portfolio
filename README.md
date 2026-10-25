@@ -1,6 +1,6 @@
 # Vijayebhava — Product Management Portfolio
 
-A responsive editorial portfolio for product management and business transformation. It uses a lightweight product-journey illustration, typography-led sections and a reduced-motion-aware entrance animation. The static export is designed to run on Hostinger Premium Web Hosting without a Node.js runtime.
+A responsive Next.js portfolio for product management and business transformation. It uses a lightweight product-journey illustration, typography-led sections and a reduced-motion-aware entrance animation. WordPress on `cms.vijayebhava.com` provides blog content through its public REST API.
 
 ## Run locally
 
@@ -9,15 +9,13 @@ npm install
 npm run dev
 ```
 
-## Build for Hostinger Premium
+## Run a production build
 
 ```sh
 npm run build
 ```
 
-Next.js writes the static site to `out/`. Upload the **contents** of `out/` to the document root for `vijayebhava.com` (usually `public_html`). Hostinger's File Manager opens in the current website's `public_html` directory; use its Upload action to add the exported files. Keep a separate WordPress installation on a CMS subdomain such as `cms.vijayebhava.com` so it does not replace the portfolio document root.
-
-The export does not require a running Node process. It intentionally does not use Next.js runtime routes, server rendering or ISR.
+The app uses Next.js server rendering and Incremental Static Regeneration (ISR), so production hosting must support the Next.js runtime. Hostinger Premium serves static files but does not provide the Node.js app runtime needed for this configuration.
 
 ## Google Analytics 4
 
@@ -29,15 +27,17 @@ To verify, build with the variable set, open the exported site, and use GA4 **Re
 
 ## WordPress copy and blog
 
-Set `WORDPRESS_URL` in `.env.local` to the WordPress site's base URL before building, for example:
+Set `WORDPRESS_URL` in the deployment environment (or `.env.local` for local development) to the WordPress site's base URL:
 
 ```env
 WORDPRESS_URL=https://cms.vijayebhava.com
 ```
 
-Create and publish a `portfolio-intro` page to override the hero title and excerpt. If it is unavailable, the reviewed local copy is used. Published WordPress posts populate `/blog/`, and each post is exported as a search-friendly page with canonical metadata and BlogPosting structured data. The generated `sitemap.xml` includes published posts; drafts are excluded.
+Published WordPress posts populate `/blog/` and each article gets a search-friendly page with canonical metadata and BlogPosting structured data. The sitemap includes published posts; drafts are excluded. Blog data is revalidated every 60 seconds, so a new post appears without a site rebuild or redeploy.
 
-To add an article, create and publish a post in WordPress, then rebuild and upload the contents of `out/` to Hostinger. This site is a static export, so new posts appear on `vijayebhava.com` after that rebuild and upload. The build uses the public WordPress REST API; no WordPress password is stored in this repository. If the CMS is unavailable, the site still builds and shows a clear setup message on `/blog/`.
+To add an article, sign in at `https://cms.vijayebhava.com/wp-admin/`, choose **Posts → Add Post**, and publish it. The Next.js site reads the public WordPress REST API; no WordPress password is stored in this repository. The CMS's WordPress theme is separate from the branded Next.js frontend.
+
+For deployment, connect this repository to a Next.js runtime host and configure `WORDPRESS_URL` and `NEXT_PUBLIC_GA_MEASUREMENT_ID`. Vercel Hobby is free for personal, non-commercial projects; review its current usage terms before using it for commercial work.
 
 ## Main files
 
