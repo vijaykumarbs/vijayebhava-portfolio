@@ -3,10 +3,11 @@
 import { useState } from "react";
 
 const links = [
-  { href: "#who-i-help", label: "Who I help" },
-  { href: "#approach", label: "Approach" },
-  { href: "#experience", label: "Experience" },
-  { href: "#about", label: "About" },
+  { href: "/#who-i-help", label: "Who I help" },
+  { href: "/#approach", label: "Approach" },
+  { href: "/#experience", label: "Experience" },
+  { href: "/#about", label: "About" },
+  { href: "/blog/", label: "Blog" },
 ];
 
 export function SiteHeader({ brand, whatsappUrl }: { brand: string; whatsappUrl: string }) {
@@ -14,7 +15,7 @@ export function SiteHeader({ brand, whatsappUrl }: { brand: string; whatsappUrl:
 
   return (
     <header className="site-header">
-      <a className="wordmark" href="#top" aria-label={`${brand}, home`} onClick={() => setMenuOpen(false)}>
+      <a className="wordmark" href="/#top" aria-label={`${brand}, home`} onClick={() => setMenuOpen(false)}>
         <span className="wordmark-mark">VB</span><span className="wordmark-name">VIJAYEBHAVA</span>
       </a>
       <button
