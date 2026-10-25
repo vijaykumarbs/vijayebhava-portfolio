@@ -37,7 +37,7 @@ Published WordPress posts populate `/blog/` and each article gets a search-frien
 
 To add an article, sign in at `https://cms.vijayebhava.com/wp-admin/`, choose **Posts → Add Post**, and publish it. The Next.js site reads the public WordPress REST API; no WordPress password is stored in this repository. The CMS's WordPress theme is separate from the branded Next.js frontend.
 
-The `Publish WordPress posts` workflow checks the published post IDs, slugs and modification times hourly, and also runs when source code changes on `main`. It skips unchanged content and publishes updated exports to the `codex/hostinger-static` branch, which Hostinger deploys automatically. The workflow uses only GitHub's built-in token and public WordPress content.
+The `Publish WordPress posts` workflow checks the published post IDs, slugs and modification times daily at 6:00 AM India time, and also runs when source code changes on `main`. It skips unchanged content and publishes updated exports to the `codex/hostinger-static` branch, which Hostinger deploys automatically. The workflow uses only GitHub's built-in token and public WordPress content.
 
 ## Main files
 
