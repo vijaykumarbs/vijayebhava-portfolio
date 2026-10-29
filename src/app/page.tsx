@@ -3,6 +3,7 @@ import { getPortfolioCopy } from "@/data/wordpress";
 import { chapters } from "@/data/chapters";
 import { portfolioContent, type AudienceNeed } from "@/data/portfolio";
 import { SiteHeader } from "@/components/site-header";
+import { ProductClarityAnimation } from "@/components/product-clarity-animation";
 
 function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: string }) {
   const id = useId().replaceAll(":", "");
@@ -51,24 +52,6 @@ function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: s
   );
 }
 
-function ProductMap() {
-  return (
-    <div className="product-map" aria-label="A product journey from customer signal to a focused decision and useful delivery">
-      <div className="map-topline"><span>PRODUCT STRATEGY</span><span className="live-mark"><i /> IN MOTION</span></div>
-      <div className="map-title">From friction<br />to <em>forward.</em></div>
-      <div className="map-flow">
-        <div className="map-node map-node-signal"><span className="node-index">01</span><span className="node-symbol">◎</span><strong>Customer problem</strong><small>What needs to change?</small></div>
-        <div className="map-link" aria-hidden="true"><i /><i /><i /></div>
-        <div className="map-node map-node-decision"><span className="node-index">02</span><span className="node-symbol">✳</span><strong>Product choice</strong><small>What matters now?</small></div>
-        <div className="map-link" aria-hidden="true"><i /><i /><i /></div>
-        <div className="map-node map-node-delivery"><span className="node-index">03</span><span className="node-symbol">↗</span><strong>Useful delivery</strong><small>Did it help?</small></div>
-      </div>
-      <div className="map-footer"><span>PEOPLE FIRST</span><span>OUTCOMES OVER OUTPUT</span><span>BUILT TO LEARN</span></div>
-      <div className="map-glow" aria-hidden="true" />
-    </div>
-  );
-}
-
 export default async function Home() {
   const copy = await getPortfolioCopy(chapters);
   const content = portfolioContent;
@@ -78,7 +61,7 @@ export default async function Home() {
       <SiteHeader brand={content.brand} whatsappUrl={content.contact.whatsappUrl} />
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-        <div className="hero-copy">
+        <div className="hero-copy" data-reveal="rise">
           <p className="eyebrow"><span className="eyebrow-dot" />{content.hero.eyebrow}</p>
           <h1 id="hero-title">{content.hero.titleLead} <em>{content.hero.titleAccent}</em><br />{content.hero.titleEnd}</h1>
           <p className="hero-intro">{copy.home?.excerpt || content.hero.summary}</p>
@@ -88,19 +71,19 @@ export default async function Home() {
           </div>
           <div className="hero-note"><span className="hero-note-star">✳</span><span>{content.hero.audienceNote}</span></div>
         </div>
-        <div className="hero-art"><ProductMap /></div>
+        <div className="hero-art" data-reveal="soft"><ProductClarityAnimation /></div>
         <div className="hero-bottom"><span>PRODUCT THINKING, MADE PRACTICAL</span><a href="#who-i-help">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a></div>
       </section>
 
       <section className="audience section-paper" id="who-i-help" aria-labelledby="audience-title">
         <div className="section-kicker"><span>01</span><span className="kicker-line" /><span>{content.audience.eyebrow}</span></div>
-        <div className="section-heading">
+        <div className="section-heading" data-reveal="rise">
           <h2 id="audience-title">{content.audience.title}</h2>
           <p>{content.audience.intro}</p>
         </div>
         <div className="audience-grid">
           {content.audience.needs.map((need) => (
-            <article className="audience-card" key={need.number}>
+            <article className="audience-card" key={need.number} data-reveal="rise">
               <div className="audience-card-top"><DimensionalIcon kind={need.icon} label={`${need.title} icon`} /><span className="card-index">{need.number}</span></div>
               <h3>{need.title}</h3>
               <p className="card-audience">{need.audience}</p>
@@ -114,11 +97,11 @@ export default async function Home() {
 
       <section className="experience section-white" id="experience" aria-labelledby="experience-title">
         <div className="section-kicker"><span>02</span><span className="kicker-line" /><span>{content.experience.eyebrow}</span></div>
-        <div className="experience-heading">
+        <div className="experience-heading" data-reveal="rise">
           <h2 id="experience-title">{content.experience.title}</h2>
           <p>{content.experience.intro}</p>
         </div>
-        <div className="company-logos" aria-label="Organisations Vijayebhava has worked with">
+        <div className="company-logos" aria-label="Organisations Vijayebhava has worked with" data-reveal="rise">
           {content.experience.companies.map((company) => <div className={`company-logo ${company.logo ? "" : "company-logo-vyturr"}`} key={company.name}>
             {company.logo ? <img src={company.logo} alt={`${company.name} logo`} /> : <span className="vyturr-name">VYTURR</span>}
           </div>)}
@@ -127,7 +110,7 @@ export default async function Home() {
 
       <section className="approach" id="approach" aria-labelledby="approach-title">
         <div className="section-kicker section-kicker-light"><span>03</span><span className="kicker-line" /><span>{content.approach.eyebrow}</span></div>
-        <div className="approach-heading">
+        <div className="approach-heading" data-reveal="rise">
           <h2 id="approach-title">{content.approach.title}</h2>
           <p>{content.approach.intro}</p>
         </div>
@@ -135,7 +118,7 @@ export default async function Home() {
           {chapters.map((chapter) => {
             const chapterCopy = copy.chapters[chapter.id];
             return (
-              <article className="approach-row" key={chapter.id}>
+              <article className="approach-row" key={chapter.id} data-reveal="rise">
                 <span className="approach-number">{chapter.number}</span>
                 <div className="approach-step-title"><span>{chapter.eyebrow}</span><h3>{chapterCopy?.title || chapter.title}</h3></div>
                 <p className="approach-description">{chapterCopy?.excerpt || chapter.description}</p>
@@ -158,24 +141,25 @@ export default async function Home() {
       </section>}
 
       <section className="about" id="about" aria-labelledby="about-title">
-        <div className="about-copy">
-          <div className="section-kicker"><span>04</span><span className="kicker-line" /><span>{content.about.eyebrow}</span></div>
+        <div className="about-copy" data-reveal="rise">
+          <div className="section-kicker"><span>05</span><span className="kicker-line" /><span>{content.about.eyebrow}</span></div>
           <h2 id="about-title">{content.about.title}</h2>
           {content.about.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           <p className="about-note">{content.about.note}</p>
+          <a className="about-link" href={content.contact.linkedinUrl} target="_blank" rel="noreferrer">More about my work on LinkedIn <span aria-hidden="true">↗</span></a>
         </div>
-        <div className="about-still-life" aria-hidden="true">
-          <div className="still-life-orbit orbit-one" /><div className="still-life-orbit orbit-two" />
-          <div className="still-life-object"><span>VB</span><i /><b /></div>
-          <span className="still-life-caption">CLARITY · CONTEXT · PROGRESS</span>
+        <div className="about-credentials" data-reveal="soft">
+          <p className="credentials-kicker">A little context</p>
+          <p className="about-context">I connect business context, customer reality and engineering detail to help small teams choose a useful next step.</p>
+          {content.about.credentials.map((item) => <article key={item.label}><span>{item.number}</span><div><h3>{item.label}</h3><p>{item.detail}</p></div></article>)}
         </div>
       </section>
 
       <section className="engagement section-white" id="engagement" aria-labelledby="engagement-title">
-        <div className="section-kicker"><span>05</span><span className="kicker-line" /><span>{content.engagements.eyebrow}</span></div>
-        <div className="section-heading"><h2 id="engagement-title">{content.engagements.title}</h2><p>{content.engagements.intro}</p></div>
+        <div className="section-kicker"><span>06</span><span className="kicker-line" /><span>{content.engagements.eyebrow}</span></div>
+        <div className="section-heading" data-reveal="rise"><h2 id="engagement-title">{content.engagements.title}</h2><p>{content.engagements.intro}</p></div>
         <div className="engagement-grid">
-          {content.engagements.options.map((option) => <article className="engagement-card" key={option.number}>
+          {content.engagements.options.map((option) => <article className="engagement-card" key={option.number} data-reveal="rise">
             <div className="engagement-card-top"><DimensionalIcon kind={option.icon} label={`${option.title} icon`} /><span>{option.number}</span></div>
             <h3>{option.title}</h3><p className="engagement-fit">{option.fit}</p><p className="engagement-focus">{option.focus}</p>
             <div className="engagement-outputs"><span>POSSIBLE OUTPUTS</span><ul>{option.outputs.map((output) => <li key={output}>{output}</li>)}</ul></div>
@@ -194,8 +178,8 @@ export default async function Home() {
       </section>}
 
       <section className="contact" id="contact" aria-labelledby="contact-title">
-        <div className="section-kicker"><span>06</span><span className="kicker-line" /><span>START A CONVERSATION</span></div>
-        <div className="contact-content">
+        <div className="section-kicker"><span>07</span><span className="kicker-line" /><span>START A CONVERSATION</span></div>
+        <div className="contact-content" data-reveal="rise">
           <p className="eyebrow"><span className="eyebrow-dot" /> The next good thing starts somewhere</p>
           <h2 id="contact-title">Have a challenge<br />worth <em>solving?</em></h2>
           <p>Bring the product question, the business problem or the workflow that needs a clear next step.</p>

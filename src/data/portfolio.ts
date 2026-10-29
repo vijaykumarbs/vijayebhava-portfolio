@@ -98,12 +98,13 @@ export const portfolioContent = {
   caseStudies: [] as CaseStudy[],
   about: {
     eyebrow: "A product partner for the messy middle",
-    title: "Business context. Customer reality. Engineering detail.",
+    title: "I make space for clear decisions.",
     paragraphs: [
-      "The useful work often sits between what a business wants to change, what customers need, and what a delivery team can build well.",
-      "I bring those perspectives into the same conversation—making workflows and assumptions visible, turning decisions into clear scope, and staying close enough to delivery to learn what actually helped.",
+      "I help founders and small product teams make sense of complex business and customer problems, choose what to build next, and carry those decisions into delivery.",
     ],
-    note: "Product management · Business analysis · Operational workflows · Engineering collaboration",
+    note: "Product discovery · Product management · Business transformation",
+    // TODO: Add only verified education and role details when confirmed from source material.
+    credentials: [] as { number: string; label: string; detail: string }[],
   },
   engagements: {
     eyebrow: "Flexible ways to work together",

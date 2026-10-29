@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
 import { GoogleAnalyticsPageViews } from "@/components/google-analytics-page-views";
+import { ThemeController } from "@/components/theme-controller";
+import { ScrollAndPointerEffects } from "@/components/scroll-and-pointer-effects";
 import "./globals.css";
 
-const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
 const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export const metadata: Metadata = {
@@ -24,8 +24,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={dmSans.variable}>
+    <html lang="en" data-theme="auto" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: "(()=>{const r=document.documentElement;try{const t=localStorage.getItem('vb-theme');r.dataset.theme=t==='light'||t==='dark'||t==='auto'?t:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){r.dataset.theme='light'}const h=new Date().getHours();r.dataset.atmosphere=h>=5&&h<8?'dawn':h>=8&&h<16?'day':h>=16&&h<18?'golden-hour':h>=18&&h<20?'dusk':'night'})()" }} />
+      </head>
+      <body>
+        <ThemeController />
+        <ScrollAndPointerEffects />
         {children}
         {gaMeasurementId && (
           <GoogleAnalyticsPageViews measurementId={gaMeasurementId} />

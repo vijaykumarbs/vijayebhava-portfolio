@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ThemeToggle } from "@/components/theme-controller";
 
 const links = [
   { href: "/#who-i-help", label: "Who I help" },
@@ -12,9 +13,17 @@ const links = [
 
 export function SiteHeader({ brand, whatsappUrl }: { brand: string; whatsappUrl: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 12);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
 
   return (
-    <header className="site-header">
+    <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
       <a className="wordmark" href="/#top" aria-label={`${brand}, home`} onClick={() => setMenuOpen(false)}>
         <span className="wordmark-mark">VB</span><span className="wordmark-name">VIJAYEBHAVA</span>
       </a>
@@ -32,6 +41,7 @@ export function SiteHeader({ brand, whatsappUrl }: { brand: string; whatsappUrl:
         {links.map((link) => <a href={link.href} key={link.href}>{link.label}</a>)}
         <a className="nav-contact" href={whatsappUrl} target="_blank" rel="noreferrer">Let’s talk <span aria-hidden="true">↗</span></a>
       </nav>
+      <ThemeToggle />
     </header>
   );
 }
