@@ -109,19 +109,14 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="case-studies section-white" id="selected-work" aria-labelledby="case-studies-title">
-        <div className="section-kicker"><span>03</span><span className="kicker-line" /><span>SELECTED WORK</span></div>
-        <div className="section-heading"><h2 id="case-studies-title">Selected work</h2></div>
+      <section className="case-studies section-white" id="proof-of-work" aria-labelledby="proof-of-work-title">
+        <div className="section-kicker"><span>03</span><span className="kicker-line" /><span>PROOF OF WORK</span></div>
+        <div className="section-heading"><h2 id="proof-of-work-title">Proof of work</h2></div>
         <div className="case-study-grid">{content.caseStudies.map((study) => <article className="case-study" key={study.title}>
-          <div className="case-study-heading"><h3>{study.title}</h3>{study.label && <span>{study.label}</span>}</div>
-          <dl>
-            <div><dt>Context</dt><dd>{study.context}</dd></div>
-            <div><dt>What I did</dt><dd>{study.whatIDid}</dd></div>
-            <div><dt>Result</dt><dd>{study.result}</dd></div>
-            {study.notYetProven && <div><dt>Not yet proven</dt><dd>{study.notYetProven}</dd></div>}
-          </dl>
+          <span className={`proof-label${study.label === "Prototype" ? " proof-label--prototype" : ""}`}>{study.label}</span>
+          <h3>{study.title}</h3>
+          <p>{study.line}</p>
         </article>)}</div>
-        <p className="case-studies-note">Project details are shared only where they can be supported and disclosed.</p>
       </section>
 
       <section className="approach" id="approach" aria-labelledby="approach-title">

@@ -18,12 +18,9 @@ export type EngagementOption = {
 };
 
 export type CaseStudy = {
+  label: "Case" | "Prototype";
   title: string;
-  label?: string;
-  context: string;
-  whatIDid: string;
-  result: string;
-  notYetProven?: string;
+  line: string;
 };
 
 export const portfolioContent = {
@@ -78,7 +75,7 @@ export const portfolioContent = {
     eyebrow: "Experience across teams and industries",
     title: "Good work happens in good company.",
     intro:
-      "A selection of organisations and teams I have worked with. Project details are shared only where they can be supported and disclosed.",
+    "A selection of organisations and teams I have worked with.",
     companies: [
       { name: "Eurofins", logo: "/companies/eurofins.png" },
       { name: "Tekenlight", logo: "/companies/tekenlight.png" },
@@ -95,26 +92,19 @@ export const portfolioContent = {
   },
   caseStudies: [
     {
-      title: "Eurofins · Annual Review Process platform",
-      context: "Internal annual review process for 3,000+ managers across 50+ countries, run on Excel.",
-      whatIDid: "As Senior Business Analyst and the sole BA, moved the Excel-based process onto a digital platform.",
-      result: "The process went from 4 months to 2 months.",
+      label: "Case",
+      title: "Eurofins: Annual Review Process",
+      line: "Moved an Excel-based process to a digital platform: 4 months to 2.",
     },
     {
-      title: "SCMCentral · Implementation Intelligence",
       label: "Prototype",
-      context: "Supply chain and shopfloor ERP for SME manufacturers (SCMCentral).",
-      whatIDid: "Framed the product and built a deterministic enterprise data-readiness MVP with validation rules, a pilot protocol, safety boundaries, and implementation-readiness decisions.",
-      result: "A working prototype and a defined pilot protocol.",
-      notYetProven: "No implementation-team pilot has run yet, there is no measured time or quality outcome, and user validation is incomplete.",
+      title: "SCMCentral: Implementation Intelligence",
+      line: "Data-readiness MVP. Pilot not yet run.",
     },
     {
-      title: "Prototypes",
       label: "Prototype",
-      context: "Quotation Comparison and BOM Extraction.",
-      whatIDid: "Two working prototypes I have built.",
-      result: "Two working prototypes.",
-      notYetProven: "Not yet validated with real users.",
+      title: "Quotation Comparison and BOM Extraction",
+      line: "Two working prototypes. Not yet validated with users.",
     },
   ] satisfies CaseStudy[],
   about: {

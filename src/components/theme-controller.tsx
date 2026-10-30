@@ -112,11 +112,10 @@ export function ThemeToggle() {
       className="theme-toggle"
       type="button"
       onClick={cycleTheme}
-      aria-label={`Theme is ${theme === "auto" ? "automatic" : theme}. Change to ${next}.`}
-      title={`Theme: ${theme}`}
+      aria-label="Switch theme"
+      title={theme}
     >
       <span aria-hidden="true">{theme === "dark" ? "☾" : theme === "light" ? "☼" : "◐"}</span>
-      <span className="theme-toggle-label">{theme === "auto" ? "Auto" : theme === "dark" ? "Dark" : "Light"}</span>
     </button>
   );
 }

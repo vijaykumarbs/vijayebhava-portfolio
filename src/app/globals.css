@@ -719,6 +719,21 @@ html[data-motion="on"] [data-reveal].is-visible { opacity: 1; transform: none; }
 .approach-row:nth-child(6) { transition-delay: 200ms; }
 .hero-note, .hero-bottom, .about-link, .site-nav a, .theme-toggle { transition: color .25s ease, background-color .25s ease, border-color .25s ease, transform .25s ease; }
 
+/* Compact proof cards and an icon-only theme control in the navigation. */
+.case-study-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.case-study { align-self: start; padding: 17px; }
+.case-study h3 { margin: 8px 0 7px; font-size: 17px; line-height: 1.25; }
+.case-study > p { margin: 0; font-size: 12px; line-height: 1.55; }
+.proof-label { display: inline-flex; padding: 4px 8px; border: 1px solid color-mix(in srgb, var(--green) 32%, var(--line)); border-radius: 999px; color: var(--green); font-size: 9px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+.proof-label--prototype { border-color: color-mix(in srgb, var(--blue) 45%, var(--line)); color: var(--blue); background: color-mix(in srgb, var(--blue) 9%, transparent); }
+.theme-toggle { justify-content: center; width: 36px; min-width: 36px; height: 36px; min-height: 36px; margin-left: -12px; padding: 0; border-color: color-mix(in srgb, var(--ink) 12%, transparent); color: var(--muted); background: transparent; }
+.theme-toggle > span:first-child { color: inherit; font-size: 17px; line-height: 1; }
+.theme-toggle:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 5%, transparent); }
+@media (max-width: 760px) {
+  .case-study-grid { grid-template-columns: minmax(0, 1fr); gap: 11px; }
+  .theme-toggle { align-self: flex-start; margin: 6px 0 4px; }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .clarity-animation:hover::before { transition-duration: .55s; }
 }
