@@ -4,6 +4,7 @@ import { chapters } from "@/data/chapters";
 import { portfolioContent, type AudienceNeed } from "@/data/portfolio";
 import { SiteHeader } from "@/components/site-header";
 import { ProductClarityAnimation } from "@/components/product-clarity-animation";
+import { BOOKING_URL } from "@/data/site-config";
 
 function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: string }) {
   const id = useId().replaceAll(":", "");
@@ -58,7 +59,7 @@ export default async function Home() {
 
   return (
     <main className="portfolio">
-      <SiteHeader brand={content.brand} whatsappUrl={content.contact.whatsappUrl} />
+      <SiteHeader brand={content.brand} />
 
       <section className="hero" id="top" aria-labelledby="hero-title">
         <div className="hero-copy" data-reveal="rise">
@@ -108,8 +109,23 @@ export default async function Home() {
         </div>
       </section>
 
+      <section className="case-studies section-white" id="selected-work" aria-labelledby="case-studies-title">
+        <div className="section-kicker"><span>03</span><span className="kicker-line" /><span>SELECTED WORK</span></div>
+        <div className="section-heading"><h2 id="case-studies-title">Selected work</h2></div>
+        <div className="case-study-grid">{content.caseStudies.map((study) => <article className="case-study" key={study.title}>
+          <div className="case-study-heading"><h3>{study.title}</h3>{study.label && <span>{study.label}</span>}</div>
+          <dl>
+            <div><dt>Context</dt><dd>{study.context}</dd></div>
+            <div><dt>What I did</dt><dd>{study.whatIDid}</dd></div>
+            <div><dt>Result</dt><dd>{study.result}</dd></div>
+            {study.notYetProven && <div><dt>Not yet proven</dt><dd>{study.notYetProven}</dd></div>}
+          </dl>
+        </article>)}</div>
+        <p className="case-studies-note">Project details are shared only where they can be supported and disclosed.</p>
+      </section>
+
       <section className="approach" id="approach" aria-labelledby="approach-title">
-        <div className="section-kicker section-kicker-light"><span>03</span><span className="kicker-line" /><span>{content.approach.eyebrow}</span></div>
+        <div className="section-kicker section-kicker-light"><span>04</span><span className="kicker-line" /><span>{content.approach.eyebrow}</span></div>
         <div className="approach-heading" data-reveal="rise">
           <h2 id="approach-title">{content.approach.title}</h2>
           <p>{content.approach.intro}</p>
@@ -130,16 +146,6 @@ export default async function Home() {
         <div className="approach-endnote"><span>01—06</span><span>FROM UNDERSTANDING TO OUTCOMES</span><span className="endnote-dot" /></div>
       </section>
 
-      {content.caseStudies.length > 0 && <section className="case-studies section-white" id="selected-work" aria-labelledby="case-studies-title">
-        <div className="section-kicker"><span>04</span><span className="kicker-line" /><span>SELECTED WORK</span></div>
-        <div className="section-heading"><h2 id="case-studies-title">Product work, grounded in evidence.</h2><p>Selected examples of a business problem, the work behind it and what changed.</p></div>
-        <div className="case-study-grid">{content.caseStudies.map((study) => <article className="case-study" key={study.title}>
-          <p className="case-context">{study.context}</p><h3>{study.title}</h3><p>{study.problem}</p>
-          <dl><div><dt>Contribution</dt><dd>{study.contribution}</dd></div><div><dt>Work and outputs</dt><dd>{study.deliverables.join(" · ")}</dd></div><div><dt>Outcome</dt><dd>{study.outcome}</dd></div></dl>
-          {study.confidentiality && <p className="case-confidentiality">{study.confidentiality}</p>}
-        </article>)}</div>
-      </section>}
-
       <section className="about" id="about" aria-labelledby="about-title">
         <div className="about-copy" data-reveal="rise">
           <div className="section-kicker"><span>05</span><span className="kicker-line" /><span>{content.about.eyebrow}</span></div>
@@ -148,10 +154,14 @@ export default async function Home() {
           <p className="about-note">{content.about.note}</p>
           <a className="about-link" href={content.contact.linkedinUrl} target="_blank" rel="noreferrer">More about my work on LinkedIn <span aria-hidden="true">↗</span></a>
         </div>
-        <div className="about-credentials" data-reveal="soft">
-          <p className="credentials-kicker">A little context</p>
-          <p className="about-context">I connect business context, customer reality and engineering detail to help small teams choose a useful next step.</p>
-          {content.about.credentials.map((item) => <article key={item.label}><span>{item.number}</span><div><h3>{item.label}</h3><p>{item.detail}</p></div></article>)}
+        <div className="about-profile" data-reveal="soft">
+          <picture className="about-portrait">
+            <source srcSet="/images/vijay-portrait.webp" type="image/webp" />
+            <img src="/images/vijay-portrait.jpg" width="600" height="750" loading="lazy" alt="Portrait of Vijay" />
+          </picture>
+          <div className="about-profile-copy">
+            <p>I have an engineering degree and an MBA. I bring 10+ years in business analysis and product work across fintech and enterprise software. At Eurofins, I worked on enterprise products with global business teams. Based in Bengaluru, I work remotely with clients in India and internationally.</p>
+          </div>
         </div>
       </section>
 
@@ -180,18 +190,23 @@ export default async function Home() {
       <section className="contact" id="contact" aria-labelledby="contact-title">
         <div className="section-kicker"><span>07</span><span className="kicker-line" /><span>START A CONVERSATION</span></div>
         <div className="contact-content" data-reveal="rise">
-          <p className="eyebrow"><span className="eyebrow-dot" /> The next good thing starts somewhere</p>
-          <h2 id="contact-title">Have a challenge<br />worth <em>solving?</em></h2>
-          <p>Bring the product question, the business problem or the workflow that needs a clear next step.</p>
+          <h2 id="contact-title">Book a call</h2>
+          <p>Pick a time that works for you. Tell me what you are working through when you book.</p>
           <div className="contact-actions">
-            <a className="button-primary" href={content.contact.whatsappUrl} target="_blank" rel="noreferrer">Discuss your product <span aria-hidden="true">↗</span></a>
-            <a className="button-outline" href={content.contact.linkedinUrl} target="_blank" rel="noreferrer">Connect on LinkedIn <span aria-hidden="true">↗</span></a>
-            {content.contact.emailAddress && <a className="button-outline" href={`mailto:${content.contact.emailAddress}`}>Email me <span aria-hidden="true">↗</span></a>}
-            {content.contact.bookingUrl && <a className="button-outline" href={content.contact.bookingUrl}>Choose a time <span aria-hidden="true">↗</span></a>}
+            <a className="button-primary" href={BOOKING_URL} target="_blank" rel="noopener">Book a time <span aria-hidden="true">↗</span></a>
+          </div>
+          <div className="contact-secondary">
+            <a href={content.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
+            <a href={content.contact.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
           </div>
         </div>
         <footer className="site-footer">
           <a className="footer-brand" href="#top" aria-label="Vijayebhava, back to top"><span className="footer-mark">VB</span><span>VIJAYEBHAVA</span></a>
+          <div className="site-footer-links">
+            <a href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
+            <a href={content.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
+            <a href={content.contact.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
+          </div>
           <span>PRODUCT MANAGEMENT · BUSINESS TRANSFORMATION</span>
           <span>© {new Date().getFullYear()}</span>
         </footer>

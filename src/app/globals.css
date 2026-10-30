@@ -400,6 +400,55 @@ h1 em, h2 em, .map-title em { color: #65783c; font-family: inherit; font-style: 
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
+/* Verified case work, booking links, and the supplied portrait. */
+.case-study-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.case-study-heading h3 { margin: 0 0 8px; }
+.case-study-heading > span { flex: 0 0 auto; padding: 5px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.case-study dl { margin-top: 12px; }
+.case-study dd { max-width: 60ch; }
+.case-studies-note { margin: 27px 0 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.company-logo-vyturr { color: var(--muted); }
+.vyturr-name { padding: 8px 12px; border: 1px solid var(--line); border-radius: 4px; color: inherit; font-size: clamp(13px, 1.4vw, 18px); font-weight: 650; letter-spacing: .14em; }
+.about-profile { display: grid; grid-template-columns: minmax(115px, .8fr) minmax(0, 1.2fr); align-items: center; gap: 20px; }
+.about-portrait { display: block; overflow: hidden; border: 1px solid color-mix(in srgb, var(--green) 20%, transparent); border-radius: 8px; background: var(--paper); aspect-ratio: 4 / 5; }
+.about-portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.about-profile-copy p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.contact { min-height: 0; }
+.contact-content { max-width: 760px; padding-bottom: 55px; }
+.contact h2 { margin-bottom: 18px; }
+.contact-content > p:not(.eyebrow) { max-width: 560px; }
+.contact-secondary { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 20px; color: var(--muted); font-size: 12px; font-weight: 650; }
+.contact-secondary a:hover, .site-footer-links a:hover, .blog-footer-links a:hover { color: var(--green); }
+.site-footer-links, .blog-footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 17px; }
+.site-footer-links a, .blog-footer-links a { color: inherit; text-decoration: none; transition: color .2s ease; }
+.blog-footer-booking { font-weight: 750; }
+.blog-article-end { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.blog-article-end .blog-article-booking { margin-top: 0; color: #fffdf8; }
+.blog-article-end .blog-article-booking span { color: inherit; }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .about-portrait { border-color: color-mix(in srgb, var(--green) 35%, transparent); background: #203832; }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .case-study-heading > span { color: var(--ink); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .blog-article-end .blog-article-booking { color: #173d35; }
+
+@media (max-width: 760px) {
+  .about-profile { grid-template-columns: minmax(105px, .72fr) minmax(0, 1.28fr); gap: 15px; }
+  .about-profile-copy p { font-size: 11px; }
+  .site-footer { row-gap: 14px; }
+  .site-footer-links { width: 100%; order: 3; }
+  .site-footer > span:last-child { margin-left: auto; }
+  .blog-footer { gap: 14px; }
+  .blog-footer-links { gap: 14px; }
+}
+
+@media (max-width: 430px) {
+  .case-study { padding: 21px; }
+  .case-study-heading { gap: 8px; }
+  .case-study-heading h3 { font-size: 19px; }
+  .about-profile { grid-template-columns: 112px minmax(0, 1fr); gap: 13px; }
+  .about-profile-copy p { font-size: 10.5px; line-height: 1.65; }
+  .blog-article-end { align-items: flex-start; flex-direction: column; }
+  .blog-footer-links { width: 100%; }
+}
+
 /* Consulting refresh: responsive atmosphere and a composed, integrated story illustration. */
 :root { --paper: #faf7f0; --white: #fffdf8; --ink: #242923; --muted: #686d65; --line: #e3ded3; --green: #a7d7c5; --blue: #247a63; --orange: #e78b70; }
 html { scroll-padding-top: 100px; }

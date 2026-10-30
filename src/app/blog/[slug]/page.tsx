@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/site-header";
 import { formatPostDate, getPublishedPosts } from "@/data/blog";
 import { portfolioContent } from "@/data/portfolio";
+import { BOOKING_URL } from "@/data/site-config";
 
 export const dynamicParams = false;
 
@@ -34,6 +35,10 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       modifiedTime: post.modified,
       ...(post.image ? { images: [{ url: post.image.src, alt: post.image.alt }] } : {}),
     },
+    twitter: {
+      card: "summary_large_image",
+      images: [post.image?.src || "/og-image.jpg"],
+    },
   };
 }
 
@@ -57,7 +62,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
 
   return (
     <main className="blog-page blog-post-page">
-      <SiteHeader brand={portfolioContent.brand} whatsappUrl={portfolioContent.contact.whatsappUrl} />
+      <SiteHeader brand={portfolioContent.brand} />
       <article className="blog-article">
         <a className="blog-back-link" href="/blog/">← All articles</a>
         <header className="blog-article-header">
@@ -68,10 +73,18 @@ export default async function BlogPostPage({ params }: PostPageProps) {
         </header>
         {post.image && <img className="blog-featured-image" src={post.image.src} alt={post.image.alt} />}
         <div className="blog-content" dangerouslySetInnerHTML={{ __html: post.content }} />
-        <div className="blog-article-end"><a href="/blog/">More product notes <span aria-hidden="true">↗</span></a></div>
+        <div className="blog-article-end">
+          <a href="/blog/">More product notes <span aria-hidden="true">↗</span></a>
+          <a className="button-primary blog-article-booking" href={BOOKING_URL} target="_blank" rel="noopener">Book a call <span aria-hidden="true">↗</span></a>
+        </div>
       </article>
       <footer className="blog-footer">
         <a href="/">← Back to Vijayebhava</a>
+        <div className="blog-footer-links">
+          <a className="blog-footer-booking" href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
+          <a href={portfolioContent.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
+          <a href={portfolioContent.contact.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
+        </div>
         <span>PRODUCT THINKING · PRACTICAL PROGRESS</span>
       </footer>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />

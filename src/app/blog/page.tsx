@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
 import { formatPostDate, getPublishedPosts } from "@/data/blog";
 import { portfolioContent } from "@/data/portfolio";
+import { BOOKING_URL } from "@/data/site-config";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { posts } = await getPublishedPosts();
@@ -17,7 +18,9 @@ export async function generateMetadata(): Promise<Metadata> {
       url: "https://vijayebhava.com/blog/",
       siteName: "Vijayebhava",
       type: "website",
+      images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Vijayebhava — Make the complex clear. Build what matters." }],
     },
+    twitter: { card: "summary_large_image", images: ["/og-image.jpg"] },
   };
 }
 
@@ -26,7 +29,7 @@ export default async function BlogIndexPage() {
 
   return (
     <main className="blog-page">
-      <SiteHeader brand={portfolioContent.brand} whatsappUrl={portfolioContent.contact.whatsappUrl} />
+      <SiteHeader brand={portfolioContent.brand} />
       <section className="blog-hero">
         <p className="eyebrow"><span className="eyebrow-dot" />A journal on making useful products</p>
         <h1>Ideas into <em>impact.</em></h1>
@@ -51,6 +54,11 @@ export default async function BlogIndexPage() {
 
       <footer className="blog-footer">
         <a href="/">← Back to Vijayebhava</a>
+        <div className="blog-footer-links">
+          <a className="blog-footer-booking" href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
+          <a href={portfolioContent.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
+          <a href={portfolioContent.contact.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
+        </div>
         <span>PRODUCT THINKING · PRACTICAL PROGRESS</span>
       </footer>
     </main>

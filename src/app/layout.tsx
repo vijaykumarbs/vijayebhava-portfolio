@@ -19,6 +19,11 @@ export const metadata: Metadata = {
     url: "https://vijayebhava.com/",
     siteName: "Vijayebhava",
     type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Vijayebhava — Make the complex clear. Build what matters." }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-image.jpg"],
   },
 };
 
