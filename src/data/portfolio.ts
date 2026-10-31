@@ -75,6 +75,7 @@ export const portfolioContent = {
     ] satisfies AudienceNeed[],
   },
   experience: {
+    // TODO(Vijay): decide whether Experience and Proof of work should become one section.
     eyebrow: "Experience across teams and industries",
     title: "Good work happens in good company.",
     intro:
@@ -143,6 +144,7 @@ export const portfolioContent = {
     note: "Product discovery · Product management · Business transformation",
   },
   engagements: {
+    // TODO(Vijay): decide whether outputs repeated across sections should appear only once.
     eyebrow: "Flexible ways to work together",
     title: "Start with the question in front of you.",
     intro:
