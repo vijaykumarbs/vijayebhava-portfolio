@@ -976,5 +976,6 @@ html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .appr
 html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .approach .how-icon { color: var(--approach-muted); }
 html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .approach .how-i-work-control { color: var(--approach-foreground); }
 html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .approach .how-i-work-control:hover { color: var(--on-primary); }
-html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .company-logo-vyturr { color: #12161C; }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .company-logo-vyturr,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .company-logo-vyturr .vyturr-name { color: #12161C; }
 @media (max-width: 760px) { .floating-talk { right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); width: 54px; height: 54px; } }
