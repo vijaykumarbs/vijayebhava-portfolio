@@ -45,7 +45,7 @@ export function BlogListing({ posts, page = 1, totalPages = 1, selectedTag }: Bl
       <footer className="blog-footer">
         <Link href="/">← Back to Vijayebhava</Link>
         <div className="blog-footer-links">
-          <a className="blog-footer-booking" href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
+          <a className="blog-footer-booking" href={BOOKING_URL} target="_blank" rel="noopener">Let&apos;s Talk</a>
           <a href={portfolioContent.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
           <a href={portfolioContent.contact.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
         </div>

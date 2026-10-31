@@ -102,7 +102,7 @@ export default async function Home() {
         </div>
         <div className="company-logos" aria-label="Organisations Vijayebhava has worked with" data-reveal="rise">
           {content.experience.companies.map((company) => <div className={`company-logo ${company.logo ? "" : "company-logo-vyturr"}`} key={company.name}>
-            {company.logo ? <img src={company.logo} width={company.width} height={company.height} alt={`${company.name} logo`} /> : <span className="vyturr-name">VYTURR</span>}
+            {company.logo ? <img src={company.logo} width={company.width} height={company.height} loading="lazy" decoding="async" alt={`${company.name} logo`} /> : <span className="vyturr-name">VYTURR</span>}
           </div>)}
         </div>
       </section>
@@ -173,10 +173,10 @@ export default async function Home() {
       <section className="contact" id="contact" aria-labelledby="contact-title">
         <div className="section-kicker"><span>07</span><span className="kicker-line" /><span>START A CONVERSATION</span></div>
         <div className="contact-content" data-reveal="rise">
-          <h2 id="contact-title">Book a call</h2>
+          <h2 id="contact-title">Let&apos;s Talk</h2>
           <p>Pick a time that works for you. Tell me what you are working through when you book.</p>
           <div className="contact-actions">
-            <a className="button-primary" href={BOOKING_URL} target="_blank" rel="noopener">Book a call <span aria-hidden="true">↗</span></a>
+            <a className="button-primary" href={BOOKING_URL} target="_blank" rel="noopener">Let&apos;s Talk <span aria-hidden="true">↗</span></a>
           </div>
           <div className="contact-secondary">
             <a href={content.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
@@ -186,7 +186,7 @@ export default async function Home() {
         <footer className="site-footer">
           <a className="footer-brand" href="#top" aria-label="Vijayebhava, back to top"><span className="footer-mark">VB</span><span>VIJAYEBHAVA</span></a>
           <div className="site-footer-links">
-            <a href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
+            <a href={BOOKING_URL} target="_blank" rel="noopener">Let&apos;s Talk</a>
             <a href={content.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
             <a href={content.contact.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
           </div>

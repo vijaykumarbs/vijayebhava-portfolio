@@ -25,6 +25,7 @@ export function SiteHeader({ brand }: { brand: string }) {
   }, []);
 
   return (
+    <>
     <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
       <Link className="wordmark" href="/#top" aria-label={`${brand}, home`} onClick={() => setMenuOpen(false)}>
         <span className="wordmark-mark">VB</span><span className="wordmark-name">VIJAYEBHAVA</span>
@@ -41,9 +42,13 @@ export function SiteHeader({ brand }: { brand: string }) {
       </button>
       <nav id="main-navigation" className={menuOpen ? "site-nav is-open" : "site-nav"} aria-label="Main navigation" onClick={() => setMenuOpen(false)}>
         {links.map((link) => <Link href={link.href} key={link.href}>{link.label}</Link>)}
-        <a className="nav-contact" href={BOOKING_URL} target="_blank" rel="noopener">Book a call <span aria-hidden="true">↗</span></a>
+        <a className="nav-contact" href={BOOKING_URL} target="_blank" rel="noopener">Let&apos;s Talk <span aria-hidden="true">↗</span></a>
       </nav>
       <ThemeToggle />
     </header>
+    <a className="floating-talk" href={BOOKING_URL} target="_blank" rel="noopener" aria-label="Let's Talk" title="Let's Talk">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l1.6-3.1A7.5 7.5 0 1 1 20 11.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M8.5 11.5h7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+    </a>
+    </>
   );
 }
