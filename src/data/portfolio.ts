@@ -120,10 +120,7 @@ export const portfolioContent = {
     {
       label: "Prototype",
       title: "Quotation Comparison and BOM Extraction",
-      whatIDid: [
-        "Built the Quotation Comparison prototype.",
-        "Built the BOM Extraction prototype.",
-      ],
+      context: "Two working prototypes.",
       outcomeOrStatus: "Not yet validated with users.",
     },
     // TODO(Vijay): confirm responsibilities for this fractional engagement.

@@ -8,9 +8,9 @@ import { BOOKING_URL, SITE_AUTHOR } from "@/data/site-config";
 function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: string }) {
   const id = useId().replaceAll(":", "");
   const colors = {
-    discover: { light: "#e4efcc", mid: "#a9c769", dark: "#5c7735", shine: "#fff9de" },
-    direction: { light: "#e3e8ff", mid: "#8294e5", dark: "#495aa7", shine: "#f7f5ff" },
-    workflow: { light: "#ffe5d3", mid: "#d99465", dark: "#9c5846", shine: "#fff5e9" },
+    discover: { light: "#DDE9E5", mid: "#9ABDB5", dark: "#0F4C47", shine: "#FFFFFF" },
+    direction: { light: "#DDE9E5", mid: "#7FAEA5", dark: "#0F4C47", shine: "#FFFFFF" },
+    workflow: { light: "#DDE9E5", mid: "#6D9F96", dark: "#0F4C47", shine: "#FFFFFF" },
   }[kind];
 
   return (

@@ -771,6 +771,171 @@ html[data-motion="on"] [data-reveal].is-visible { opacity: 1; transform: none; }
   .how-i-work-control { display: none; }
 }
 
+/* Current colour-token mapping: lime/green marked the main CTA and process cues; blue marked links and icons; orange marked decorative symbols; jade/green marked dots and progress; champagne marked small numbering; coral marked accent headings; lavender only tinted dusk atmospheres. These map to deep teal or muted ink. Amber is reserved for filled animation states and highlight fills. Atmosphere backgrounds remain with low-opacity palette tints. TODO(Vijay): confirm the time-of-day atmospheres should remain alongside the light/dark themes. */
+:root,
+html[data-theme="light"] {
+  color-scheme: light;
+  --paper: #F5F7F5;
+  --white: #FFFFFF;
+  --ink: #0E1F21;
+  --deep: #0F4C47;
+  --spark: #F5A524;
+  --line: #CBD7D4;
+  --muted: #5E6D6F;
+  --on-deep: #FFFFFF;
+  --forest: var(--deep);
+  --green: var(--deep);
+  --blue: var(--deep);
+  --orange: var(--deep);
+  --jade: var(--deep);
+  --champagne: var(--deep);
+  --coral: var(--deep);
+  --lavender: var(--muted);
+  --ambient-base: var(--paper);
+  --ambient-one: rgba(15, 76, 71, .055);
+  --ambient-two: rgba(245, 165, 36, .035);
+  --ambient-three: rgba(15, 76, 71, .025);
+}
+
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) {
+  color-scheme: dark;
+  --paper: #0B1516;
+  --white: #101D1E;
+  --ink: #EAF0EE;
+  --deep: #2FA394;
+  --spark: #F5A524;
+  --line: #2A3D3E;
+  --muted: #93A5A3;
+  --on-deep: #06201D;
+  --forest: #0B1516;
+  --green: var(--deep);
+  --blue: var(--deep);
+  --orange: var(--deep);
+  --jade: var(--deep);
+  --champagne: var(--deep);
+  --coral: var(--deep);
+  --lavender: var(--muted);
+  --ambient-base: var(--paper);
+  --ambient-one: rgba(47, 163, 148, .075);
+  --ambient-two: rgba(245, 165, 36, .028);
+  --ambient-three: rgba(47, 163, 148, .035);
+}
+
+html[data-theme="auto"][data-atmosphere="dawn"] { --ambient-base: var(--paper); --ambient-one: rgba(245, 165, 36, .045); --ambient-two: rgba(15, 76, 71, .04); --ambient-three: rgba(15, 76, 71, .02); }
+html[data-theme="auto"][data-atmosphere="day"] { --ambient-base: var(--paper); --ambient-one: rgba(15, 76, 71, .05); --ambient-two: rgba(245, 165, 36, .025); --ambient-three: rgba(15, 76, 71, .02); }
+html[data-theme="auto"][data-atmosphere="golden-hour"] { --ambient-base: var(--paper); --ambient-one: rgba(245, 165, 36, .05); --ambient-two: rgba(15, 76, 71, .035); --ambient-three: rgba(245, 165, 36, .02); }
+html[data-theme="auto"][data-atmosphere="dusk"] { --ambient-base: var(--paper); --ambient-one: rgba(15, 76, 71, .045); --ambient-two: rgba(47, 163, 148, .025); --ambient-three: rgba(245, 165, 36, .018); }
+
+html, body { background-color: var(--ambient-base); color: var(--ink); }
+body::before { background:
+  radial-gradient(ellipse 66% 48% at var(--ambient-x, 54%) var(--ambient-y, 15%), var(--ambient-one), transparent 74%),
+  radial-gradient(ellipse 78% 60% at 88% 88%, var(--ambient-two), transparent 72%),
+  radial-gradient(ellipse 70% 52% at 0% 65%, var(--ambient-three), transparent 75%),
+  var(--ambient-base);
+}
+.site-header, .site-header.is-scrolled { color: var(--ink); border-color: var(--line); background: color-mix(in srgb, var(--paper) 93%, transparent); }
+.wordmark-mark, .footer-mark { color: var(--on-deep); background: var(--deep); }
+.site-nav > a:not(.nav-contact), .button-text, .blog-read-link, .blog-article-end a { color: var(--muted); }
+.site-nav > a:hover, .button-text:hover, .blog-read-link:hover, .blog-article-end a:hover { color: var(--deep); }
+.nav-contact { color: var(--deep); border-color: var(--deep); }
+.nav-contact span, .button-text span, .hero-bottom a span, .writing-samples li span, .blog-read-link span, .blog-article-end span { color: var(--deep); }
+.theme-toggle, .nav-toggle { color: var(--muted); border-color: var(--line); background: color-mix(in srgb, var(--white) 85%, transparent); }
+.theme-toggle:hover, .nav-toggle:hover { color: var(--ink); border-color: var(--deep); }
+a:focus-visible, button:focus-visible, .theme-toggle:focus-visible, .site-header a:focus-visible, .nav-toggle:focus-visible, .how-i-work-control:focus-visible { outline: 3px solid var(--deep); outline-offset: 3px; }
+.hero::before { background: radial-gradient(ellipse at calc(66% + var(--pointer-dx, 0px)) calc(45% + var(--pointer-dy, 0px)), var(--ambient-one), transparent 70%); }
+.eyebrow, .section-kicker, .hero-bottom, .hero-bottom a, .hero-note, .map-topline, .map-footer, .section-heading > p, .experience-heading > p, .about-copy > p:not(.about-note), .contact-content > p:not(.eyebrow), .blog-hero > p:last-child, .blog-article-excerpt, .blog-card time, .blog-byline, .blog-content, .blog-back-link, .blog-footer { color: var(--muted); }
+.eyebrow-dot, .live-mark i { background: var(--deep); box-shadow: 0 0 0 4px color-mix(in srgb, var(--deep) 16%, transparent); }
+h1 em, h2 em, .map-title em, .contact h2 em { color: var(--deep); }
+.hero-intro, .card-copy p, .card-output p, .engagement-fit, .engagement-focus, .about-profile-copy p, .case-study > p, .case-study .case-field, .case-study dd, .blog-card-copy > p { color: var(--muted); }
+.button-primary { color: var(--on-deep); border-color: var(--deep); background: var(--deep); box-shadow: 0 9px 22px color-mix(in srgb, var(--deep) 18%, transparent); }
+.button-primary span { color: var(--on-deep); }
+.button-primary:hover { color: var(--on-deep); border-color: color-mix(in srgb, var(--deep) 82%, var(--ink)); background: color-mix(in srgb, var(--deep) 82%, var(--ink)); }
+.button-outline { color: var(--ink); border-color: var(--deep); background: transparent; }
+.button-outline span { color: var(--deep); }
+.product-map, .map-node, .audience-card, .engagement-card, .case-study, .blog-card { color: var(--ink); border-color: var(--line); background: var(--white); }
+.product-map { background: linear-gradient(150deg, var(--white), color-mix(in srgb, var(--paper) 86%, var(--deep))); }
+.product-map::before { border-color: color-mix(in srgb, var(--deep) 12%, transparent); background-image: linear-gradient(color-mix(in srgb, var(--deep) 5%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--deep) 5%, transparent) 1px, transparent 1px); }
+.map-node { box-shadow: 0 8px 20px color-mix(in srgb, var(--ink) 7%, transparent); }
+.node-index, .map-node small, .experience-proof > p, .credentials-kicker, .about-note, .site-footer, .footer-brand, .blog-card time { color: var(--muted); }
+.node-symbol { color: var(--deep); background: color-mix(in srgb, var(--deep) 12%, var(--white)); }
+.map-node-decision .node-symbol, .map-node-delivery .node-symbol { color: var(--deep); background: color-mix(in srgb, var(--deep) 12%, var(--white)); }
+.map-link i { background: var(--deep); }
+.map-glow { background: color-mix(in srgb, var(--deep) 8%, transparent); }
+.section-paper, .section-white, .experience, .engagement, .blog-page, .blog-article { color: var(--ink); background: color-mix(in srgb, var(--paper) 82%, var(--white)); }
+.kicker-line { background: var(--line); }
+.section-kicker > span:first-child, .section-kicker-light > span:first-child { color: var(--deep); }
+.audience-card:hover, .engagement-card:hover { border-color: var(--deep); background: color-mix(in srgb, var(--white) 90%, var(--deep)); }
+.dimensional-icon { border-color: var(--line); background: color-mix(in srgb, var(--white) 85%, var(--deep)); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white) 90%, transparent), 0 5px 11px color-mix(in srgb, var(--ink) 6%, transparent); }
+.card-index, .engagement-card-top > span:last-child, .approach-number, .approach-step-title > span, .approach-output > span, .approach-endnote, .credentials-kicker, .about-credentials article > span { color: var(--deep); }
+.card-copy, .company-logos, .about-credentials, .about-credentials article, .site-footer { border-color: var(--line); }
+.card-copy > span, .card-output > span, .engagement-outputs > span, .case-context, .case-study dt { color: var(--muted); }
+.card-output, .engagement-outputs li { color: var(--deep); background: color-mix(in srgb, var(--deep) 10%, var(--white)); }
+.card-output p, .engagement-outputs li { color: var(--deep); }
+.experience-proof > div { border-color: var(--deep); }
+.experience-proof strong, .about-credentials h3 { color: var(--deep); }
+.company-logo-vyturr, .vyturr-name, .about-portrait { color: var(--muted); border-color: var(--line); }
+.about, .contact { color: var(--ink); background: color-mix(in srgb, var(--paper) 86%, var(--deep) 4%); }
+.about-link, .contact-secondary, .site-footer-links a, .blog-footer-links a { color: var(--deep); }
+.about-note { border-color: var(--line); }
+.approach { color: var(--on-deep); background: linear-gradient(118deg, var(--forest), color-mix(in srgb, var(--forest) 86%, var(--deep))); }
+.approach h2, .approach-row h3, .approach-output p { color: var(--on-deep); }
+.approach-heading > p, .approach-description, .how-i-work-step, .how-i-work-output { color: color-mix(in srgb, var(--on-deep) 78%, var(--deep)); }
+.approach-row { border-color: color-mix(in srgb, var(--on-deep) 20%, transparent); }
+.approach-row::after, .approach-list::after { background: var(--deep); }
+.approach-number { background: var(--forest); }
+.approach-step-title > span, .approach-output > span, .approach-endnote { color: color-mix(in srgb, var(--on-deep) 78%, var(--deep)); }
+.testimonials { color: var(--on-deep); background: var(--forest); }
+.testimonials figcaption { color: var(--deep); }
+.testimonials figcaption span { color: color-mix(in srgb, var(--on-deep) 72%, var(--forest)); }
+.blog-hero, .blog-article-header { color: var(--ink); }
+.blog-card { box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 5%, transparent); }
+.blog-card-image { background: color-mix(in srgb, var(--deep) 8%, var(--paper)); }
+.blog-card h2, .blog-content h2, .blog-content h3, .blog-content h4, .blog-article-header h1, .related-posts h2 { color: var(--ink); }
+.blog-card h2 a:hover, .blog-content a, .related-posts a, .blog-tags a, .blog-pagination a { color: var(--deep); }
+.blog-content blockquote { color: var(--muted); border-color: var(--deep); }
+.blog-footer { border-color: var(--line); }
+.blog-pagination, .blog-tags, .related-posts { color: var(--ink); }
+.blog-pagination > span, .blog-tags a { border-color: var(--line); }
+.case-study { background: color-mix(in srgb, var(--white) 86%, var(--deep) 4%); }
+.proof-label { color: var(--deep); border-color: var(--deep); }
+.proof-label--prototype { color: var(--deep); border-color: var(--deep); background: color-mix(in srgb, var(--deep) 9%, var(--white)); }
+.proof-label--fractional { color: var(--deep); border-color: var(--deep); background: color-mix(in srgb, var(--deep) 9%, var(--white)); }
+.about-portrait { background: var(--paper); }
+.about-portrait img { border-radius: inherit; }
+.how-i-work-base { stroke: var(--line); }
+.how-i-work-progress { stroke: var(--deep); }
+.how-node { fill: var(--paper); stroke: var(--line); }
+.how-i-work-control { color: var(--on-deep); border-color: color-mix(in srgb, var(--on-deep) 55%, var(--forest)); }
+.how-i-work-control:hover { color: var(--on-deep); border-color: var(--deep); }
+.how-i-work-control:focus-visible { outline-color: var(--deep); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .section-paper,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .section-white,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .experience,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .engagement,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .blog-page,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .blog-article { background: color-mix(in srgb, var(--paper) 93%, var(--white)); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .about,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .contact { background: color-mix(in srgb, var(--paper) 86%, var(--deep) 5%); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .approach { color: var(--ink); background: linear-gradient(118deg, #0B1516, #102322); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .approach h2,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .approach-row h3,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .approach-output p { color: var(--ink); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .how-i-work-step,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .how-i-work-output,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .approach-heading > p,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .approach-description { color: var(--muted); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .button-primary { color: var(--on-deep); border-color: var(--deep); background: var(--deep); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .button-primary:hover { color: var(--on-deep); background: color-mix(in srgb, var(--deep) 82%, var(--ink)); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .button-primary span { color: var(--on-deep); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .wordmark-mark,
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .footer-mark { color: var(--on-deep); background: var(--deep); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .site-nav { color: var(--ink); background: var(--white); }
+html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .site-nav > a:not(.nav-contact) { color: var(--muted); border-color: var(--line); }
+
+@media (prefers-reduced-motion: reduce) {
+  .how-i-work *, .how-i-work *::before, .how-i-work *::after { animation: none !important; }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .clarity-animation:hover::before { transition-duration: .55s; }
 }
