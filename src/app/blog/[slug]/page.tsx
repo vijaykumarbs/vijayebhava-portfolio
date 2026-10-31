@@ -54,7 +54,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
   const relatedPosts = post.tags.length
     ? posts.filter((item) => item.slug !== post.slug && item.tags.some((tag) => post.tags.includes(tag))).slice(0, 3)
     : [];
-  const cta = post.cta || { label: "Book a call", url: BOOKING_URL };
+  const cta = post.cta || { label: "Let’s Talk", url: BOOKING_URL };
   const canonicalUrl = post.canonicalUrl || postUrl(post.slug);
   const structuredData = {
     "@context": "https://schema.org",
