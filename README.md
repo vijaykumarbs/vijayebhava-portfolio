@@ -1,53 +1,61 @@
 # Vijayebhava — Product Management Portfolio
 
-A responsive Next.js portfolio for product management and business transformation. It uses a lightweight product-journey illustration, typography-led sections and a reduced-motion-aware entrance animation. WordPress on `cms.vijayebhava.com` provides blog content through its public REST API.
+A responsive Next.js 15 portfolio and local Markdown blog for product management and business transformation. The site is statically exported to `out/` for Cloudflare Pages.
 
 ## Run locally
 
 ```sh
-npm install
+npm ci
 npm run dev
 ```
 
-## Run a production build
+## Build and deploy
 
 ```sh
+npm run typecheck
+npm run lint
 npm run build
 ```
 
-Next.js writes a static export to `out/`, which Hostinger Premium serves from `public_html`. GitHub Actions checks WordPress hourly and rebuilds/redeploys the static export only after published-post content changes, so writing a post does not require a manual build or deployment.
+Cloudflare Pages settings:
+
+- Framework preset: Next.js (Static HTML Export) or None
+- Build command: `npm run build`
+- Build output directory: `out`
+- Node.js version: `22`
+- Environment variable: `NEXT_PUBLIC_GA_MEASUREMENT_ID` (optional)
+
+To connect the repository, create a Cloudflare Pages project, connect the GitHub repository and production branch, enter the settings above, add the optional GA4 environment variable, then start the first deployment. Add the repository secret `CF_PAGES_DEPLOY_HOOK` with the project's deploy-hook URL for scheduled post publishing. The daily workflow calls this hook; Cloudflare rebuilds the connected branch and future-dated posts become eligible when the new build runs.
+
+Before relying on scheduled deploys, confirm current Cloudflare Pages deploy-hook behavior and the support and precedence of `_headers` and `_redirects` in the Cloudflare documentation. Static export behavior can change independently of this repository.
+
+## Blog authoring
+
+Posts live in `content/blog/<slug>.md`. Required frontmatter fields are `title`, `slug`, `date` (ISO date or datetime), `description`, `tags` (array), `imageAlt`, and `draft` (boolean). Optional fields are `updated`, `image` (local file under `public/blog/`), `canonicalUrl`, and `cta` with `label` and `url`.
+
+```sh
+npm run new-post -- "A useful title"
+```
+
+The command creates a draft with `TODO(Vijay)` content fields. Fill them in and remove the TODO values before setting `draft: false`. Draft posts and future-dated posts are excluded from the static export. Images must be local `/blog/...` files; Markdown raw HTML is not enabled. Markdown is parsed using `gray-matter` and Unified/remark, transformed to HAST, and sanitized with `rehype-sanitize`; React renders the sanitized tree without injecting HTML strings.
+
+Blog URLs preserve `/blog/` and `/blog/<slug>/`. The archive paginates at 10 posts, tag pages are at `/blog/tags/<tag>/`, and `/feed.xml` provides RSS. The sitemap includes articles, archive pages, tag archives and the feed. Posts with shared tags show up to three related links. The end-of-post CTA defaults to “Book a call” and can be overridden in post frontmatter.
+
+The migration notes list CMS URLs that should be redirected or noindexed at the old host. No `vijayebhava.com` content path changed, so no Pages redirect is currently needed.
 
 ## Google Analytics 4
 
-Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` to the GA4 web stream Measurement ID before running `npm run build`. The static export embeds the ID at build time; the tag is omitted when the variable is unset. The provided `.env.example` contains the current ID (`G-EK0TS9LYBC`).
-
-The root layout loads `gtag.js` once across the site. Automatic page views are disabled, and the App Router tracker sends one `page_view` for the initial route and each pathname change. Section anchors and query strings do not create extra page views or enter the reported page URL. No form contents or personal information are sent.
-
-To verify, build with the variable set, open the exported site, and use GA4 **Realtime** or **DebugView** to confirm a `page_view` event. For a locally served static export, check the browser Network panel for `gtag/js?id=G-EK0TS9LYBC` and the `g/collect` request.
-
-## WordPress copy and blog
-
-Set `WORDPRESS_URL` in the deployment environment (or `.env.local` for local development) to the WordPress site's base URL:
-
-```env
-WORDPRESS_URL=https://cms.vijayebhava.com
-```
-
-Published WordPress posts populate `/blog/` and each article gets a search-friendly page with canonical metadata and BlogPosting structured data. The sitemap includes published posts; drafts are excluded. New posts normally appear within about an hour after publishing, after the automatic GitHub build and Hostinger deployment finish.
-
-To add an article, sign in at `https://cms.vijayebhava.com/wp-admin/`, choose **Posts → Add Post**, and publish it. The Next.js site reads the public WordPress REST API; no WordPress password is stored in this repository. The CMS's WordPress theme is separate from the branded Next.js frontend.
-
-The `Publish WordPress posts` workflow checks the published post IDs, slugs and modification times daily at 6:00 AM India time, and also runs when source code changes on `main`. It skips unchanged content and publishes updated exports to the `codex/hostinger-static` branch, which Hostinger deploys automatically. The workflow uses only GitHub's built-in token and public WordPress content.
+Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in the build environment to the GA4 web stream Measurement ID. The static export embeds the ID at build time; the tag is omitted when unset. No form contents or personal information are sent.
 
 ## Main files
 
-- Main content and company marks: `src/app/page.tsx`
+- Main content and company marks: `src/app/page.tsx`, `src/data/portfolio.ts`
 - Responsive visual system: `src/app/globals.css`
-- WordPress blog API and post formatting: `src/data/blog.ts`
-- Blog index and article pages: `src/app/blog/`
-- Sitemap and crawler rules: `src/app/sitemap.ts`, `src/app/robots.ts`
-- Process narrative: `src/data/chapters.ts`
-- WordPress build-time copy: `src/data/wordpress.ts`
-- SEO and page metadata: `src/app/layout.tsx`
+- Animated process: `src/components/how-i-work-animation.tsx`, `src/data/chapters.ts`
+- Local Markdown parser and validation: `src/data/blog.ts`
+- Blog source: `content/blog/`
+- Blog pages and components: `src/app/blog/`, `src/components/blog-listing.tsx`, `src/components/markdown-content.tsx`
+- Sitemap, RSS and crawler rules: `src/app/sitemap.ts`, `src/app/feed.xml/route.ts`, `src/app/robots.ts`
+- Site identity and booking configuration: `src/data/site-config.ts`
 
-The company strip uses official local logo files where available, with a text wordmark for Vyturr. No client outcomes, role tenure, testimonials or performance figures are invented.
+The company strip uses local logo files where available and a text wordmark for Vyturr. Case details include only information currently supported by the source material.

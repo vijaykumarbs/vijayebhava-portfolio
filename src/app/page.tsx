@@ -1,6 +1,4 @@
 import { useId } from "react";
-import { getPortfolioCopy } from "@/data/wordpress";
-import { chapters } from "@/data/chapters";
 import { portfolioContent, type AudienceNeed } from "@/data/portfolio";
 import { SiteHeader } from "@/components/site-header";
 import { ProductClarityAnimation } from "@/components/product-clarity-animation";
@@ -55,7 +53,6 @@ function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: s
 }
 
 export default async function Home() {
-  const copy = await getPortfolioCopy(chapters);
   const content = portfolioContent;
 
   return (
@@ -66,7 +63,7 @@ export default async function Home() {
         <div className="hero-copy" data-reveal="rise">
           <p className="eyebrow"><span className="eyebrow-dot" />{content.hero.eyebrow}</p>
           <h1 id="hero-title">{content.hero.titleLead} <em>{content.hero.titleAccent}</em><br />{content.hero.titleEnd}</h1>
-          <p className="hero-intro">{copy.home?.excerpt || content.hero.summary}</p>
+          <p className="hero-intro">{content.hero.summary}</p>
           <div className="hero-actions">
             <a className="button-primary" href="#contact">{content.hero.primaryCta} <span aria-hidden="true">↗</span></a>
             <a className="button-text" href="#approach">{content.hero.secondaryCta} <span aria-hidden="true">↓</span></a>
