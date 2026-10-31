@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { formatPostDate, getPublishedPosts } from "@/data/blog";
 import { portfolioContent } from "@/data/portfolio";
@@ -53,7 +54,7 @@ export default async function BlogIndexPage() {
       )}
 
       <footer className="blog-footer">
-        <a href="/">← Back to Vijayebhava</a>
+        <Link href="/">← Back to Vijayebhava</Link>
         <div className="blog-footer-links">
           <a className="blog-footer-booking" href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
           <a href={portfolioContent.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>

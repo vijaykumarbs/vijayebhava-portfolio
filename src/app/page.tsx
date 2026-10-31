@@ -4,7 +4,7 @@ import { chapters } from "@/data/chapters";
 import { portfolioContent, type AudienceNeed } from "@/data/portfolio";
 import { SiteHeader } from "@/components/site-header";
 import { ProductClarityAnimation } from "@/components/product-clarity-animation";
-import { BOOKING_URL } from "@/data/site-config";
+import { BOOKING_URL, SITE_AUTHOR } from "@/data/site-config";
 
 function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: string }) {
   const id = useId().replaceAll(":", "");
@@ -188,7 +188,7 @@ export default async function Home() {
           <h2 id="contact-title">Book a call</h2>
           <p>Pick a time that works for you. Tell me what you are working through when you book.</p>
           <div className="contact-actions">
-            <a className="button-primary" href={BOOKING_URL} target="_blank" rel="noopener">Book a time <span aria-hidden="true">↗</span></a>
+            <a className="button-primary" href={BOOKING_URL} target="_blank" rel="noopener">Book a call <span aria-hidden="true">↗</span></a>
           </div>
           <div className="contact-secondary">
             <a href={content.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
@@ -206,6 +206,23 @@ export default async function Home() {
           <span>© {new Date().getFullYear()}</span>
         </footer>
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            name: SITE_AUTHOR,
+            url: "https://vijayebhava.com/",
+            sameAs: [content.contact.linkedinUrl],
+          },
+          {
+            "@type": "ProfessionalService",
+            name: SITE_AUTHOR,
+            url: "https://vijayebhava.com/",
+            sameAs: [content.contact.linkedinUrl],
+          },
+        ],
+      }).replace(/</g, "\\u003c") }} />
     </main>
   );
 }

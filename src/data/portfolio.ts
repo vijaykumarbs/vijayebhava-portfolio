@@ -33,7 +33,7 @@ export const portfolioContent = {
     summary:
       "I help founders and small product teams understand the problem, choose what to build next, and turn good decisions into practical solutions.",
     audienceNote: "For early-stage digital products and AI-enabled SaaS",
-    primaryCta: "Discuss your product",
+    primaryCta: "Book a call",
     secondaryCta: "Explore my approach",
   },
   audience: {
