@@ -116,7 +116,7 @@ export default async function Home() {
           {study.context && <p className="case-field"><strong>Context</strong>{study.context}</p>}
           {study.myRole && <p className="case-field"><strong>My role</strong>{study.myRole}</p>}
           {study.whatIDid?.length ? <div className="case-field"><strong>What I did</strong><ul>{study.whatIDid.map((point) => <li key={point}>{point}</li>)}</ul></div> : null}
-          {study.outcomeOrStatus && <p className="case-field"><strong>Outcome / status</strong>{study.outcomeOrStatus}</p>}
+          {study.outcomeOrStatus && <p className="case-field case-status"><strong>Outcome / status</strong>{study.outcomeOrStatus}</p>}
         </article>)}</div>
       </section>
 

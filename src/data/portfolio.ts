@@ -99,10 +99,7 @@ export const portfolioContent = {
       title: "Eurofins: Annual Review Process",
       context: "An internal platform for about 5,000 mid and senior-level managers globally.",
       myRole: "Sole Business Analyst.",
-      whatIDid: [
-        "Worked as the sole Business Analyst.",
-        "Moved the Excel-based process to a digital platform.",
-      ],
+      whatIDid: ["Moved the Excel-based process to a digital platform."],
       outcomeOrStatus: "The process moved from 4 months to 2 months.",
     },
     // TODO(Vijay): confirm your role on the Implementation Intelligence MVP.
@@ -110,10 +107,6 @@ export const portfolioContent = {
       label: "Prototype",
       title: "SCMCentral: Implementation Intelligence",
       context: "A data-readiness MVP that checks ERP master data and shows validation issues for review.",
-      whatIDid: [
-        "Checks ERP master data.",
-        "Shows validation issues for review.",
-      ],
       outcomeOrStatus: "Pilot not yet run.",
     },
     // TODO(Vijay): confirm your role on the Quotation Comparison and BOM Extraction prototypes.
@@ -126,7 +119,7 @@ export const portfolioContent = {
     // TODO(Vijay): confirm responsibilities for this fractional engagement.
     {
       label: "Fractional work",
-      title: "Fractional Product Manager · SCMCentral",
+      title: "Fractional Product Manager: SCMCentral",
       context: "Supply-chain and shopfloor ERP for SME manufacturers.",
       myRole: "Fractional Product Manager.",
     },
