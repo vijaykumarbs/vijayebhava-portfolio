@@ -39,7 +39,7 @@ npm run new-post -- "A useful title"
 
 The command creates a draft with `TODO(Vijay)` content fields. Fill them in and remove the TODO values before setting `draft: false`. Draft posts and future-dated posts are excluded from the static export. Images must be local `/blog/...` files; Markdown raw HTML is not enabled. Markdown is parsed using `gray-matter` and Unified/remark, transformed to HAST, and sanitized with `rehype-sanitize`; React renders the sanitized tree without injecting HTML strings.
 
-Blog URLs preserve `/blog/` and `/blog/<slug>/`. The archive paginates at 10 posts, tag pages are at `/blog/tags/<tag>/`, and `/feed.xml` provides RSS. The sitemap includes articles, archive pages, tag archives and the feed. Posts with shared tags show up to three related links. The end-of-post CTA defaults to “Book a call” and can be overridden in post frontmatter.
+Blog URLs preserve `/blog/` and `/blog/<slug>/`. The archive paginates at 10 posts, tag pages are at `/blog/tags/<tag>/`, and `/feed.xml` provides RSS. The sitemap includes articles, archive pages, tag archives and the feed. Posts with shared tags show up to three related links. The end-of-post CTA defaults to “Let's Talk” and can be overridden in post frontmatter.
 
 The migration notes list CMS URLs that should be redirected or noindexed at the old host. No `vijayebhava.com` content path changed, so no Pages redirect is currently needed.
 
