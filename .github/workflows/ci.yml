@@ -27,3 +27,5 @@ jobs:
         run: npm run lint
       - name: Build static site
         run: npm run build
+      - name: Check built output for placeholders
+        run: npm run check:output

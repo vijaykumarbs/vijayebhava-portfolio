@@ -20,7 +20,7 @@ npm run build
 Cloudflare Pages settings:
 
 - Framework preset: Next.js (Static HTML Export) or None
-- Build command: `npm run build`
+- Build command: `npm run build && npm run check:output`
 - Build output directory: `out`
 - Node.js version: `22`
 - Environment variable: `NEXT_PUBLIC_GA_MEASUREMENT_ID` (optional)

@@ -199,15 +199,18 @@ export default async function Home() {
         "@graph": [
           {
             "@type": "Person",
+            "@id": "https://vijayebhava.com/#person",
             name: SITE_AUTHOR,
             url: "https://vijayebhava.com/",
             sameAs: [content.contact.linkedinUrl],
           },
           {
             "@type": "ProfessionalService",
-            name: SITE_AUTHOR,
+            name: "Vijayebhava",
             url: "https://vijayebhava.com/",
             sameAs: [content.contact.linkedinUrl],
+            founder: { "@id": "https://vijayebhava.com/#person" },
+            provider: { "@id": "https://vijayebhava.com/#person" },
           },
         ],
       }).replace(/</g, "\\u003c") }} />

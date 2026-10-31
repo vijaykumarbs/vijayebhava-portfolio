@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "check:output": "node scripts/check-no-placeholders.mjs",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "new-post": "node scripts/new-post.mjs",
     "start": "next start",
