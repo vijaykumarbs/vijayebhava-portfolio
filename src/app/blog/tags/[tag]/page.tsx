@@ -18,7 +18,11 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
   const matching = posts.filter((post) => post.tags.some((name) => tagSlug(name) === tag));
   const label = matching.flatMap((post) => post.tags).find((name) => tagSlug(name) === tag);
   if (!label) return { title: "Topic not found | Vijayebhava", robots: { index: false, follow: false } };
-  return { title: `${label} | Product Notes | Vijayebhava`, alternates: { canonical: `/blog/tags/${tag}/` } };
+  return {
+    title: `${label} | Product Notes | Vijayebhava`,
+    alternates: { canonical: `/blog/tags/${tag}/` },
+    robots: { index: false, follow: true },
+  };
 }
 
 export default async function BlogTagPage({ params }: TagPageProps) {
