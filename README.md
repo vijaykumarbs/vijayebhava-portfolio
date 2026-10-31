@@ -25,6 +25,10 @@ Cloudflare Pages settings:
 - Node.js version: `22`
 - Environment variable: `NEXT_PUBLIC_GA_MEASUREMENT_ID` (optional)
 
+### Contact form
+
+The `/api/contact` Pages Function sends messages through Resend. Configure the encrypted secrets `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, and `RESEND_API_KEY` in the Cloudflare Pages project. `CONTACT_FROM_EMAIL` must use a verified sending domain. Bind a KV namespace as `CONTACT_RATE_LIMIT_KV` for the existing per-IP limit of five messages per hour. Do not commit secret values.
+
 To connect the repository, create a Cloudflare Pages project, connect the GitHub repository and production branch, enter the settings above, add the optional GA4 environment variable, then start the first deployment. Add the repository secret `CF_PAGES_DEPLOY_HOOK` with the project's deploy-hook URL for scheduled post publishing. The daily workflow calls this hook; Cloudflare rebuilds the connected branch and future-dated posts become eligible when the new build runs.
 
 Before relying on scheduled deploys, confirm current Cloudflare Pages deploy-hook behavior and the support and precedence of `_headers` and `_redirects` in the Cloudflare documentation. Static export behavior can change independently of this repository.
