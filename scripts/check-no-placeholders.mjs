@@ -2,8 +2,29 @@ import { readdir, readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 
 const outputDirectory = resolve(process.cwd(), "out");
+const sourceDirectories = [resolve(process.cwd(), "src"), resolve(process.cwd(), "content")];
 const scannedExtensions = new Set([".html", ".txt", ".xml"]);
 const matches = [];
+const sourceMatches = [];
+
+async function scanSource(directory) {
+  let entries;
+  try {
+    entries = await readdir(directory, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === "ENOENT") return;
+    throw error;
+  }
+
+  for (const entry of entries) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) {
+      await scanSource(path);
+    } else if ((await readFile(path, "utf8")).includes("TODO(")) {
+      sourceMatches.push(path);
+    }
+  }
+}
 
 async function scan(directory) {
   let entries;
@@ -25,6 +46,11 @@ async function scan(directory) {
 }
 
 try {
+  for (const directory of sourceDirectories) await scanSource(directory);
+  if (sourceMatches.length) {
+    console.warn(`Warning: found "TODO(" in source/content (non-failing):\n${sourceMatches.map((path) => `- ${path}`).join("\n")}`);
+  }
+
   await scan(outputDirectory);
   if (matches.length) {
     console.error(`Found "TODO(" in built output:\n${matches.map((path) => `- ${path}`).join("\n")}`);
