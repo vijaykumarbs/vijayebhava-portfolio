@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { BlogListing } from "@/components/blog-listing";
-import { getPublishedPosts } from "@/data/blog";
-
-const POSTS_PER_PAGE = 10;
+import { getPublishedPosts, POSTS_PER_PAGE } from "@/data/blog";
 
 export async function generateMetadata(): Promise<Metadata> {
   const posts = await getPublishedPosts();

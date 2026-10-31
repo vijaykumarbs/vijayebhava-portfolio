@@ -1,10 +1,9 @@
 import type { MetadataRoute } from "next";
-import { getPublishedPosts, tagSlug } from "@/data/blog";
+import { getPublishedPosts, POSTS_PER_PAGE, postUrl, SITE_URL, tagSlug } from "@/data/blog";
 
 export const dynamic = "force-static";
 
-const siteUrl = "https://vijayebhava.com";
-const POSTS_PER_PAGE = 10;
+const siteUrl = SITE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getPublishedPosts();
@@ -34,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
     { url: `${siteUrl}/feed.xml`, lastModified: latestPostDate, changeFrequency: "daily", priority: 0.4 },
     ...posts.map((post) => ({
-      url: `${siteUrl}/blog/${encodeURIComponent(post.slug)}/`,
+      url: postUrl(post.slug),
       lastModified: postLastModified(post),
       changeFrequency: "monthly" as const,
       priority: 0.7,

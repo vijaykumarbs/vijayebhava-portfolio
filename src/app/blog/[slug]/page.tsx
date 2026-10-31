@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BlogFooter } from "@/components/blog-footer";
 import { MarkdownContent } from "@/components/markdown-content";
 import { SiteHeader } from "@/components/site-header";
-import { formatPostDate, getPublishedPosts, tagSlug } from "@/data/blog";
+import { formatPostDate, getPublishedPosts, postUrl, tagSlug } from "@/data/blog";
 import { portfolioContent } from "@/data/portfolio";
 import { BOOKING_URL, SITE_AUTHOR } from "@/data/site-config";
 
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   const post = posts.find((item) => item.slug === slug);
   if (!post) return { title: "Article not found | Vijayebhava", robots: { index: false, follow: false } };
 
-  const canonicalUrl = post.canonicalUrl || `https://vijayebhava.com/blog/${encodeURIComponent(post.slug)}/`;
+  const canonicalUrl = post.canonicalUrl || postUrl(post.slug);
   return {
     title: `${post.title} | Vijayebhava`,
     description: post.description,
@@ -54,7 +55,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
     ? posts.filter((item) => item.slug !== post.slug && item.tags.some((tag) => post.tags.includes(tag))).slice(0, 3)
     : [];
   const cta = post.cta || { label: "Book a call", url: BOOKING_URL };
-  const canonicalUrl = post.canonicalUrl || `https://vijayebhava.com/blog/${encodeURIComponent(post.slug)}/`;
+  const canonicalUrl = post.canonicalUrl || postUrl(post.slug);
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -92,15 +93,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
           <a className="button-primary blog-article-booking" href={cta.url} target={externalCta ? "_blank" : undefined} rel={externalCta ? "noopener" : undefined}>{cta.label} <span aria-hidden="true">↗</span></a>
         </div>
       </article>
-      <footer className="blog-footer">
-        <Link href="/">← Back to Vijayebhava</Link>
-        <div className="blog-footer-links">
-          <a className="blog-footer-booking" href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
-          <a href={portfolioContent.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
-          <a href={portfolioContent.contact.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
-        </div>
-        <span>PRODUCT THINKING · PRACTICAL PROGRESS</span>
-      </footer>
+      <BlogFooter note="PRODUCT THINKING · PRACTICAL PROGRESS" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
     </main>
   );

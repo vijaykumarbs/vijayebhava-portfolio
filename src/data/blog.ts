@@ -49,6 +49,8 @@ type MarkdownNode = {
 const postsDirectory = resolve(process.cwd(), "content", "blog");
 const publicDirectory = resolve(process.cwd(), "public");
 let publishedPostsPromise: Promise<BlogPost[]> | undefined;
+export const POSTS_PER_PAGE = 10;
+export const SITE_URL = "https://vijayebhava.com";
 const EXPECT_POSTS = process.env.EXPECT_BLOG_POSTS !== "false";
 
 function readString(value: unknown, field: string, fileName: string, optional = false): string | undefined {
@@ -211,6 +213,10 @@ async function loadPublishedPosts(): Promise<BlogPost[]> {
 export function getPublishedPosts(): Promise<BlogPost[]> {
   publishedPostsPromise ??= loadPublishedPosts();
   return publishedPostsPromise;
+}
+
+export function postUrl(slug: string) {
+  return `${SITE_URL}/blog/${encodeURIComponent(slug)}/`;
 }
 
 export function formatPostDate(date: string) {
