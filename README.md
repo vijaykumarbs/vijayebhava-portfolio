@@ -45,7 +45,7 @@ The migration notes list CMS URLs that should be redirected or noindexed at the 
 
 ## Response security headers
 
-`public/_headers` sets the standard hardening headers and starts the Content Security Policy in report-only mode. After deployment, inspect browser-console or configured Cloudflare CSP reports, resolve required violations, and then change `Content-Security-Policy-Report-Only` to `Content-Security-Policy`. Keep the exact hash for the inline theme initializer synchronized whenever its source changes. Check the deployed result at [securityheaders.com](https://securityheaders.com/).
+`public/_headers` sets the standard response headers and a Content Security Policy (CSP) in report-only mode. The CSP does not currently block anything, and there is no CSP report endpoint. The static export has inline Next.js scripts whose hashes differ by page, so an enforced policy with the current single hash would block scripts. Enforcement would require per-page hashes or allowing inline scripts; the CSP must remain report-only until that design is completed. Check delivered headers at [securityheaders.com](https://securityheaders.com/).
 
 ## Google Analytics 4
 
