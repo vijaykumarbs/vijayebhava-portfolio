@@ -1,0 +1,20 @@
+{
+  "ci": {
+    "collect": {
+      "staticDistDir": "./out",
+      "url": ["http://localhost/", "http://localhost/blog/"]
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["off"],
+        "categories:accessibility": ["off"],
+        "categories:best-practices": ["off"],
+        "categories:seo": ["off"]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci"
+    }
+  }
+}

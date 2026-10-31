@@ -1,6 +1,7 @@
 node_modules
 .next
 out
+.lighthouseci
 *.tsbuildinfo
 .DS_Store
 .env*
