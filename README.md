@@ -43,6 +43,10 @@ Blog URLs preserve `/blog/` and `/blog/<slug>/`. The archive paginates at 10 pos
 
 The migration notes list CMS URLs that should be redirected or noindexed at the old host. No `vijayebhava.com` content path changed, so no Pages redirect is currently needed.
 
+## Response security headers
+
+`public/_headers` sets the standard hardening headers and starts the Content Security Policy in report-only mode. After deployment, inspect browser-console or configured Cloudflare CSP reports, resolve required violations, and then change `Content-Security-Policy-Report-Only` to `Content-Security-Policy`. Keep the exact hash for the inline theme initializer synchronized whenever its source changes. Check the deployed result at [securityheaders.com](https://securityheaders.com/).
+
 ## Google Analytics 4
 
 Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in the build environment to the GA4 web stream Measurement ID. The static export embeds the ID at build time; the tag is omitted when unset. No form contents or personal information are sent.
