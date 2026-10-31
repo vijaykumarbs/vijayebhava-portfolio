@@ -81,7 +81,7 @@ export default async function BlogPostPage({ params }: PostPageProps) {
           <div className="blog-byline"><span>{SITE_AUTHOR}</span><time dateTime={post.date}>{formatPostDate(post.date)}</time></div>
           {post.tags.length > 0 && <div className="blog-tags" aria-label="Article topics">{post.tags.map((tag) => <Link href={`/blog/tags/${tagSlug(tag)}/`} key={tag}>{tag}</Link>)}</div>}
         </header>
-        {post.image && <img className="blog-featured-image" src={post.image.src} alt={post.image.alt} />}
+        {post.image && <img className="blog-featured-image" src={post.image.src} width={post.image.width} height={post.image.height} alt={post.image.alt} />}
         <MarkdownContent tree={post.content} />
         {relatedPosts.length > 0 && <section className="related-posts" aria-labelledby="related-posts-title">
           <h2 id="related-posts-title">Related posts</h2>

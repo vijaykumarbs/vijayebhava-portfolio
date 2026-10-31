@@ -24,7 +24,7 @@ export function BlogListing({ posts, page = 1, totalPages = 1, selectedTag }: Bl
       <section className="blog-grid" aria-label="Published articles">
         {posts.map((post) => (
           <article className="blog-card" key={post.slug}>
-            {post.image && <Link className="blog-card-image" href={`/blog/${encodeURIComponent(post.slug)}/`} tabIndex={-1} aria-hidden="true"><img src={post.image.src} alt="" /></Link>}
+            {post.image && <Link className="blog-card-image" href={`/blog/${encodeURIComponent(post.slug)}/`} tabIndex={-1}><img src={post.image.src} width={post.image.width} height={post.image.height} alt={post.image.alt} /></Link>}
             <div className="blog-card-copy">
               <time dateTime={post.date}>{formatPostDate(post.date)}</time>
               <h2><Link href={`/blog/${encodeURIComponent(post.slug)}/`}>{post.title}</Link></h2>

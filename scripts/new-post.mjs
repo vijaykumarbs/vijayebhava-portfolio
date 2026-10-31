@@ -34,5 +34,5 @@ const today = new Intl.DateTimeFormat("en-CA", {
 }).format(new Date());
 
 mkdirSync(directory, { recursive: true });
-writeFileSync(destination, `---\ntitle: ${JSON.stringify(title)}\nslug: ${slug}\ndate: "${today}"\ndescription: "TODO(Vijay): write a concise description."\ntags:\n  - "TODO(Vijay): add a tag"\nimageAlt: ""\ndraft: true\n---\n\nTODO(Vijay): write the article.\n`);
+writeFileSync(destination, `---\ntitle: ${JSON.stringify(title)}\nslug: ${slug}\ndate: "${today}"\ndescription: "TODO(Vijay): write a concise description."\ntags:\n  - "TODO(Vijay): add a tag"\nimageWidth:\nimageHeight:\ndraft: true\n---\n\nTODO(Vijay): write the article.\n`);
 console.log(`Created content/blog/${slug}.md`);

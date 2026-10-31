@@ -102,7 +102,7 @@ export default async function Home() {
         </div>
         <div className="company-logos" aria-label="Organisations Vijayebhava has worked with" data-reveal="rise">
           {content.experience.companies.map((company) => <div className={`company-logo ${company.logo ? "" : "company-logo-vyturr"}`} key={company.name}>
-            {company.logo ? <img src={company.logo} alt={`${company.name} logo`} /> : <span className="vyturr-name">VYTURR</span>}
+            {company.logo ? <img src={company.logo} width={company.width} height={company.height} alt={`${company.name} logo`} /> : <span className="vyturr-name">VYTURR</span>}
           </div>)}
         </div>
       </section>

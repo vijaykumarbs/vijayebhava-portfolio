@@ -11,7 +11,12 @@ type PaginationProps = { params: Promise<{ page: string }> };
 export async function generateStaticParams() {
   const posts = await getPublishedPosts();
   const pageCount = Math.ceil(posts.length / POSTS_PER_PAGE);
-  return Array.from({ length: Math.max(1, pageCount - 1) }, (_, index) => ({ page: String(index + 2) }));
+  if (pageCount <= 1) {
+    // Next static export rejects an empty generateStaticParams result for this dynamic route.
+    // Keep one noindex not-found route so the route can still participate in the export.
+    return [{ page: "2" }];
+  }
+  return Array.from({ length: pageCount - 1 }, (_, index) => ({ page: String(index + 2) }));
 }
 
 export async function generateMetadata({ params }: PaginationProps): Promise<Metadata> {

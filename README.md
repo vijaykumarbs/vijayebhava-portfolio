@@ -31,7 +31,7 @@ Before relying on scheduled deploys, confirm current Cloudflare Pages deploy-hoo
 
 ## Blog authoring
 
-Posts live in `content/blog/<slug>.md`. Required frontmatter fields are `title`, `slug`, `date` (ISO date or datetime), `description`, `tags` (array), `imageAlt`, and `draft` (boolean). Optional fields are `updated`, `image` (local file under `public/blog/`), `canonicalUrl`, and `cta` with `label` and `url`.
+Posts live in `content/blog/<slug>.md`. Required frontmatter fields are `title`, `slug`, `date` (ISO date or datetime), `description`, `tags` (array), and `draft` (boolean). Optional fields are `updated`, `image` (local file under `public/blog/`, requires non-empty `imageAlt` and decorative posts must omit the image), `imageAlt`, `imageWidth` and `imageHeight` (positive integers, supplied together), `canonicalUrl`, and `cta` with `label` and `url`.
 
 ```sh
 npm run new-post -- "A useful title"

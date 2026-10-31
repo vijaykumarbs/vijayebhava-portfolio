@@ -81,10 +81,10 @@ export const portfolioContent = {
     intro:
     "A selection of organisations and teams I have worked with.",
     companies: [
-      { name: "Eurofins", logo: "/companies/eurofins.png" },
-      { name: "Tekenlight", logo: "/companies/tekenlight.png" },
-      { name: "SCMCentral", logo: "/companies/scmcentral.png" },
-      { name: "Focaloid", logo: "/companies/focaloid.svg" },
+      { name: "Eurofins", logo: "/companies/eurofins.png", width: 159, height: 32 },
+      { name: "Tekenlight", logo: "/companies/tekenlight.png", width: 1379, height: 295 },
+      { name: "SCMCentral", logo: "/companies/scmcentral.png", width: 1454, height: 705 },
+      { name: "Focaloid", logo: "/companies/focaloid.svg", width: 152, height: 36 },
       { name: "Vyturr", logo: null },
     ],
   },

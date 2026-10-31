@@ -17,7 +17,7 @@ export type BlogPost = {
   description: string;
   content: unknown;
   tags: string[];
-  image?: { src: string; alt: string };
+  image?: { src: string; alt: string; width?: number; height?: number };
   canonicalUrl?: string;
   cta?: BlogCta;
 };
@@ -31,6 +31,8 @@ type Frontmatter = {
   tags?: unknown;
   image?: unknown;
   imageAlt?: unknown;
+  imageWidth?: unknown;
+  imageHeight?: unknown;
   draft?: unknown;
   canonicalUrl?: unknown;
   cta?: unknown;
@@ -100,8 +102,6 @@ async function parsePost(fileName: string): Promise<{ post?: BlogPost; publishCa
   const updated = readIsoDate(frontmatter.updated, "updated", fileName, true);
   const description = readString(frontmatter.description, "description", fileName)!;
   const imageAlt = readString(frontmatter.imageAlt, "imageAlt", fileName, true);
-
-  if (imageAlt === undefined) throw new Error(`${fileName}: frontmatter field "imageAlt" is required (use an empty string when no image is set).`);
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) throw new Error(`${fileName}: slug must use lowercase letters, numbers, and hyphens.`);
   if (fileName.slice(0, -3) !== slug) throw new Error(`${fileName}: filename must match the frontmatter slug.`);
   if (typeof frontmatter.draft !== "boolean") throw new Error(`${fileName}: frontmatter field "draft" must be a boolean.`);
@@ -117,15 +117,33 @@ async function parsePost(fileName: string): Promise<{ post?: BlogPost; publishCa
 
   let image: BlogPost["image"];
   const imagePath = readString(frontmatter.image, "image", fileName, true);
+  const imageWidth = frontmatter.imageWidth;
+  const imageHeight = frontmatter.imageHeight;
+  if ((imageWidth === undefined) !== (imageHeight === undefined)) {
+    throw new Error(`${fileName}: imageWidth and imageHeight must be supplied together.`);
+  }
+  if (imageWidth !== undefined && (!Number.isInteger(imageWidth) || (imageWidth as number) <= 0)) {
+    throw new Error(`${fileName}: imageWidth must be a positive integer.`);
+  }
+  if (imageHeight !== undefined && (!Number.isInteger(imageHeight) || (imageHeight as number) <= 0)) {
+    throw new Error(`${fileName}: imageHeight must be a positive integer.`);
+  }
+  if (!imagePath && (imageWidth !== undefined || imageHeight !== undefined)) {
+    throw new Error(`${fileName}: image dimensions require an image field.`);
+  }
   if (imagePath) {
     if (!imagePath.startsWith("/blog/") || imagePath.split("/").includes("..")) {
       throw new Error(`${fileName}: image must be a path under public/blog/ (for example, /blog/example.jpg).`);
     }
-    if (!imageAlt.trim()) throw new Error(`${fileName}: imageAlt is required when an image is set.`);
+    if (!imageAlt?.trim()) throw new Error(`${fileName}: imageAlt is required when an image is set; decorative posts must omit image.`);
     if (!existsSync(resolve(publicDirectory, `.${imagePath}`))) {
       throw new Error(`${fileName}: image path "${imagePath}" does not exist under public/.`);
     }
-    image = { src: imagePath, alt: imageAlt };
+    image = {
+      src: imagePath,
+      alt: imageAlt,
+      ...(imageWidth !== undefined ? { width: imageWidth as number, height: imageHeight as number } : {}),
+    };
   }
 
   let cta: BlogCta | undefined;
