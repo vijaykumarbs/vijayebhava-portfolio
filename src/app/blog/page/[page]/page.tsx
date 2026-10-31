@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BlogListing } from "@/components/blog-listing";
-import { getPublishedPosts } from "@/data/blog";
+import { getPublishedPosts, POSTS_PER_PAGE } from "@/data/blog";
 
-const POSTS_PER_PAGE = 10;
 export const dynamicParams = false;
 
 type PaginationProps = { params: Promise<{ page: string }> };

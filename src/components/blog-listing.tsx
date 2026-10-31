@@ -1,8 +1,8 @@
 import Link from "next/link";
+import { BlogFooter } from "@/components/blog-footer";
 import { SiteHeader } from "@/components/site-header";
 import { formatPostDate, tagSlug, type BlogPost } from "@/data/blog";
 import { portfolioContent } from "@/data/portfolio";
-import { BOOKING_URL } from "@/data/site-config";
 
 type BlogListingProps = {
   posts: BlogPost[];
@@ -42,15 +42,7 @@ export function BlogListing({ posts, page = 1, totalPages = 1, selectedTag }: Bl
       </nav>}
 
       {selectedTag && <p className="blog-tags-back"><Link href="/blog/">View all articles</Link></p>}
-      <footer className="blog-footer">
-        <Link href="/">← Back to Vijayebhava</Link>
-        <div className="blog-footer-links">
-          <a className="blog-footer-booking" href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
-          <a href={portfolioContent.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
-          <a href={portfolioContent.contact.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
-        </div>
-        <span>PRODUCT THINKING · PRACTICAL PROGRESS</span>
-      </footer>
+      <BlogFooter note="PRODUCT THINKING · PRACTICAL PROGRESS" />
     </main>
   );
 }

@@ -7,11 +7,7 @@ import { BOOKING_URL, SITE_AUTHOR } from "@/data/site-config";
 
 function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: string }) {
   const id = useId().replaceAll(":", "");
-  const colors = {
-    discover: { light: "#E5E9FF", mid: "#AAB9FF", dark: "var(--primary)", shine: "#FFFFFF" },
-    direction: { light: "#E5E9FF", mid: "#AAB9FF", dark: "var(--primary)", shine: "#FFFFFF" },
-    workflow: { light: "#E5E9FF", mid: "#AAB9FF", dark: "var(--primary)", shine: "#FFFFFF" },
-  }[kind];
+  const colors = { light: "#E5E9FF", mid: "#AAB9FF", dark: "var(--primary)", shine: "#FFFFFF" };
 
   return (
     <span className={`dimensional-icon dimensional-icon--${kind}`} aria-hidden="true">
@@ -52,7 +48,7 @@ function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: s
   );
 }
 
-export default async function Home() {
+export default function Home() {
   const content = portfolioContent;
 
   return (

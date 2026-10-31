@@ -1,4 +1,4 @@
-import { getPublishedPosts } from "@/data/blog";
+import { getPublishedPosts, postUrl } from "@/data/blog";
 
 export const dynamic = "force-static";
 
@@ -10,7 +10,7 @@ export async function GET() {
   const posts = await getPublishedPosts();
   const latest = posts[0]?.updated || posts[0]?.date || new Date().toISOString();
   const items = posts.map((post) => {
-    const url = `https://vijayebhava.com/blog/${encodeURIComponent(post.slug)}/`;
+    const url = postUrl(post.slug);
     return `
     <item>
       <title>${escapeXml(post.title)}</title>
