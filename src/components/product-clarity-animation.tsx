@@ -24,7 +24,12 @@ export function ProductClarityAnimation() {
     const ns = "http://www.w3.org/2000/svg";
     const ink = "var(--animation-ink)";
     const paper = "var(--animation-paper)";
-    const colors = { ink, blue: "#176B53", amber: "#D9B77E", sage: "#48B99A" };
+    const colors = {
+      ink,
+      primary: "var(--primary)",
+      spark: "var(--spark)",
+      muted: "var(--muted)",
+    };
     const actions: Array<(time: number) => void> = [];
     const element = (tag: string, attrs: Record<string, string | number>, parent: SVGElement = root) => {
       const node = document.createElementNS(ns, tag);
@@ -51,13 +56,13 @@ export function ProductClarityAnimation() {
     };
 
     const notes = [
-      { color: "blue", title: "Customer asks", positions: [[640, 420, -7, 1], [520, 330, -3, 1], [400, 330, 0, 1], [1100, 200, 0, .55]], lines: [90, 60], later: true },
-      { color: "amber", title: "Unclear goal", positions: [[720, 380, 5, 1], [690, 300, 2, 1], [400, 470, 0, 1], [1100, 305, 0, .55]], lines: [70, 100], later: true },
-      { color: "sage", title: "Interview data", positions: [[800, 470, -4, 0], [860, 430, -1, 1], [570, 330, 0, 1], [1100, 500, 0, 0]], lines: [100, 60] },
+      { color: "primary", title: "Customer asks", positions: [[640, 420, -7, 1], [520, 330, -3, 1], [400, 330, 0, 1], [1100, 200, 0, .55]], lines: [90, 60], later: true },
+      { color: "spark", title: "Unclear goal", positions: [[720, 380, 5, 1], [690, 300, 2, 1], [400, 470, 0, 1], [1100, 305, 0, .55]], lines: [70, 100], later: true },
+      { color: "muted", title: "Interview data", positions: [[800, 470, -4, 0], [860, 430, -1, 1], [570, 330, 0, 1], [1100, 500, 0, 0]], lines: [100, 60] },
       { color: "ink", title: "Everyone wants X", positions: [[900, 400, 8, 1], [980, 330, 4, .9], [1000, 300, 4, 0], [1000, 300, 4, 0]], lines: [80, 100] },
-      { color: "blue", title: "Core problem", positions: [[560, 500, 3, 1], [540, 470, 0, 1], [740, 410, 0, 1], [400, 300, 0, 1]], lines: [100, 50] },
-      { color: "amber", title: "A: Quick fix", positions: [[820, 540, -5, 1], [800, 540, -2, 1], [930, 330, 0, 1], [1100, 410, 0, .55]], lines: [100, 60], later: true },
-      { color: "sage", title: "B: Full rebuild", positions: [[740, 520, 6, 1], [700, 570, 3, 1], [930, 500, 0, 1], [1100, 515, 0, .55]], lines: [100, 70], later: true },
+      { color: "primary", title: "Core problem", positions: [[560, 500, 3, 1], [540, 470, 0, 1], [740, 410, 0, 1], [400, 300, 0, 1]], lines: [100, 50] },
+      { color: "spark", title: "A: Quick fix", positions: [[820, 540, -5, 1], [800, 540, -2, 1], [930, 330, 0, 1], [1100, 410, 0, .55]], lines: [100, 60], later: true },
+      { color: "muted", title: "B: Full rebuild", positions: [[740, 520, 6, 1], [700, 570, 3, 1], [930, 500, 0, 1], [1100, 515, 0, .55]], lines: [100, 70], later: true },
     ];
     const keyframes = [0, 3.6, 5, 7.6, 9, 11.6, 13, 99];
     const place = (positions: number[][], t: number) => {
@@ -75,11 +80,11 @@ export function ProductClarityAnimation() {
       "M570,520 C520,600 640,610 700,575 M700,575 l-12,-2 M700,575 l-6,-11",
       "M800,380 C860,330 900,330 925,385 M925,385 l-8,-9 M925,385 l-12,-1",
     ].map((d) => pen(complexity, d, ink, 1.8, .55));
-    const grouping = pen(complexity, "M378,322 C372,400 384,500 378,584", colors.sage, 2.4);
-    const connections = [pen(complexity, "M892,440 C910,400 915,385 930,378", colors.amber, 2.4), pen(complexity, "M892,460 C910,500 915,520 930,548", colors.amber, 2.4)];
-    const evidence = [pen(complexity, "M720,610 L822,628", ink, 2.4), pen(complexity, "M771,624 l-11,20 h22 z", ink, 2), pen(complexity, "M702,598 a10,10 0 1 0 .1,0", colors.blue, 2.2), pen(complexity, "M832,634 a6,6 0 1 0 .1,0", colors.blue, 2.2)];
+    const grouping = pen(complexity, "M378,322 C372,400 384,500 378,584", colors.muted, 2.4);
+    const connections = [pen(complexity, "M892,440 C910,400 915,385 930,378", colors.spark, 2.4), pen(complexity, "M892,460 C910,500 915,520 930,548", colors.spark, 2.4)];
+    const evidence = [pen(complexity, "M720,610 L822,628", ink, 2.4), pen(complexity, "M771,624 l-11,20 h22 z", ink, 2), pen(complexity, "M702,598 a10,10 0 1 0 .1,0", colors.primary, 2.2), pen(complexity, "M832,634 a6,6 0 1 0 .1,0", colors.primary, 2.2)];
     const tradeoff = text(complexity, "trade-off", 771, 682, 24, ink, "middle");
-    const annotations = [[2, "backed by data", 0, 126, colors.sage, 7], [3, "no evidence", 0, 128, colors.amber, 6.8]] as const;
+    const annotations = [[2, "backed by data", 0, 126, colors.muted, 7], [3, "no evidence", 0, 128, colors.primary, 6.8]] as const;
 
     notes.forEach((note, index) => {
       const group = element("g", {});
@@ -91,13 +96,13 @@ export function ProductClarityAnimation() {
       const decorations: SVGElement[] = [];
       if (note.later) {
         decorations.push(element("rect", { x: -8, y: -8, width: 166, height: 116, rx: 8, fill: "none", stroke: ink, "stroke-width": 1.6, "stroke-dasharray": "7 6", "stroke-opacity": .6 }, group));
-        decorations.push(text(group, "later", 152, -14, 22, colors.amber, "end"));
+        decorations.push(text(group, "later", 152, -14, 22, colors.primary, "end"));
       }
       const marks = [
-        [1, "M156,-4 q12,-16 24,-6 q6,12 -8,18 q-6,4 -6,12 M166,46 a2,2 0 1 0 .1,0", colors.amber, 3, 5.3, 6.1],
-        [2, "M118,70 l10,10 l20,-30", colors.sage, 3.5, 6.4, 7.1],
+        [1, "M156,-4 q12,-16 24,-6 q6,12 -8,18 q-6,4 -6,12 M166,46 a2,2 0 1 0 .1,0", colors.spark, 3, 5.3, 6.1],
+        [2, "M118,70 l10,10 l20,-30", colors.muted, 3.5, 6.4, 7.1],
         [3, "M-8,-8 L158,108 M158,-8 L-8,108", ink, 3, 6.0, 6.9],
-        [4, "M70,-22 C195,-28 195,128 72,126 C-42,132 -46,-14 88,-20", colors.amber, 3.2, 9.9, 10.9],
+        [4, "M70,-22 C195,-28 195,128 72,126 C-42,132 -46,-14 88,-20", colors.spark, 3.2, 9.9, 10.9],
       ] as const;
       marks.filter((mark) => mark[0] === index).forEach((mark) => {
         const path = pen(group, mark[1], mark[2], mark[3]);
@@ -117,12 +122,12 @@ export function ProductClarityAnimation() {
     });
 
     const plan = element("g", {});
-    const planLink = pen(plan, "M552,345 C590,345 600,305 640,300", colors.amber, 2.4);
+    const planLink = pen(plan, "M552,345 C590,345 600,305 640,300", colors.spark, 2.4);
     const rails = [pen(plan, "M660,316 V376", ink, 1.8, .5), pen(plan, "M660,436 V496", ink, 1.8, .5)];
     const planText = ["1  Test the riskiest assumption", "2  Build the smallest useful solution", "3  Define how success is measured"];
     const rows = planText.map((label, index) => {
       const y = [270, 390, 510][index];
-      const color = [colors.blue, colors.amber, colors.sage][index];
+      const color = [colors.primary, colors.spark, colors.muted][index];
       const row: { t0: number; marker: SVGPathElement; label: SVGTextElement; underline: SVGPathElement; arrow?: SVGPathElement; start?: SVGTextElement; bars?: SVGPathElement } = {
         t0: [13.4, 14.2, 15][index],
         marker: pen(plan, `M674,${y + 30} a14,14 0 1 0 -.1,0`, color, 3),
@@ -130,10 +135,10 @@ export function ProductClarityAnimation() {
         underline: pen(plan, squiggle(706, y + 58, 150), ink, 2.2, .4),
       };
       if (index === 0) {
-        row.arrow = pen(plan, `M704,${y + 48} C780,${y + 54} 900,${y + 44} 1040,${y + 50}`, colors.amber, 2.6);
-        row.start = text(plan, "start here", 1050, y + 70, 24, colors.amber);
+        row.arrow = pen(plan, `M704,${y + 48} C780,${y + 54} 900,${y + 44} 1040,${y + 50}`, colors.spark, 2.6);
+        row.start = text(plan, "start here", 1050, y + 70, 24, colors.primary);
       }
-      if (index === 2) row.bars = pen(plan, `M1040,${y + 60} v-22 M1056,${y + 60} v-36 M1072,${y + 60} v-50`, colors.sage, 3.5);
+      if (index === 2) row.bars = pen(plan, `M1040,${y + 60} v-22 M1056,${y + 60} v-36 M1072,${y + 60} v-50`, colors.muted, 3.5);
       return row;
     });
     const loop = pen(root, "M980,628 C860,716 560,716 440,596 M440,596 l3,15 M440,596 l15,-5", ink, 2.2, .45);
@@ -170,8 +175,8 @@ export function ProductClarityAnimation() {
       limb("M0,-104 L0,-52 M0,-52 L-16,0 M0,-52 L16,0");
       return { group, arm: limb("M0,-94 L0,-62"), otherArm: limb("M0,-94 L0,-62"), baseX, baseY };
     };
-    const consultant = figure(colors.blue, 470, 810);
-    const founder = figure(colors.amber, 1180, 810);
+    const consultant = figure(colors.primary, 470, 810);
+    const founder = figure(colors.spark, 1180, 810);
     const rotate = (arm: SVGPathElement, degrees: number) => arm.setAttribute("transform", `rotate(${degrees} 0 -94)`);
     const bubble = (x: number, y: number, message: string, from: number, to: number) => {
       const group = element("g", {});

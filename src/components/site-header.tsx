@@ -42,8 +42,8 @@ export function SiteHeader({ brand }: { brand: string }) {
       <nav id="main-navigation" className={menuOpen ? "site-nav is-open" : "site-nav"} aria-label="Main navigation" onClick={() => setMenuOpen(false)}>
         {links.map((link) => <Link href={link.href} key={link.href}>{link.label}</Link>)}
         <a className="nav-contact" href={BOOKING_URL} target="_blank" rel="noopener">Book a call <span aria-hidden="true">↗</span></a>
-        <ThemeToggle />
       </nav>
+      <ThemeToggle />
     </header>
   );
 }
