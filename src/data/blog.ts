@@ -64,7 +64,12 @@ function readString(value: unknown, field: string, fileName: string, optional = 
 function readIsoDate(value: unknown, field: string, fileName: string, optional = false): string | undefined {
   const date = readString(value, field, fileName, optional);
   if (!date) return undefined;
-  if (!/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$/.test(date) || Number.isNaN(Date.parse(date))) {
+  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  const isValidDateOnly = dateOnly
+    ? new Date(Date.UTC(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3])))
+      .toISOString().startsWith(`${dateOnly[1]}-${dateOnly[2]}-${dateOnly[3]}`)
+    : true;
+  if (!/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$/.test(date) || Number.isNaN(Date.parse(date)) || !isValidDateOnly) {
     throw new Error(`${fileName}: frontmatter field "${field}" must be an ISO date or datetime.`);
   }
   return date;
@@ -94,7 +99,7 @@ function validateMarkdownImages(node: MarkdownNode, fileName: string) {
   node.children?.forEach((child) => validateMarkdownImages(child, fileName));
 }
 
-async function parsePost(fileName: string): Promise<{ post?: BlogPost; publishCandidate: boolean }> {
+export async function parsePost(fileName: string): Promise<{ post?: BlogPost; publishCandidate: boolean }> {
   const fullPath = join(postsDirectory, fileName);
   const { data, content } = matter(readFileSync(fullPath, "utf8"));
   const frontmatter = data as Frontmatter;
