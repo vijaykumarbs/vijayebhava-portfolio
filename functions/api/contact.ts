@@ -21,6 +21,11 @@ function jsonResponse(body: Record<string, unknown>, status = 200): Response {
     headers: {
       "Cache-Control": "no-store",
       "Content-Type": "application/json; charset=utf-8",
+      "Strict-Transport-Security": "max-age=63072000",
+      "X-Frame-Options": "DENY",
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "strict-origin-when-cross-origin",
+      "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
     },
   });
 }
