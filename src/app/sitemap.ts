@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const tags = new Set(posts.flatMap((post) => post.tags.map(tagSlug)).filter(Boolean));
 
   return [
-    { url: `${siteUrl}/`, changeFrequency: "monthly", priority: 1 },
+    { url: `${siteUrl}/`, lastModified: latestPostDate, changeFrequency: "monthly", priority: 1 },
     { url: `${siteUrl}/blog/`, lastModified: latestPostDate, changeFrequency: "weekly", priority: 0.8 },
     ...Array.from({ length: Math.max(0, pageCount - 1) }, (_, index) => ({
       url: `${siteUrl}/blog/page/${index + 2}/`,
@@ -31,7 +31,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.6,
     })),
-    { url: `${siteUrl}/feed.xml`, lastModified: latestPostDate, changeFrequency: "daily", priority: 0.4 },
     ...posts.map((post) => ({
       url: postUrl(post.slug),
       lastModified: postLastModified(post),
