@@ -1,17 +1,16 @@
 import { useId } from "react";
-import { getPortfolioCopy } from "@/data/wordpress";
-import { chapters } from "@/data/chapters";
 import { portfolioContent, type AudienceNeed } from "@/data/portfolio";
 import { SiteHeader } from "@/components/site-header";
 import { ProductClarityAnimation } from "@/components/product-clarity-animation";
-import { BOOKING_URL } from "@/data/site-config";
+import { HowIWorkAnimation } from "@/components/how-i-work-animation";
+import { BOOKING_URL, SITE_AUTHOR } from "@/data/site-config";
 
 function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: string }) {
   const id = useId().replaceAll(":", "");
   const colors = {
-    discover: { light: "#e4efcc", mid: "#a9c769", dark: "#5c7735", shine: "#fff9de" },
-    direction: { light: "#e3e8ff", mid: "#8294e5", dark: "#495aa7", shine: "#f7f5ff" },
-    workflow: { light: "#ffe5d3", mid: "#d99465", dark: "#9c5846", shine: "#fff5e9" },
+    discover: { light: "#E5E9FF", mid: "#AAB9FF", dark: "var(--primary)", shine: "#FFFFFF" },
+    direction: { light: "#E5E9FF", mid: "#AAB9FF", dark: "var(--primary)", shine: "#FFFFFF" },
+    workflow: { light: "#E5E9FF", mid: "#AAB9FF", dark: "var(--primary)", shine: "#FFFFFF" },
   }[kind];
 
   return (
@@ -29,19 +28,19 @@ function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: s
             <stop offset="1" stopColor="#fff" stopOpacity=".08" />
           </linearGradient>
         </defs>
-        <ellipse cx="32" cy="54" rx="17" ry="4" fill="#23302b" opacity=".13" />
+        <ellipse cx="32" cy="54" rx="17" ry="4" fill="#12161C" opacity=".13" />
         <circle cx="31" cy="29" r="21" fill={`url(#${id}-sphere)`} />
         <circle cx="31" cy="29" r="20.5" fill="none" stroke={`url(#${id}-edge)`} strokeWidth="1" />
         <ellipse cx="23" cy="17" rx="7" ry="3.3" fill="#fff" opacity=".56" transform="rotate(-38 23 17)" />
-        {kind === "discover" && <g fill="none" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2">
+        {kind === "discover" && <g fill="none" stroke="var(--spark-ink)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2">
           <circle cx="29" cy="28" r="7.5" opacity=".96" />
           <path d="m34.5 33.5 7 7M29 17v3M18 28h3M37 28h3" opacity=".9" />
         </g>}
-        {kind === "direction" && <g fill="none" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
-          <path d="m31 19 11 6-11 6-11-6 11-6Z" fill="#fff" fillOpacity=".18" />
+        {kind === "direction" && <g fill="none" stroke="var(--spark-ink)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+          <path d="m31 19 11 6-11 6-11-6 11-6Z" fill="var(--spark-ink)" fillOpacity=".18" />
           <path d="m20 31 11 6 11-6M20 37l11 6 11-6" opacity=".9" />
         </g>}
-        {kind === "workflow" && <g fill="#fff" stroke="#fff" strokeLinecap="round" strokeLinejoin="round">
+        {kind === "workflow" && <g fill="var(--spark-ink)" stroke="var(--spark-ink)" strokeLinecap="round" strokeLinejoin="round">
           <path d="M24 28h13M31 28v10" fill="none" strokeWidth="2" opacity=".95" />
           <circle cx="22" cy="28" r="4" fillOpacity=".92" />
           <circle cx="41" cy="28" r="4" fillOpacity=".72" />
@@ -54,7 +53,6 @@ function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: s
 }
 
 export default async function Home() {
-  const copy = await getPortfolioCopy(chapters);
   const content = portfolioContent;
 
   return (
@@ -65,7 +63,7 @@ export default async function Home() {
         <div className="hero-copy" data-reveal="rise">
           <p className="eyebrow"><span className="eyebrow-dot" />{content.hero.eyebrow}</p>
           <h1 id="hero-title">{content.hero.titleLead} <em>{content.hero.titleAccent}</em><br />{content.hero.titleEnd}</h1>
-          <p className="hero-intro">{copy.home?.excerpt || content.hero.summary}</p>
+          <p className="hero-intro">{content.hero.summary}</p>
           <div className="hero-actions">
             <a className="button-primary" href="#contact">{content.hero.primaryCta} <span aria-hidden="true">↗</span></a>
             <a className="button-text" href="#approach">{content.hero.secondaryCta} <span aria-hidden="true">↓</span></a>
@@ -104,7 +102,7 @@ export default async function Home() {
         </div>
         <div className="company-logos" aria-label="Organisations Vijayebhava has worked with" data-reveal="rise">
           {content.experience.companies.map((company) => <div className={`company-logo ${company.logo ? "" : "company-logo-vyturr"}`} key={company.name}>
-            {company.logo ? <img src={company.logo} alt={`${company.name} logo`} /> : <span className="vyturr-name">VYTURR</span>}
+            {company.logo ? <img src={company.logo} width={company.width} height={company.height} alt={`${company.name} logo`} /> : <span className="vyturr-name">VYTURR</span>}
           </div>)}
         </div>
       </section>
@@ -113,9 +111,12 @@ export default async function Home() {
         <div className="section-kicker"><span>03</span><span className="kicker-line" /><span>PROOF OF WORK</span></div>
         <div className="section-heading"><h2 id="proof-of-work-title">Proof of work</h2></div>
         <div className="case-study-grid">{content.caseStudies.map((study) => <article className="case-study" key={study.title}>
-          <span className={`proof-label${study.label === "Prototype" ? " proof-label--prototype" : ""}`}>{study.label}</span>
+          <span className={`proof-label${study.label === "Prototype" ? " proof-label--prototype" : study.label === "Fractional work" ? " proof-label--fractional" : ""}`}>{study.label}</span>
           <h3>{study.title}</h3>
-          <p>{study.line}</p>
+          {study.context && <p className="case-field"><strong>Context</strong>{study.context}</p>}
+          {study.myRole && <p className="case-field"><strong>My role</strong>{study.myRole}</p>}
+          {study.whatIDid?.length ? <div className="case-field"><strong>What I did</strong><ul>{study.whatIDid.map((point) => <li key={point}>{point}</li>)}</ul></div> : null}
+          {study.outcomeOrStatus && <p className="case-field case-status"><strong>Outcome / status</strong>{study.outcomeOrStatus}</p>}
         </article>)}</div>
       </section>
 
@@ -125,20 +126,7 @@ export default async function Home() {
           <h2 id="approach-title">{content.approach.title}</h2>
           <p>{content.approach.intro}</p>
         </div>
-        <div className="approach-list">
-          {chapters.map((chapter) => {
-            const chapterCopy = copy.chapters[chapter.id];
-            return (
-              <article className="approach-row" key={chapter.id} data-reveal="rise">
-                <span className="approach-number">{chapter.number}</span>
-                <div className="approach-step-title"><span>{chapter.eyebrow}</span><h3>{chapterCopy?.title || chapter.title}</h3></div>
-                <p className="approach-description">{chapterCopy?.excerpt || chapter.description}</p>
-                <div className="approach-output"><span>OUTPUT</span><p>{chapter.deliverable}</p></div>
-              </article>
-            );
-          })}
-        </div>
-        <div className="approach-endnote"><span>01—06</span><span>FROM UNDERSTANDING TO OUTCOMES</span><span className="endnote-dot" /></div>
+        <HowIWorkAnimation />
       </section>
 
       <section className="about" id="about" aria-labelledby="about-title">
@@ -188,7 +176,7 @@ export default async function Home() {
           <h2 id="contact-title">Book a call</h2>
           <p>Pick a time that works for you. Tell me what you are working through when you book.</p>
           <div className="contact-actions">
-            <a className="button-primary" href={BOOKING_URL} target="_blank" rel="noopener">Book a time <span aria-hidden="true">↗</span></a>
+            <a className="button-primary" href={BOOKING_URL} target="_blank" rel="noopener">Book a call <span aria-hidden="true">↗</span></a>
           </div>
           <div className="contact-secondary">
             <a href={content.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
@@ -206,6 +194,26 @@ export default async function Home() {
           <span>© {new Date().getFullYear()}</span>
         </footer>
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://vijayebhava.com/#person",
+            name: SITE_AUTHOR,
+            url: "https://vijayebhava.com/",
+            sameAs: [content.contact.linkedinUrl],
+          },
+          {
+            "@type": "ProfessionalService",
+            name: "Vijayebhava",
+            url: "https://vijayebhava.com/",
+            sameAs: [content.contact.linkedinUrl],
+            founder: { "@id": "https://vijayebhava.com/#person" },
+            provider: { "@id": "https://vijayebhava.com/#person" },
+          },
+        ],
+      }).replace(/</g, "\\u003c") }} />
     </main>
   );
 }

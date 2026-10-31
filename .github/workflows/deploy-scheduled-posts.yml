@@ -1,0 +1,22 @@
+name: Deploy scheduled blog posts
+
+on:
+  schedule:
+    - cron: "15 0 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages deployment
+        env:
+          CF_PAGES_DEPLOY_HOOK: ${{ secrets.CF_PAGES_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$CF_PAGES_DEPLOY_HOOK" ]; then
+            echo "CF_PAGES_DEPLOY_HOOK repository secret is not configured." >&2
+            exit 1
+          fi
+          curl --fail --silent --show-error --request POST "$CF_PAGES_DEPLOY_HOOK"

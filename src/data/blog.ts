@@ -1,112 +1,229 @@
-export type WordPressPost = {
-  id: number;
-  slug: string;
-  date: string;
-  modified: string;
-  link: string;
-  title: { rendered: string };
-  excerpt: { rendered: string };
-  content: { rendered: string };
-  _embedded?: {
-    "wp:featuredmedia"?: Array<{ source_url?: string; alt_text?: string }>;
-  };
-};
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { join, resolve, sep } from "node:path";
+import matter from "gray-matter";
+import rehypeSanitize from "rehype-sanitize";
+import remarkGfm from "remark-gfm";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import { unified } from "unified";
+import type { BlogCta } from "@/data/site-config";
 
 export type BlogPost = {
-  id: number;
   slug: string;
   date: string;
-  modified: string;
+  updated?: string;
   title: string;
-  excerpt: string;
-  content: string;
-  image?: { src: string; alt: string };
+  description: string;
+  content: unknown;
+  tags: string[];
+  image?: { src: string; alt: string; width?: number; height?: number };
+  canonicalUrl?: string;
+  cta?: BlogCta;
 };
 
-export type BlogFeed = { posts: BlogPost[]; cmsAvailable: boolean };
+type Frontmatter = {
+  title?: unknown;
+  slug?: unknown;
+  date?: unknown;
+  updated?: unknown;
+  description?: unknown;
+  tags?: unknown;
+  image?: unknown;
+  imageAlt?: unknown;
+  imageWidth?: unknown;
+  imageHeight?: unknown;
+  draft?: unknown;
+  canonicalUrl?: unknown;
+  cta?: unknown;
+};
 
-function decodeEntities(value: string) {
-  return value
-    .replace(/&nbsp;/gi, " ")
-    .replace(/&amp;/gi, "&")
-    .replace(/&quot;/gi, '"')
-    .replace(/&#039;|&apos;/gi, "'")
-    .replace(/&colon;/gi, ":")
-    .replace(/&tab;/gi, "\t")
-    .replace(/&newline;/gi, "\n")
-    .replace(/&lt;/gi, "<")
-    .replace(/&gt;/gi, ">")
-    .replace(/&#(\d+);?/g, (_, code: string) => String.fromCodePoint(Number(code)))
-    .replace(/&#x([\da-f]+);?/gi, (_, code: string) => String.fromCodePoint(parseInt(code, 16)));
+type MarkdownNode = {
+  type?: unknown;
+  tagName?: unknown;
+  value?: unknown;
+  properties?: Record<string, unknown>;
+  children?: MarkdownNode[];
+};
+
+const postsDirectory = resolve(process.cwd(), "content", "blog");
+const publicDirectory = resolve(process.cwd(), "public");
+let publishedPostsPromise: Promise<BlogPost[]> | undefined;
+const EXPECT_POSTS = process.env.EXPECT_BLOG_POSTS !== "false";
+
+function readString(value: unknown, field: string, fileName: string, optional = false): string | undefined {
+  if (optional && value === undefined) return undefined;
+  if (typeof value !== "string" || (!optional && !value.trim())) {
+    throw new Error(`${fileName}: frontmatter field "${field}" must be a non-empty string.`);
+  }
+  return value;
 }
 
-function plainText(markup: string) {
-  return decodeEntities(markup.replace(/<br\s*\/?\s*>/gi, " ").replace(/<[^>]*>/g, " "))
-    .replace(/\s+/g, " ")
-    .trim();
+function readIsoDate(value: unknown, field: string, fileName: string, optional = false): string | undefined {
+  const date = readString(value, field, fileName, optional);
+  if (!date) return undefined;
+  if (!/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$/.test(date) || Number.isNaN(Date.parse(date))) {
+    throw new Error(`${fileName}: frontmatter field "${field}" must be an ISO date or datetime.`);
+  }
+  return date;
 }
 
-function safeContent(markup: string) {
-  return markup
-    .replace(/<!--[\s\S]*?-->/g, "")
-    .replace(/<(script|style|iframe|object|embed|form|template|svg|math)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, "")
-    .replace(/<(script|style|iframe|object|embed|form|template|svg|math)\b[^>]*\/?\s*>/gi, "")
-    .replace(/\s+on[a-z]+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, "")
-    .replace(/\s+(?:srcdoc|style)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, "")
-    .replace(/\s+(href|src|xlink:href)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi, (attribute, doubleQuoted, singleQuoted, unquoted) => {
-      const value = doubleQuoted ?? singleQuoted ?? unquoted ?? "";
-      const normalized = decodeEntities(value).replace(/[\u0000-\u0020]+/g, "").toLowerCase();
-      return /^(javascript|vbscript|data):/.test(normalized) ? "" : attribute;
-    });
-}
-
-function toBlogPost(post: WordPressPost): BlogPost {
-  const featuredMedia = post._embedded?.["wp:featuredmedia"]?.[0];
-  return {
-    id: post.id,
-    slug: post.slug,
-    date: post.date,
-    modified: post.modified,
-    title: plainText(post.title.rendered),
-    excerpt: plainText(post.excerpt.rendered),
-    content: safeContent(post.content.rendered),
-    image: featuredMedia?.source_url
-      ? { src: featuredMedia.source_url, alt: featuredMedia.alt_text || plainText(post.title.rendered) }
-      : undefined,
-  };
-}
-
-export async function getPublishedPosts(): Promise<BlogFeed> {
-  const baseUrl = process.env.WORDPRESS_URL;
-  if (!baseUrl) return { posts: [], cmsAvailable: false };
-
+function assertUrl(value: string, field: string, fileName: string, allowRelative = false) {
   try {
-    const endpoint = new URL("/wp-json/wp/v2/posts", baseUrl);
-    endpoint.searchParams.set("status", "publish");
-    endpoint.searchParams.set("per_page", "100");
-    endpoint.searchParams.set("orderby", "date");
-    endpoint.searchParams.set("order", "desc");
-    endpoint.searchParams.set("_embed", "1");
-    endpoint.searchParams.set("_fields", "id,slug,date,modified,link,title,excerpt,content,_embedded");
-
-    const response = await fetch(endpoint, {
-      signal: AbortSignal.timeout(3000),
-      cache: "force-cache",
-    });
-    if (!response.ok) return { posts: [], cmsAvailable: false };
-    const posts = (await response.json()) as WordPressPost[];
-    return { posts: posts.map(toBlogPost), cmsAvailable: true };
+    const url = new URL(value, "https://vijayebhava.com");
+    if (!allowRelative && !/^https?:$/.test(url.protocol)) throw new Error();
+    if (allowRelative && !/^(https?:|mailto:)$/.test(url.protocol)) throw new Error();
+    if (allowRelative && value.startsWith("//")) throw new Error();
   } catch {
-    return { posts: [], cmsAvailable: false };
+    throw new Error(`${fileName}: frontmatter field "${field}" must be an HTTP(S) URL${allowRelative ? " or site-relative path" : ""}.`);
   }
 }
 
-export function getWordPressAdminUrl() {
-  const baseUrl = process.env.WORDPRESS_URL;
-  return baseUrl ? new URL("/wp-admin/", baseUrl).toString() : undefined;
+function validateMarkdownImages(node: MarkdownNode, fileName: string) {
+  if (node.type === "element" && node.tagName === "img") {
+    const src = node.properties?.src;
+    if (typeof src !== "string" || !src.startsWith("/blog/") || src.split("/").includes("..")) {
+      throw new Error(`${fileName}: Markdown images must use a local /blog/ path.`);
+    }
+    if (!existsSync(resolve(publicDirectory, `.${src}`))) {
+      throw new Error(`${fileName}: Markdown image path "${src}" does not exist under public/.`);
+    }
+  }
+  node.children?.forEach((child) => validateMarkdownImages(child, fileName));
+}
+
+async function parsePost(fileName: string): Promise<{ post?: BlogPost; publishCandidate: boolean }> {
+  const fullPath = join(postsDirectory, fileName);
+  const { data, content } = matter(readFileSync(fullPath, "utf8"));
+  const frontmatter = data as Frontmatter;
+  const title = readString(frontmatter.title, "title", fileName)!;
+  const slug = readString(frontmatter.slug, "slug", fileName)!;
+  const date = readIsoDate(frontmatter.date, "date", fileName)!;
+  const updated = readIsoDate(frontmatter.updated, "updated", fileName, true);
+  const description = readString(frontmatter.description, "description", fileName)!;
+  const imageAlt = readString(frontmatter.imageAlt, "imageAlt", fileName, true);
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) throw new Error(`${fileName}: slug must use lowercase letters, numbers, and hyphens.`);
+  if (fileName.slice(0, -3) !== slug) throw new Error(`${fileName}: filename must match the frontmatter slug.`);
+  if (typeof frontmatter.draft !== "boolean") throw new Error(`${fileName}: frontmatter field "draft" must be a boolean.`);
+  if (!Array.isArray(frontmatter.tags) || frontmatter.tags.some((tag) => typeof tag !== "string" || !tag.trim())) {
+    throw new Error(`${fileName}: frontmatter field "tags" must be an array of non-empty strings.`);
+  }
+  if ((frontmatter.tags as string[]).some((tag) => !tagSlug(tag))) {
+    throw new Error(`${fileName}: every tag must contain at least one letter or number.`);
+  }
+
+  const canonicalUrl = readString(frontmatter.canonicalUrl, "canonicalUrl", fileName, true);
+  if (canonicalUrl) assertUrl(canonicalUrl, "canonicalUrl", fileName);
+
+  let image: BlogPost["image"];
+  const imagePath = readString(frontmatter.image, "image", fileName, true);
+  const imageWidth = frontmatter.imageWidth;
+  const imageHeight = frontmatter.imageHeight;
+  if ((imageWidth === undefined) !== (imageHeight === undefined)) {
+    throw new Error(`${fileName}: imageWidth and imageHeight must be supplied together.`);
+  }
+  if (imageWidth !== undefined && (!Number.isInteger(imageWidth) || (imageWidth as number) <= 0)) {
+    throw new Error(`${fileName}: imageWidth must be a positive integer.`);
+  }
+  if (imageHeight !== undefined && (!Number.isInteger(imageHeight) || (imageHeight as number) <= 0)) {
+    throw new Error(`${fileName}: imageHeight must be a positive integer.`);
+  }
+  if (!imagePath && (imageWidth !== undefined || imageHeight !== undefined)) {
+    throw new Error(`${fileName}: image dimensions require an image field.`);
+  }
+  if (imagePath) {
+    if (!imagePath.startsWith("/blog/") || imagePath.split("/").includes("..")) {
+      throw new Error(`${fileName}: image must be a path under public/blog/ (for example, /blog/example.jpg).`);
+    }
+    if (!imageAlt?.trim()) throw new Error(`${fileName}: imageAlt is required when an image is set; decorative posts must omit image.`);
+    if (!existsSync(resolve(publicDirectory, `.${imagePath}`))) {
+      throw new Error(`${fileName}: image path "${imagePath}" does not exist under public/.`);
+    }
+    image = {
+      src: imagePath,
+      alt: imageAlt,
+      ...(imageWidth !== undefined ? { width: imageWidth as number, height: imageHeight as number } : {}),
+    };
+  }
+
+  let cta: BlogCta | undefined;
+  if (frontmatter.cta !== undefined) {
+    if (!frontmatter.cta || typeof frontmatter.cta !== "object") throw new Error(`${fileName}: cta must contain a label and url.`);
+    const rawCta = frontmatter.cta as { label?: unknown; url?: unknown };
+    const label = readString(rawCta.label, "cta.label", fileName)!;
+    const url = readString(rawCta.url, "cta.url", fileName)!;
+    assertUrl(url, "cta.url", fileName, true);
+    cta = { label, url };
+  }
+
+  const processor = unified().use(remarkParse).use(remarkGfm).use(remarkRehype).use(rehypeSanitize);
+  const parsed = processor.parse(content);
+  const tree = await processor.run(parsed);
+  validateMarkdownImages(tree as MarkdownNode, fileName);
+  await unified().use(rehypeStringify).stringify(tree);
+
+  const publishCandidate = !frontmatter.draft && Date.parse(date) <= Date.now();
+  return {
+    publishCandidate,
+    post: frontmatter.draft ? undefined : {
+      slug,
+      date,
+      updated,
+      title,
+      description,
+      content: tree,
+      tags: frontmatter.tags as string[],
+      image,
+      canonicalUrl,
+      cta,
+    },
+  };
+}
+
+async function loadPublishedPosts(): Promise<BlogPost[]> {
+  if (!existsSync(postsDirectory)) {
+    if (EXPECT_POSTS) throw new Error("No content/blog directory exists, but blog posts are expected.");
+    return [];
+  }
+  const files = readdirSync(postsDirectory).filter((name) => name.endsWith(".md") && !name.startsWith("_"));
+  const parsed = await Promise.all(files.map((fileName) => parsePost(fileName)));
+  const slugs = new Set<string>();
+  for (const { post } of parsed) {
+    if (!post) continue;
+    if (slugs.has(post.slug)) throw new Error(`Duplicate blog slug "${post.slug}".`);
+    slugs.add(post.slug);
+  }
+
+  const now = Date.now();
+  const posts = parsed
+    .map(({ post }) => post)
+    .filter((post): post is BlogPost => Boolean(post) && Date.parse(post!.date) <= now)
+    .sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+  if (parsed.some((item) => item.publishCandidate) && posts.length === 0) {
+    throw new Error("Blog posts were expected, but no valid published Markdown posts were found.");
+  }
+  if (EXPECT_POSTS && posts.length === 0) {
+    throw new Error("No published Markdown posts were found. Add a post or set EXPECT_BLOG_POSTS=false for a deliberately empty blog.");
+  }
+  return posts;
+}
+
+export function getPublishedPosts(): Promise<BlogPost[]> {
+  publishedPostsPromise ??= loadPublishedPosts();
+  return publishedPostsPromise;
 }
 
 export function formatPostDate(date: string) {
   return new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })
     .format(new Date(date));
+}
+
+export function tagSlug(tag: string) {
+  return tag.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+export function absoluteBlogPath(path: string) {
+  const normalized = resolve(publicDirectory, `.${path}`);
+  if (!normalized.startsWith(`${resolve(publicDirectory, "blog")}${sep}`)) throw new Error(`Invalid public blog path: ${path}`);
+  return normalized;
 }

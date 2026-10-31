@@ -106,7 +106,6 @@ export function ThemeToggle() {
     setTheme(next);
   }
 
-  const next = theme === "auto" ? "light" : theme === "light" ? "dark" : "auto";
   return (
     <button
       className="theme-toggle"

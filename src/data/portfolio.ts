@@ -18,9 +18,12 @@ export type EngagementOption = {
 };
 
 export type CaseStudy = {
-  label: "Case" | "Prototype";
+  label: "Case" | "Prototype" | "Fractional work";
   title: string;
-  line: string;
+  context?: string;
+  myRole?: string;
+  whatIDid?: string[];
+  outcomeOrStatus?: string;
 };
 
 export const portfolioContent = {
@@ -33,7 +36,7 @@ export const portfolioContent = {
     summary:
       "I help founders and small product teams understand the problem, choose what to build next, and turn good decisions into practical solutions.",
     audienceNote: "For early-stage digital products and AI-enabled SaaS",
-    primaryCta: "Discuss your product",
+    primaryCta: "Book a call",
     secondaryCta: "Explore my approach",
   },
   audience: {
@@ -72,39 +75,53 @@ export const portfolioContent = {
     ] satisfies AudienceNeed[],
   },
   experience: {
+    // TODO(Vijay): decide whether Experience and Proof of work should become one section.
     eyebrow: "Experience across teams and industries",
     title: "Good work happens in good company.",
     intro:
     "A selection of organisations and teams I have worked with.",
     companies: [
-      { name: "Eurofins", logo: "/companies/eurofins.png" },
-      { name: "Tekenlight", logo: "/companies/tekenlight.png" },
-      { name: "SCMCentral", logo: "/companies/scmcentral.png" },
-      { name: "Focaloid", logo: "/companies/focaloid.svg" },
+      { name: "Eurofins", logo: "/companies/eurofins.png", width: 159, height: 32 },
+      { name: "Tekenlight", logo: "/companies/tekenlight.png", width: 1379, height: 295 },
+      { name: "SCMCentral", logo: "/companies/scmcentral.png", width: 1454, height: 705 },
+      { name: "Focaloid", logo: "/companies/focaloid.svg", width: 152, height: 36 },
       { name: "Vyturr", logo: null },
     ],
   },
   approach: {
     eyebrow: "How I work",
     title: "From a real problem to useful progress.",
-    intro:
-      "A practical sequence for making decisions with the people closest to the work. Start with the problem you need to solve; each engagement can be scoped around your current needs, with the wider process available when it adds value.",
+    intro: "A practical sequence for making decisions with the people closest to the work, scoped to your needs and continued through the wider process where it adds value.",
   },
   caseStudies: [
     {
       label: "Case",
       title: "Eurofins: Annual Review Process",
-      line: "Moved an Excel-based process to a digital platform: 4 months to 2.",
+      context: "An internal platform for about 5,000 mid and senior-level managers globally.",
+      myRole: "Sole Business Analyst.",
+      whatIDid: ["Moved the Excel-based process to a digital platform."],
+      outcomeOrStatus: "The process moved from 4 months to 2 months.",
     },
+    // TODO(Vijay): confirm your role on the Implementation Intelligence MVP.
     {
       label: "Prototype",
       title: "SCMCentral: Implementation Intelligence",
-      line: "Data-readiness MVP. Pilot not yet run.",
+      context: "A data-readiness MVP that checks ERP master data and shows validation issues for review.",
+      outcomeOrStatus: "Pilot not yet run.",
     },
+    // TODO(Vijay): confirm your role on the Quotation Comparison and BOM Extraction prototypes.
     {
       label: "Prototype",
       title: "Quotation Comparison and BOM Extraction",
-      line: "Two working prototypes. Not yet validated with users.",
+      context: "Two working prototypes.",
+      outcomeOrStatus: "Not yet validated with users.",
+    },
+    // TODO(Vijay): confirm responsibilities for this fractional engagement.
+    {
+      label: "Fractional work",
+      title: "Fractional Product Manager: SCMCentral",
+      context: "Supply-chain and shopfloor ERP for SME manufacturers.",
+      myRole: "Fractional Product Manager.",
     },
   ] satisfies CaseStudy[],
   about: {
@@ -116,6 +133,7 @@ export const portfolioContent = {
     note: "Product discovery · Product management · Business transformation",
   },
   engagements: {
+    // TODO(Vijay): decide whether outputs repeated across sections should appear only once.
     eyebrow: "Flexible ways to work together",
     title: "Start with the question in front of you.",
     intro:
