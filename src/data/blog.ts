@@ -126,17 +126,17 @@ export async function parsePost(fileName: string): Promise<{ post?: BlogPost; pu
   const imagePath = readString(frontmatter.image, "image", fileName, true);
   const imageWidth = frontmatter.imageWidth;
   const imageHeight = frontmatter.imageHeight;
-  if ((imageWidth === undefined) !== (imageHeight === undefined)) {
-    throw new Error(`${fileName}: imageWidth and imageHeight must be supplied together.`);
-  }
-  if (imageWidth !== undefined && (!Number.isInteger(imageWidth) || (imageWidth as number) <= 0)) {
-    throw new Error(`${fileName}: imageWidth must be a positive integer.`);
-  }
-  if (imageHeight !== undefined && (!Number.isInteger(imageHeight) || (imageHeight as number) <= 0)) {
-    throw new Error(`${fileName}: imageHeight must be a positive integer.`);
-  }
-  if (!imagePath && (imageWidth !== undefined || imageHeight !== undefined)) {
-    throw new Error(`${fileName}: image dimensions require an image field.`);
+  if (imageWidth !== undefined || imageHeight !== undefined) {
+    if (imageWidth === undefined || imageHeight === undefined) {
+      throw new Error(`${fileName}: imageWidth and imageHeight must be supplied together.`);
+    }
+    if (!Number.isInteger(imageWidth) || (imageWidth as number) <= 0) {
+      throw new Error(`${fileName}: imageWidth must be a positive integer.`);
+    }
+    if (!Number.isInteger(imageHeight) || (imageHeight as number) <= 0) {
+      throw new Error(`${fileName}: imageHeight must be a positive integer.`);
+    }
+    if (!imagePath) throw new Error(`${fileName}: image dimensions require an image field.`);
   }
   if (imagePath) {
     if (!imagePath.startsWith("/blog/") || imagePath.split("/").includes("..")) {
