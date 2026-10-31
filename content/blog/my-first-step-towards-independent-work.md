@@ -5,7 +5,7 @@ date: "2026-10-25T06:34:53Z"
 updated: "2026-10-25T06:41:21Z"
 description: "After an engineering degree and an MBA, I built my career in business analysis, working across fintech and enterprise software. Eventually, I joined Eurofins, where I worked on enterprise products and collaborated with global business teams"
 tags:
-  - "Independent work"
+  - "Personal"
 imageAlt: ""
 draft: false
 ---
@@ -57,3 +57,5 @@ But I’m finally asking myself a different question:
 **What kind of work and life do I actually want to build?**
 
 And I’m going to find out, one problem at a time.
+
+VIJAYEBHAVA...!
