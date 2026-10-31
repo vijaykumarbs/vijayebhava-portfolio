@@ -18,9 +18,12 @@ export type EngagementOption = {
 };
 
 export type CaseStudy = {
-  label: "Case" | "Prototype";
+  label: "Case" | "Prototype" | "Fractional work";
   title: string;
-  line: string;
+  context?: string;
+  myRole?: string;
+  whatIDid?: string[];
+  outcomeOrStatus?: string;
 };
 
 export const portfolioContent = {
@@ -94,17 +97,41 @@ export const portfolioContent = {
     {
       label: "Case",
       title: "Eurofins: Annual Review Process",
-      line: "Moved an Excel-based process to a digital platform: 4 months to 2.",
+      context: "An internal platform for about 5,000 mid and senior-level managers globally.",
+      myRole: "Sole Business Analyst.",
+      whatIDid: [
+        "Worked as the sole Business Analyst.",
+        "Moved the Excel-based process to a digital platform.",
+      ],
+      outcomeOrStatus: "The process moved from 4 months to 2 months.",
     },
+    // TODO(Vijay): confirm your role on the Implementation Intelligence MVP.
     {
       label: "Prototype",
       title: "SCMCentral: Implementation Intelligence",
-      line: "Data-readiness MVP. Pilot not yet run.",
+      context: "A data-readiness MVP that checks ERP master data and shows validation issues for review.",
+      whatIDid: [
+        "Checks ERP master data.",
+        "Shows validation issues for review.",
+      ],
+      outcomeOrStatus: "Pilot not yet run.",
     },
+    // TODO(Vijay): confirm your role on the Quotation Comparison and BOM Extraction prototypes.
     {
       label: "Prototype",
       title: "Quotation Comparison and BOM Extraction",
-      line: "Two working prototypes. Not yet validated with users.",
+      whatIDid: [
+        "Built the Quotation Comparison prototype.",
+        "Built the BOM Extraction prototype.",
+      ],
+      outcomeOrStatus: "Not yet validated with users.",
+    },
+    // TODO(Vijay): confirm responsibilities for this fractional engagement.
+    {
+      label: "Fractional work",
+      title: "Fractional Product Manager · SCMCentral",
+      context: "Supply-chain and shopfloor ERP for SME manufacturers.",
+      myRole: "Fractional Product Manager.",
     },
   ] satisfies CaseStudy[],
   about: {

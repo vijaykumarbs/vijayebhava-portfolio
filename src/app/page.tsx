@@ -113,9 +113,12 @@ export default async function Home() {
         <div className="section-kicker"><span>03</span><span className="kicker-line" /><span>PROOF OF WORK</span></div>
         <div className="section-heading"><h2 id="proof-of-work-title">Proof of work</h2></div>
         <div className="case-study-grid">{content.caseStudies.map((study) => <article className="case-study" key={study.title}>
-          <span className={`proof-label${study.label === "Prototype" ? " proof-label--prototype" : ""}`}>{study.label}</span>
+          <span className={`proof-label${study.label === "Prototype" ? " proof-label--prototype" : study.label === "Fractional work" ? " proof-label--fractional" : ""}`}>{study.label}</span>
           <h3>{study.title}</h3>
-          <p>{study.line}</p>
+          {study.context && <p className="case-field"><strong>Context</strong>{study.context}</p>}
+          {study.myRole && <p className="case-field"><strong>My role</strong>{study.myRole}</p>}
+          {study.whatIDid?.length ? <div className="case-field"><strong>What I did</strong><ul>{study.whatIDid.map((point) => <li key={point}>{point}</li>)}</ul></div> : null}
+          {study.outcomeOrStatus && <p className="case-field"><strong>Outcome / status</strong>{study.outcomeOrStatus}</p>}
         </article>)}</div>
       </section>
 
