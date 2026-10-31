@@ -9,16 +9,26 @@ const successMessages = [
 ];
 
 export function FloatingTalkButton() {
-  const [hidden, setHidden] = useState(false);
+  const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
     const targets = document.querySelectorAll(".hero-actions .button-primary, .contact-actions .button-primary");
-    if (!("IntersectionObserver" in window)) return;
-    const observer = new IntersectionObserver((entries) => {
-      setHidden(entries.some((entry) => entry.isIntersecting));
-    });
-    targets.forEach((target) => observer.observe(target));
-    return () => observer.disconnect();
+    const updateVisibility = () => {
+      const visible = Array.from(targets).some((target) => {
+        const rect = target.getBoundingClientRect();
+        const style = getComputedStyle(target);
+        return style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0
+          && rect.bottom > 0 && rect.top < window.innerHeight && rect.right > 0 && rect.left < window.innerWidth;
+      });
+      setHidden(visible);
+    };
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    window.addEventListener("resize", updateVisibility);
+    return () => {
+      window.removeEventListener("scroll", updateVisibility);
+      window.removeEventListener("resize", updateVisibility);
+    };
   }, []);
 
   return <a className="floating-talk button-primary" href="#contact" aria-label="Let’s Talk" hidden={hidden}>Let’s Talk <span aria-hidden="true">↗</span></a>;
