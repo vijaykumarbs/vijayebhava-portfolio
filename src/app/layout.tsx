@@ -9,6 +9,13 @@ const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 export const metadata: Metadata = {
   metadataBase: new URL("https://vijayebhava.com"),
   title: "Vijayebhava | Product Discovery & Product Management",
+  applicationName: "Vijayebhava",
+  authors: [{ name: "Vijay Kumar B. S.", url: "https://vijayebhava.com/" }],
+  creator: "Vijay Kumar B. S.",
+  publisher: "Vijayebhava",
+  keywords: ["product discovery", "product management", "business analysis", "SaaS", "Bengaluru", "AI-enabled products"],
+  category: "Professional services",
+  icons: { icon: "/icon.svg", shortcut: "/icon.svg" },
   description:
     "Product discovery and product management for founders building AI-enabled SaaS and digital products. Clarify the problem, prioritise what matters, and shape practical delivery.",
   alternates: { canonical: "/" },
@@ -23,6 +30,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    title: "Vijayebhava | Product Discovery & Product Management",
+    description: "Product discovery and product management for founders building AI-enabled SaaS and digital products.",
     images: ["/og-image.jpg"],
   },
 };

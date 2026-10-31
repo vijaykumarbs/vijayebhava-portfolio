@@ -5,6 +5,7 @@ import { ProductClarityAnimation } from "@/components/product-clarity-animation"
 import { HowIWorkAnimation } from "@/components/how-i-work-animation";
 import { BOOKING_URL, SITE_AUTHOR } from "@/data/site-config";
 import { ContactForm, FloatingTalkButton } from "@/components/site-interactions";
+import { SocialLink } from "@/components/social-links";
 
 function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: string }) {
   const id = useId().replaceAll(":", "");
@@ -58,6 +59,25 @@ export default function Home() {
       <SiteHeader brand={content.brand} />
 
       <section className="hero" id="top" aria-labelledby="hero-title">
+        <svg className="atmosphere-doodles" viewBox="0 0 520 360" aria-hidden="true" focusable="false">
+          <g className="atmosphere-doodle atmosphere-doodle--dawn" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2">
+            <path d="M68 238h145M92 238a50 50 0 0 1 100 0M142 172v-18m-47 36-13-13m107 13 13-13" />
+            <path d="M238 119q8-10 16 0t16 0m22 23q8-10 16 0t16 0" />
+          </g>
+          <g className="atmosphere-doodle atmosphere-doodle--day" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2">
+            <circle cx="155" cy="155" r="34" /><path d="M155 100v-17m0 144v-17m55-55h17m-144 0h17m94-39 12-12m-102 102 12-12m78 0 12 12m-102-102 12 12" />
+            <path d="M270 116q7-9 14 0t14 0m24 18q7-9 14 0t14 0" />
+          </g>
+          <g className="atmosphere-doodle atmosphere-doodle--golden" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2">
+            <path d="M72 230h150M100 230a47 47 0 0 1 94 0M147 170v-14m-43 32-11-11m99 11 11-11M262 112q8-10 16 0t16 0m22 24q8-10 16 0t16 0" />
+          </g>
+          <g className="atmosphere-doodle atmosphere-doodle--dusk" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2">
+            <path d="M168 116a44 44 0 1 0 42 63 38 38 0 0 1-42-63Z" /><path d="m260 113 2 7 7 2-7 2-2 7-2-7-7-2 7-2 2-7Zm64 44 1.5 5 5 1.5-5 1.5-1.5 5-1.5-5-5-1.5 5-1.5 1.5-5Z" />
+          </g>
+          <g className="atmosphere-doodle atmosphere-doodle--night" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2">
+            <path d="M166 104a48 48 0 1 0 48 68 41 41 0 0 1-48-68Z" /><path d="m265 102 2 8 8 2-8 2-2 8-2-8-8-2 8-2 2-8Zm70 55 1.5 6 6 1.5-6 1.5-1.5 6-1.5-6-6-1.5 6-1.5 1.5-6ZM292 195h20m-10-10v20" />
+          </g>
+        </svg>
         <div className="hero-copy" data-reveal="rise">
           <p className="eyebrow"><span className="eyebrow-dot" />{content.hero.eyebrow}</p>
           <h1 id="hero-title">{content.hero.titleLead} <em>{content.hero.titleAccent}</em><br />{content.hero.titleEnd}</h1>
@@ -141,7 +161,7 @@ export default function Home() {
             <img src="/images/vijay-portrait.jpg" width="600" height="750" loading="lazy" alt="Portrait of Vijay" />
           </picture>
           <div className="about-profile-copy">
-            <p>I have an engineering degree and an MBA. I bring 10+ years in business analysis and product work across fintech and enterprise software. At Eurofins, I worked on enterprise products with global business teams. Based in Bengaluru, I work remotely with clients in India and internationally.</p>
+            <p>I hold an engineering degree and an MBA, with over 10 years of experience in business analysis and product management across fintech and enterprise software. At Eurofins, I partnered with global teams on enterprise products. Based in Bengaluru, I work remotely with clients in India and worldwide.</p>
           </div>
         </div>
       </section>
@@ -171,23 +191,22 @@ export default function Home() {
       <section className="contact" id="contact" aria-labelledby="contact-title">
         <div className="section-kicker"><span>07</span><span className="kicker-line" /><span>START A CONVERSATION</span></div>
         <div className="contact-content" data-reveal="rise">
-          <h2 id="contact-title">Book a call</h2>
+          <h2 id="contact-title">Let’s Talk</h2>
           <p>Pick a time that works for you. Tell me what you are working through when you book.</p>
           <div className="contact-actions">
-            <a className="button-primary" href={BOOKING_URL} target="_blank" rel="noopener">Book a call <span aria-hidden="true">↗</span></a>
+            <a className="button-primary" href={BOOKING_URL} target="_blank" rel="noopener">Let’s Talk <span aria-hidden="true">↗</span></a>
           </div>
           <div className="contact-secondary">
-            <a href={content.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
-            <a href={content.contact.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
+            <SocialLink network="whatsapp" href={content.contact.whatsappUrl} />
+            <SocialLink network="linkedin" href={content.contact.linkedinUrl} />
           </div>
         </div>
         <ContactForm />
         <footer className="site-footer">
           <a className="footer-brand" href="#top" aria-label="Vijayebhava, back to top"><span className="footer-mark">VB</span><span>VIJAYEBHAVA</span></a>
           <div className="site-footer-links">
-            <a href={BOOKING_URL} target="_blank" rel="noopener">Book a call</a>
-            <a href={content.contact.whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
-            <a href={content.contact.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
+            <SocialLink network="whatsapp" href={content.contact.whatsappUrl} />
+            <SocialLink network="linkedin" href={content.contact.linkedinUrl} />
           </div>
           <span>PRODUCT MANAGEMENT · BUSINESS TRANSFORMATION</span>
           <span>© {new Date().getFullYear()}</span>

@@ -2,12 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-const successMessages = [
-  "Good software starts with a clear problem. Small steps turn it into something useful.",
-  "The best technology makes hard things feel simpler. Every useful idea starts with a question.",
-  "Build with curiosity; refine with feedback. Progress is a series of thoughtful iterations.",
-];
-
 export function FloatingTalkButton() {
   const [hidden, setHidden] = useState(true);
 
@@ -57,7 +51,7 @@ export function ContactForm() {
       if (!response.ok) throw new Error(data.error || "Could not send your message. Please try again.");
       form.reset();
       setState("success");
-      setStatus(`Thanks — I’ll get back to you soon. ${successMessages[Math.floor(Math.random() * successMessages.length)]}`);
+      setStatus("Thanks — I’ll get back to you soon.");
     } catch (error) {
       setState("error");
       setStatus(error instanceof Error ? error.message : "Something went wrong. Please try again.");
@@ -68,14 +62,14 @@ export function ContactForm() {
 
   return (
     <div className="contact-form-wrap">
-      <form className="contact-form" action="/api/contact" method="post" onSubmit={submit}>
+      {state === "success" ? <p className="contact-form-success" role="status">{status}</p> : <form className="contact-form" action="/api/contact" method="post" onSubmit={submit}>
         <label>Name<input name="name" autoComplete="name" maxLength={100} required /></label>
         <label>Email<input name="email" type="email" autoComplete="email" maxLength={254} required /></label>
         <label>Short message<textarea name="message" maxLength={2000} required /></label>
         <div className="contact-form-hp" aria-hidden="true"><label>Leave blank<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
         <button className="button-primary" type="submit" disabled={sending}>Send message <span aria-hidden="true">↗</span></button>
         <p className="contact-form-status" role="status" aria-live="polite" data-state={state}>{status}</p>
-      </form>
+      </form>}
     </div>
   );
 }
