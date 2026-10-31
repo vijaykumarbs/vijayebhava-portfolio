@@ -31,7 +31,7 @@
     "@types/node": "^22.18.6",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
-    "eslint": "^8.57.1",
+    "eslint": "^10.13.0",
     "eslint-config-next": "^15.5.28",
     "linkinator": "^8.1.0",
     "typescript": "^5.9.2",
