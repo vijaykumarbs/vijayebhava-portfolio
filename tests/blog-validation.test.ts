@@ -47,10 +47,18 @@ describe("blog frontmatter validation", () => {
     await expect(parsePost(fileName)).rejects.toThrow('frontmatter field "date" must be an ISO date or datetime.');
   });
 
-  it("rejects an invalid image size", async () => {
-    const fields = `${validFields()}\nimage: "/blog/missing.jpg"\nimageAlt: "Fixture image"\nimageWidth: 0\nimageHeight: 100`;
+  it.each([
+    ["incomplete image dimensions", `imageWidth: 100`, "imageWidth and imageHeight must be supplied together."],
+    ["an invalid image width", `image: "/blog/missing.jpg"\nimageAlt: "Fixture image"\nimageWidth: 0\nimageHeight: 100`, "imageWidth must be a positive integer."],
+    ["an invalid image height", `image: "/blog/missing.jpg"\nimageAlt: "Fixture image"\nimageWidth: 100\nimageHeight: -1`, "imageHeight must be a positive integer."],
+    ["dimensions without an image", `imageWidth: 100\nimageHeight: 100`, "image dimensions require an image field."],
+    ["an invalid image path", `image: "/blog/../missing.jpg"\nimageAlt: "Fixture image"`, "image must be a path under public/blog/ (for example, /blog/example.jpg)."],
+    ["a missing image alt", `image: "/blog/missing.jpg"`, "imageAlt is required when an image is set; decorative posts must omit image."],
+    ["a missing image file", `image: "/blog/missing.jpg"\nimageAlt: "Fixture image"`, 'image path "/blog/missing.jpg" does not exist under public/.'],
+  ])("rejects %s with its established message", async (_case, imageFields, message) => {
+    const fields = `${validFields()}\n${imageFields}`;
     const { fileName } = await fixture(fields);
-    await expect(parsePost(fileName)).rejects.toThrow("imageWidth must be a positive integer.");
+    await expect(parsePost(fileName)).rejects.toThrow(message);
   });
 
   it("does not publish drafts", async () => {
