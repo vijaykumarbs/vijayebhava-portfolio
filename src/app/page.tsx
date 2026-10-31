@@ -8,9 +8,9 @@ import { BOOKING_URL, SITE_AUTHOR } from "@/data/site-config";
 function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: string }) {
   const id = useId().replaceAll(":", "");
   const colors = {
-    discover: { light: "#DDE9E5", mid: "#9ABDB5", dark: "#0F4C47", shine: "#FFFFFF" },
-    direction: { light: "#DDE9E5", mid: "#7FAEA5", dark: "#0F4C47", shine: "#FFFFFF" },
-    workflow: { light: "#DDE9E5", mid: "#6D9F96", dark: "#0F4C47", shine: "#FFFFFF" },
+    discover: { light: "#E5E9FF", mid: "#AAB9FF", dark: "var(--primary)", shine: "#FFFFFF" },
+    direction: { light: "#E5E9FF", mid: "#AAB9FF", dark: "var(--primary)", shine: "#FFFFFF" },
+    workflow: { light: "#E5E9FF", mid: "#AAB9FF", dark: "var(--primary)", shine: "#FFFFFF" },
   }[kind];
 
   return (
@@ -28,19 +28,19 @@ function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: s
             <stop offset="1" stopColor="#fff" stopOpacity=".08" />
           </linearGradient>
         </defs>
-        <ellipse cx="32" cy="54" rx="17" ry="4" fill="#23302b" opacity=".13" />
+        <ellipse cx="32" cy="54" rx="17" ry="4" fill="#12161C" opacity=".13" />
         <circle cx="31" cy="29" r="21" fill={`url(#${id}-sphere)`} />
         <circle cx="31" cy="29" r="20.5" fill="none" stroke={`url(#${id}-edge)`} strokeWidth="1" />
         <ellipse cx="23" cy="17" rx="7" ry="3.3" fill="#fff" opacity=".56" transform="rotate(-38 23 17)" />
-        {kind === "discover" && <g fill="none" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2">
+        {kind === "discover" && <g fill="none" stroke="var(--spark-ink)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2">
           <circle cx="29" cy="28" r="7.5" opacity=".96" />
           <path d="m34.5 33.5 7 7M29 17v3M18 28h3M37 28h3" opacity=".9" />
         </g>}
-        {kind === "direction" && <g fill="none" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
-          <path d="m31 19 11 6-11 6-11-6 11-6Z" fill="#fff" fillOpacity=".18" />
+        {kind === "direction" && <g fill="none" stroke="var(--spark-ink)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+          <path d="m31 19 11 6-11 6-11-6 11-6Z" fill="var(--spark-ink)" fillOpacity=".18" />
           <path d="m20 31 11 6 11-6M20 37l11 6 11-6" opacity=".9" />
         </g>}
-        {kind === "workflow" && <g fill="#fff" stroke="#fff" strokeLinecap="round" strokeLinejoin="round">
+        {kind === "workflow" && <g fill="var(--spark-ink)" stroke="var(--spark-ink)" strokeLinecap="round" strokeLinejoin="round">
           <path d="M24 28h13M31 28v10" fill="none" strokeWidth="2" opacity=".95" />
           <circle cx="22" cy="28" r="4" fillOpacity=".92" />
           <circle cx="41" cy="28" r="4" fillOpacity=".72" />

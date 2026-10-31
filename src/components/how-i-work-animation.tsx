@@ -37,14 +37,14 @@ function createAnimationStyles() {
     return `
       @keyframes ${node} {
         0%, ${start}% { fill: var(--paper); stroke: var(--line); transform: scale(1); }
-        ${start + 1.5}%, ${end}% { fill: var(--spark, var(--orange)); stroke: var(--spark, var(--orange)); transform: scale(1.14); }
-        ${end + 1}%, 95% { fill: var(--deep, var(--forest, var(--ink))); stroke: var(--deep, var(--forest, var(--ink))); transform: scale(1); }
+        ${start + 1.5}%, ${end}% { fill: var(--spark); stroke: var(--spark); transform: scale(1.14); }
+        ${end + 1}%, 95% { fill: var(--primary); stroke: var(--primary); transform: scale(1); }
         99%, 100% { fill: var(--paper); stroke: var(--line); transform: scale(1); }
       }
       @keyframes ${icon} {
         0%, ${start}% { color: var(--muted); }
-        ${start + 1.5}%, ${end}% { color: var(--ink); }
-        ${end + 1}%, 95% { color: var(--on-deep, var(--white)); }
+        ${start + 1.5}%, ${end}% { color: var(--spark-ink); }
+        ${end + 1}%, 95% { color: var(--on-primary); }
         99%, 100% { color: var(--muted); }
       }
       @keyframes ${caption} {
