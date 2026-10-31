@@ -91,8 +91,7 @@ export const portfolioContent = {
   approach: {
     eyebrow: "How I work",
     title: "From a real problem to useful progress.",
-    intro:
-      "A practical sequence for making decisions with the people closest to the work. Start with the problem you need to solve; each engagement can be scoped around your current needs, with the wider process available when it adds value.",
+    intro: "A practical sequence for making decisions with the people closest to the work, scoped to your needs and continued through the wider process where it adds value.",
   },
   caseStudies: [
     {

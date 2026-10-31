@@ -4,6 +4,7 @@ import { chapters } from "@/data/chapters";
 import { portfolioContent, type AudienceNeed } from "@/data/portfolio";
 import { SiteHeader } from "@/components/site-header";
 import { ProductClarityAnimation } from "@/components/product-clarity-animation";
+import { HowIWorkAnimation } from "@/components/how-i-work-animation";
 import { BOOKING_URL, SITE_AUTHOR } from "@/data/site-config";
 
 function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: string }) {
@@ -128,20 +129,7 @@ export default async function Home() {
           <h2 id="approach-title">{content.approach.title}</h2>
           <p>{content.approach.intro}</p>
         </div>
-        <div className="approach-list">
-          {chapters.map((chapter) => {
-            const chapterCopy = copy.chapters[chapter.id];
-            return (
-              <article className="approach-row" key={chapter.id} data-reveal="rise">
-                <span className="approach-number">{chapter.number}</span>
-                <div className="approach-step-title"><span>{chapter.eyebrow}</span><h3>{chapterCopy?.title || chapter.title}</h3></div>
-                <p className="approach-description">{chapterCopy?.excerpt || chapter.description}</p>
-                <div className="approach-output"><span>OUTPUT</span><p>{chapter.deliverable}</p></div>
-              </article>
-            );
-          })}
-        </div>
-        <div className="approach-endnote"><span>01—06</span><span>FROM UNDERSTANDING TO OUTCOMES</span><span className="endnote-dot" /></div>
+        <HowIWorkAnimation />
       </section>
 
       <section className="about" id="about" aria-labelledby="about-title">

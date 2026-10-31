@@ -738,6 +738,39 @@ html[data-motion="on"] [data-reveal].is-visible { opacity: 1; transform: none; }
   .theme-toggle { align-self: flex-start; margin: 6px 0 4px; }
 }
 
+.how-i-work { width: min(100%, 960px); margin: 0 auto; }
+.how-i-work-figure { margin: 0; }
+.how-i-work-track { display: block; width: 100%; height: auto; overflow: visible; }
+.how-i-work-base { stroke: var(--line); stroke-width: 2; }
+.how-i-work-progress { stroke: var(--deep, var(--forest, var(--ink))); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 500; stroke-dashoffset: 500; animation: how-progress 18s linear infinite; }
+.how-node { fill: var(--paper); stroke: var(--line); stroke-width: 2; transform-box: fill-box; transform-origin: center; }
+.how-icon { fill: none; color: var(--muted); stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.how-i-work-captions { display: grid; min-height: 175px; margin-top: 29px; }
+.how-i-work-caption { grid-area: 1 / 1; opacity: 0; }
+.how-i-work-step { margin: 0 0 9px; color: var(--muted); font-size: 14px; }
+.how-i-work-step strong { margin-left: 9px; color: var(--ink); font-weight: 700; }
+.how-i-work-caption h3 { max-width: 24ch; margin: 0 0 13px; color: var(--ink); font-size: clamp(22px, 4.6vw, 34px); font-weight: 600; letter-spacing: -.025em; line-height: 1.15; }
+.how-i-work-output { max-width: 52ch; margin: 0; color: var(--muted); font-size: clamp(15px, 2.6vw, 17px); line-height: 1.5; }
+.how-i-work-output strong { margin-right: 8px; color: var(--ink); font-weight: 700; }
+.how-i-work-control { margin-top: 20px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: transparent; cursor: pointer; font-size: 14px; }
+.how-i-work-control:focus-visible { outline: 3px solid var(--spark, var(--orange)); outline-offset: 3px; }
+.how-i-work.is-paused * { animation-play-state: paused !important; }
+
+@media (max-width: 600px) {
+  .how-i-work-captions { min-height: 210px; margin-top: 21px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .how-i-work-track * { animation: none !important; }
+  .how-i-work-progress { stroke-dashoffset: 0; }
+  .how-node { fill: var(--deep, var(--forest, var(--ink))); stroke: var(--deep, var(--forest, var(--ink))); }
+  .how-icon { color: var(--on-deep, var(--white)); }
+  .how-i-work-captions { display: block; min-height: 0; }
+  .how-i-work-caption { margin-top: 22px; opacity: 1; transform: none; }
+  .how-i-work-caption h3, .how-i-work-output { max-width: none; }
+  .how-i-work-control { display: none; }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .clarity-animation:hover::before { transition-duration: .55s; }
 }
