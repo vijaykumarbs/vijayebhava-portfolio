@@ -945,3 +945,16 @@ html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .enga
 html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .blog-card { border-color: var(--border); background: var(--surface); box-shadow: 0 8px 20px var(--shadow); }
 html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .dimensional-icon { border-color: var(--border); background: linear-gradient(145deg, var(--surface), color-mix(in srgb, var(--surface) 78%, var(--paper))); box-shadow: inset 0 1px 0 var(--surface), 0 5px 11px var(--shadow); }
 html:is([data-theme="dark"], [data-theme="auto"][data-atmosphere="night"]) .site-nav { background: var(--surface); }
+
+/* Keep the desktop navigation surface uniform over page gradients. */
+@media (min-width: 761px) {
+  .site-header,
+  .site-header.is-scrolled {
+    background: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .site-nav {
+    background: transparent;
+  }
+}
