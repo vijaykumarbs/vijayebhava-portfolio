@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { ProductClarityAnimation } from "@/components/product-clarity-animation";
 import { HowIWorkAnimation } from "@/components/how-i-work-animation";
 import { BOOKING_URL, SITE_AUTHOR } from "@/data/site-config";
+import { ContactForm, FloatingTalkButton } from "@/components/site-interactions";
 
 function DimensionalIcon({ kind, label }: { kind: AudienceNeed["icon"]; label: string }) {
   const id = useId().replaceAll(":", "");
@@ -53,6 +54,7 @@ export default function Home() {
 
   return (
     <main className="portfolio">
+      <FloatingTalkButton />
       <SiteHeader brand={content.brand} />
 
       <section className="hero" id="top" aria-labelledby="hero-title">
@@ -179,6 +181,7 @@ export default function Home() {
             <a href={content.contact.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
           </div>
         </div>
+        <ContactForm />
         <footer className="site-footer">
           <a className="footer-brand" href="#top" aria-label="Vijayebhava, back to top"><span className="footer-mark">VB</span><span>VIJAYEBHAVA</span></a>
           <div className="site-footer-links">

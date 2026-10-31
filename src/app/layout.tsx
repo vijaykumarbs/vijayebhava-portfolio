@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { GoogleAnalyticsPageViews } from "@/components/google-analytics-page-views";
 import { ThemeController } from "@/components/theme-controller";
 import { ScrollAndPointerEffects } from "@/components/scroll-and-pointer-effects";
@@ -38,7 +37,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <ThemeController />
         <ScrollAndPointerEffects />
         {children}
-        <Script src="/site-fixes.js" strategy="afterInteractive" />
         {gaMeasurementId && (
           <GoogleAnalyticsPageViews measurementId={gaMeasurementId} />
         )}
