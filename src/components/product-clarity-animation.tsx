@@ -16,7 +16,13 @@ export function ProductClarityAnimation() {
     const root = rootRef.current;
     if (!stage || !art || !root) return;
 
-    const resizeArt = () => art.setAttribute("viewBox", stage.clientWidth <= 760 ? "330 0 1040 900" : "220 90 1320 760");
+    const resizeArt = () => {
+      art.setAttribute("viewBox", stage.clientWidth <= 760 ? "330 0 1040 900" : "220 90 1320 760");
+      const desktopCaption = matchMedia("(min-width: 761px)").matches;
+      art.querySelectorAll<SVGTextElement>('text[data-caption="true"]').forEach((label) => {
+        label.setAttribute("y", desktopCaption ? "205" : "138");
+      });
+    };
     resizeArt();
     const resizeObserver = "ResizeObserver" in window ? new ResizeObserver(resizeArt) : null;
     resizeObserver?.observe(stage);
@@ -214,7 +220,8 @@ export function ProductClarityAnimation() {
 
     const captions = [[.6, 4.2, "1 · The messy reality"], [5, 8.6, "2 · Understand & validate"], [9.2, 12.6, "3 · Prioritise"], [13.2, 16.4, "4 · Turn decisions into action"], [16.6, 18.6, "5 · Learn, adjust, repeat"]] as const;
     captions.forEach(([from, to, caption]) => {
-      const label = text(root, caption, 800, 138, 40, ink, "middle");
+      const label = text(root, caption, 800, matchMedia("(min-width: 761px)").matches ? 205 : 138, 40, ink, "middle");
+      label.dataset.caption = "true";
       actions.push((t) => label.setAttribute("opacity", String(windowOf(from, to, t) * .85)));
     });
 

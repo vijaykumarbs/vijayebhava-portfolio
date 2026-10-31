@@ -73,18 +73,46 @@ const animationStyles = createAnimationStyles();
 
 export function HowIWorkAnimation() {
   const [paused, setPaused] = useState(false);
+  const [selectedStep, setSelectedStep] = useState<number | null>(null);
+
+  function selectStep(index: number) {
+    setSelectedStep(index);
+    const root = document.querySelector<HTMLElement>(".how-i-work");
+    if (!root) return;
+    const time = index * 2.7 + 0.6;
+    root.querySelectorAll<HTMLElement>(".how-node, .how-icon, .how-i-work-caption, .how-i-work-progress")
+      .forEach((element) => { element.style.animationDelay = `-${time}s`; });
+    requestAnimationFrame(() => {
+      root.getAnimations({ subtree: true }).forEach((animation) => {
+        try { animation.currentTime = time * 1000; } catch { /* Some browsers expose a read-only animation timeline. */ }
+      });
+    });
+  }
 
   return (
-    <div className={`how-i-work${paused ? " is-paused" : ""}`}>
+    <div className={`how-i-work${paused ? " is-paused" : ""}`} data-selected-step={selectedStep ?? undefined}>
       <style>{animationStyles}</style>
       <figure className="how-i-work-figure" aria-label="A six-step loop: understand, validate, prioritise, design, deliver, measure and improve.">
-        <svg className="how-i-work-track" viewBox="0 0 600 100" aria-hidden="true" focusable="false">
+        <svg className="how-i-work-track" viewBox="0 0 600 100" aria-label="Select a step in the How I work animation">
           <line className="how-i-work-base" x1="50" y1="50" x2="550" y2="50" />
           <line className="how-i-work-progress" x1="50" y1="50" x2="550" y2="50" />
           {chapters.map((chapter, index) => {
             const x = 50 + index * 100;
             return (
-              <g key={chapter.id}>
+              <g
+                key={chapter.id}
+                className="how-step-target"
+                role="button"
+                tabIndex={0}
+                aria-label={`Show step ${index + 1}: ${chapter.title}`}
+                onClick={() => selectStep(index)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    selectStep(index);
+                  }
+                }}
+              >
                 <circle className={`how-node how-node-${index}`} cx={x} cy="50" r="22" />
                 <svg className={`how-icon how-icon-${index}`} x={x - 12} y="38" width="24" height="24" viewBox="0 0 24 24">
                   <StepIcon id={chapter.id} />
@@ -106,7 +134,10 @@ export function HowIWorkAnimation() {
           {chapters.map((chapter) => <li key={chapter.id}>{chapter.eyebrow}: {chapter.title} Output: {chapter.deliverable}</li>)}
         </ol>
       </figure>
-      <button className="how-i-work-control" type="button" aria-pressed={paused} onClick={() => setPaused((value) => !value)}>
+      <button className="how-i-work-control" type="button" aria-pressed={paused} onClick={() => {
+        if (paused) setSelectedStep(null);
+        setPaused((value) => !value);
+      }}>
         {paused ? "Play animation" : "Pause animation"}
       </button>
     </div>
