@@ -7,8 +7,8 @@ export function BlogFooter({ note }: { note: string }) {
     <footer className="blog-footer">
       <Link href="/">← Back to Vijayebhava</Link>
       <div className="blog-footer-links">
-        <SocialLink network="whatsapp" href={portfolioContent.contact.whatsappUrl} />
-        <SocialLink network="linkedin" href={portfolioContent.contact.linkedinUrl} />
+        <SocialLink network="whatsapp" href={portfolioContent.contact.whatsappUrl} placement="blog-footer" />
+        <SocialLink network="linkedin" href={portfolioContent.contact.linkedinUrl} placement="blog-footer" />
       </div>
       <span>{note}</span>
     </footer>

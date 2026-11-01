@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BlogFooter } from "@/components/blog-footer";
+import { AdSenseUnit } from "@/components/adsense-unit";
 import { MarkdownContent } from "@/components/markdown-content";
 import { SiteHeader } from "@/components/site-header";
 import { formatPostDate, getPublishedPosts, postUrl, tagSlug } from "@/data/blog";
@@ -90,9 +91,10 @@ export default async function BlogPostPage({ params }: PostPageProps) {
         </section>}
         <div className="blog-article-end">
           <Link href="/blog/">More product notes <span aria-hidden="true">↗</span></Link>
-          <a className="button-primary blog-article-booking" href={cta.url} target={externalCta ? "_blank" : undefined} rel={externalCta ? "noopener" : undefined}>{cta.label} <span aria-hidden="true">↗</span></a>
+          <a className="button-primary blog-article-booking" href={cta.url} target={externalCta ? "_blank" : undefined} rel={externalCta ? "noopener" : undefined} data-analytics-event="booking_click" data-analytics-placement="blog-article">{cta.label} <span aria-hidden="true">↗</span></a>
         </div>
       </article>
+      <AdSenseUnit placement="blog-article" />
       <BlogFooter note="PRODUCT THINKING · PRACTICAL PROGRESS" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
     </main>

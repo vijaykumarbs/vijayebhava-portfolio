@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog-footer";
+import { AdSenseUnit } from "@/components/adsense-unit";
 import { SiteHeader } from "@/components/site-header";
 import { formatPostDate, tagSlug, type BlogPost } from "@/data/blog";
 import { portfolioContent } from "@/data/portfolio";
@@ -34,6 +35,8 @@ export function BlogListing({ posts, page = 1, totalPages = 1, selectedTag }: Bl
           </article>
         ))}
       </section>
+
+      <AdSenseUnit placement="blog-listing" />
 
       {totalPages > 1 && <nav className="blog-pagination" aria-label="Blog pages">
         {page > 1 && <Link rel="prev" href={page === 2 ? "/blog/" : `/blog/page/${page - 1}/`}>← Previous</Link>}

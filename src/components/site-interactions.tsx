@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { trackAnalyticsEvent } from "@/components/google-analytics-page-views";
 
 export function FloatingTalkButton() {
   const [hidden, setHidden] = useState(true);
@@ -49,6 +50,7 @@ export function ContactForm() {
       });
       const data = await response.json() as { error?: string };
       if (!response.ok) throw new Error(data.error || "Could not send your message. Please try again.");
+      trackAnalyticsEvent("generate_lead", { method: "contact_form", form_id: "contact" });
       form.reset();
       setState("success");
       setStatus("Thanks — I’ll get back to you soon.");
