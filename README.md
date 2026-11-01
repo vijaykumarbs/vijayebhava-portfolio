@@ -53,7 +53,11 @@ The migration notes list CMS URLs that should be redirected or noindexed at the 
 
 ## Google Analytics 4
 
-Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in the build environment to the GA4 web stream Measurement ID. The static export embeds the ID at build time; the tag is omitted when unset. No form contents or personal information are sent.
+Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in the build environment to the GA4 web stream Measurement ID. The static export embeds the ID at build time; the tag is omitted when unset. Analytics and AdSense load only after a visitor chooses “Accept all”; “Necessary only” and “Reject all” leave both disabled. The saved choice can be changed with the Privacy choices button. Events include `page_view`, `linkedin_profile_click`, `whatsapp_click`, `booking_click`, and `generate_lead` after a successful contact-form response. GA receives no form contents or personal information. LinkedIn profile views and messages actually sent in WhatsApp are not observable from this site; click events are proxies.
+
+## Google AdSense
+
+The blog listing and article pages include the configured display ad unit. `/ads.txt` identifies the publisher account. Ads are requested only after a visitor chooses “Accept all” and use non-personalized targeting; delivery depends on Google marking the site Ready for ads.
 
 ## Main files
 

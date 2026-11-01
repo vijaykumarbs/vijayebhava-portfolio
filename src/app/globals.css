@@ -484,6 +484,20 @@ body { background-color: var(--paper); transition: background-color .7s, color .
 .testimonials { background: var(--paper); }
 .dimensional-icon svg { animation: none; }
 .blog-page { background: #faf7f0; }
+.analytics-consent { position: fixed; z-index: 20; right: 18px; bottom: 18px; left: 18px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 18px; width: min(760px, calc(100% - 36px)); margin-inline: auto; padding: 18px 20px; border: 1px solid var(--border); border-radius: 16px; color: var(--ink); background: var(--surface); box-shadow: 0 16px 48px var(--shadow); }
+.analytics-consent h2 { margin: 0 0 6px; font-size: 15px; }
+.analytics-consent p { max-width: 470px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.analytics-consent-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
+.analytics-consent-actions button, .analytics-preferences { min-height: 36px; padding: 8px 11px; border: 1px solid var(--border); border-radius: 999px; color: var(--ink); background: var(--surface); cursor: pointer; font-size: 11px; font-weight: 650; }
+.analytics-consent-actions button:first-child { border-color: var(--primary); color: var(--on-primary); background: var(--primary); }
+.analytics-preferences { position: fixed; z-index: 19; bottom: 18px; left: 18px; color: var(--muted); background: var(--surface); box-shadow: 0 6px 18px var(--shadow); }
+.blog-ad { width: min(1080px, calc(100% - 48px)); min-height: 90px; margin: 36px auto; color: var(--muted); }
+@media (max-width: 680px) {
+  .analytics-consent { grid-template-columns: 1fr; gap: 13px; padding: 16px; }
+  .analytics-consent-actions { justify-content: flex-start; }
+  .analytics-consent-actions button { flex: 1 1 auto; }
+  .blog-ad { width: calc(100% - 36px); min-height: 60px; }
+}
 .button-primary:hover { background: var(--primary); }
 .eyebrow, .section-kicker, .card-copy > span, .card-output > span, .engagement-outputs > span,
 .approach-step-title > span, .approach-output > span, .approach-endnote, .site-footer,

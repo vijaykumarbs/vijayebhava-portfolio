@@ -153,7 +153,7 @@ export default function Home() {
           <h2 id="about-title">{content.about.title}</h2>
           {content.about.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           <p className="about-note">{content.about.note}</p>
-          <a className="about-link" href={content.contact.linkedinUrl} target="_blank" rel="noreferrer">More about my work on LinkedIn <span aria-hidden="true">↗</span></a>
+          <a className="about-link" href={content.contact.linkedinUrl} target="_blank" rel="noreferrer" data-analytics-event="linkedin_profile_click" data-analytics-network="linkedin" data-analytics-placement="about">More about my work on LinkedIn <span aria-hidden="true">↗</span></a>
         </div>
         <div className="about-profile" data-reveal="soft">
           <picture className="about-portrait">
@@ -194,19 +194,19 @@ export default function Home() {
           <h2 id="contact-title">Let’s Talk</h2>
           <p>Pick a time that works for you. Tell me what you are working through when you book.</p>
           <div className="contact-actions">
-            <a className="button-primary" href={BOOKING_URL} target="_blank" rel="noopener">Let’s Talk <span aria-hidden="true">↗</span></a>
+            <a className="button-primary" href={BOOKING_URL} target="_blank" rel="noopener" data-analytics-event="booking_click" data-analytics-placement="contact">Let’s Talk <span aria-hidden="true">↗</span></a>
           </div>
           <div className="contact-secondary">
-            <SocialLink network="whatsapp" href={content.contact.whatsappUrl} />
-            <SocialLink network="linkedin" href={content.contact.linkedinUrl} />
+            <SocialLink network="whatsapp" href={content.contact.whatsappUrl} placement="contact" />
+            <SocialLink network="linkedin" href={content.contact.linkedinUrl} placement="contact" />
           </div>
         </div>
         <ContactForm />
         <footer className="site-footer">
           <a className="footer-brand" href="#top" aria-label="Vijayebhava, back to top"><span className="footer-mark">VB</span><span>VIJAYEBHAVA</span></a>
           <div className="site-footer-links">
-            <SocialLink network="whatsapp" href={content.contact.whatsappUrl} />
-            <SocialLink network="linkedin" href={content.contact.linkedinUrl} />
+            <SocialLink network="whatsapp" href={content.contact.whatsappUrl} placement="footer" />
+            <SocialLink network="linkedin" href={content.contact.linkedinUrl} placement="footer" />
           </div>
           <span>PRODUCT MANAGEMENT · BUSINESS TRANSFORMATION</span>
           <span>© {new Date().getFullYear()}</span>
