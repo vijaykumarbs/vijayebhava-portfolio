@@ -1,7 +1,8 @@
 "use client";
 
+/* eslint-disable @next/next/no-html-link-for-pages -- Full document navigation is needed for cross-page hash targets in the static export. */
+
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-controller";
 import { BOOKING_URL } from "@/data/site-config";
 
@@ -26,9 +27,9 @@ export function SiteHeader({ brand }: { brand: string }) {
 
   return (
     <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
-      <Link className="wordmark" href="/#top" aria-label={`${brand}, home`} onClick={() => setMenuOpen(false)}>
+      <a className="wordmark" href="/#top" aria-label={`${brand}, home`} onClick={() => setMenuOpen(false)}>
         <span className="wordmark-mark">VB</span><span className="wordmark-name">VIJAYEBHAVA</span>
-      </Link>
+      </a>
       <button
         className="nav-toggle"
         type="button"
@@ -40,7 +41,7 @@ export function SiteHeader({ brand }: { brand: string }) {
         <span>{menuOpen ? "Close" : "Menu"}</span><i aria-hidden="true">{menuOpen ? "−" : "+"}</i>
       </button>
       <nav id="main-navigation" className={menuOpen ? "site-nav is-open" : "site-nav"} aria-label="Main navigation" onClick={() => setMenuOpen(false)}>
-        {links.map((link) => <Link href={link.href} key={link.href}>{link.label}</Link>)}
+        {links.map((link) => <a href={link.href} key={link.href}>{link.label}</a>)}
         <a className="nav-contact" href={BOOKING_URL} target="_blank" rel="noopener">Let’s Talk <span aria-hidden="true">↗</span></a>
       </nav>
       <ThemeToggle />

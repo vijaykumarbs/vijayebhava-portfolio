@@ -99,6 +99,13 @@ export async function onRequestPost({ request, env }: { request: Request; env: C
     return jsonResponse({ error: "Please check your name, email and message." }, 422);
   }
 
+  const missingConfiguration = ["CONTACT_TO_EMAIL", "CONTACT_FROM_EMAIL", "RESEND_API_KEY"]
+    .filter((key) => !env[key as keyof ContactEnvironment]);
+  if (missingConfiguration.length) {
+    console.error("Contact form email configuration is incomplete", { missing: missingConfiguration });
+    return jsonResponse({ error: "Message could not be sent right now. Please email me directly." }, 500);
+  }
+
   try {
     const ipAddress = request.headers.get("CF-Connecting-IP") || "unknown";
     if (!(await allowMessage(env.CONTACT_RATE_LIMIT_KV, ipAddress))) {
@@ -123,11 +130,27 @@ export async function onRequestPost({ request, env }: { request: Request; env: C
     });
 
     if (!emailResponse.ok) {
+      let providerError: { name?: unknown; message?: unknown; statusCode?: unknown } = {};
+      try {
+        providerError = await emailResponse.json() as typeof providerError;
+      } catch {
+        // Keep provider diagnostics useful even when the response is not JSON.
+      }
+      const message = typeof providerError.message === "string"
+        ? providerError.message.replace(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g, "[email]").slice(0, 240)
+        : undefined;
+      console.error("Resend rejected a contact form email", {
+        status: emailResponse.status,
+        name: typeof providerError.name === "string" ? providerError.name : undefined,
+        statusCode: typeof providerError.statusCode === "number" ? providerError.statusCode : undefined,
+        message,
+      });
       return jsonResponse({ error: "Message could not be sent right now. Please email me directly." }, 500);
     }
 
     return jsonResponse({ ok: true });
-  } catch {
+  } catch (error) {
+    console.error("Contact form processing failed", { errorName: error instanceof Error ? error.name : "unknown" });
     return jsonResponse({ error: "Message could not be sent right now. Please email me directly." }, 500);
   }
 }
